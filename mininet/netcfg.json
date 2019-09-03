@@ -1,0 +1,134 @@
+{
+  "devices": {
+    "device:leaf1": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50001?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.p4.srv6-tutorial"
+      },
+      "srv6DeviceConfig": {
+        "myStationMac": "00:aa:00:00:00:01",
+        "mySid": "3:101:2::",
+        "isSpine": false
+      }
+    },
+    "device:leaf2": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50002?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.p4.srv6-tutorial"
+      },
+      "srv6DeviceConfig": {
+        "myStationMac": "00:aa:00:00:00:02",
+        "mySid": "3:102:2::",
+        "isSpine": false
+      }
+    },
+    "device:spine1": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50003?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.p4.srv6-tutorial"
+      },
+      "srv6DeviceConfig": {
+        "myStationMac": "00:bb:00:00:00:01",
+        "mySid": "3:201:2::",
+        "isSpine": true
+      }
+    },
+    "device:spine2": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50004?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.p4.srv6-tutorial"
+      },
+      "srv6DeviceConfig": {
+        "myStationMac": "00:bb:00:00:00:02",
+        "mySid": "3:202:2::",
+        "isSpine": true
+      }
+    }
+  },
+  "ports": {
+    "device:leaf1/3": {
+      "interfaces": [
+        {
+          "name": "leaf1-3",
+          "ips": ["2001:1:1::ff/64"]
+        }
+      ]
+    },
+    "device:leaf1/4": {
+      "interfaces": [
+        {
+          "name": "leaf1-4",
+          "ips": ["2001:1:1::ff/64"]
+        }
+      ]
+    },
+    "device:leaf1/5": {
+      "interfaces": [
+        {
+          "name": "leaf1-5",
+          "ips": ["2001:1:1::ff/64"]
+        }
+      ]
+    },
+    "device:leaf1/6": {
+      "interfaces": [
+        {
+          "name": "leaf1-6",
+          "ips": ["2001:1:2::ff/64"]
+        }
+      ]
+    },
+    "device:leaf2/3": {
+      "interfaces": [
+        {
+          "name": "leaf2-3",
+          "ips": ["2001:2:3::ff/64"]
+        }
+      ]
+    },
+    "device:leaf2/4": {
+      "interfaces": [
+        {
+          "name": "leaf2-4",
+          "ips": ["2001:2:4::ff/64"]
+        }
+      ]
+    }
+  },
+  "hosts": {
+    "00:00:00:00:00:1A/None": {
+      "basic": {
+        "name": "h1a"
+      }
+    },
+    "00:00:00:00:00:1B/None": {
+      "basic": {
+        "name": "h1b"
+      }
+    },
+    "00:00:00:00:00:1C/None": {
+      "basic": {
+        "name": "h1c"
+      }
+    },
+    "00:00:00:00:00:20/None": {
+      "basic": {
+        "name": "h2"
+      }
+    },
+    "00:00:00:00:00:30/None": {
+      "basic": {
+        "name": "h3"
+      }
+    },
+    "00:00:00:00:00:40/None": {
+      "basic": {
+        "name": "h4"
+      }
+    }
+  }
+}

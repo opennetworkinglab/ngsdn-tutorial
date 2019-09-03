@@ -1,0 +1,6 @@
+.idea/
+tmp/
+p4src/build
+app/target
+app/src/main/resources/p4info.txt
+app/src/main/resources/bmv2.json

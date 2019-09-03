@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+
+# Copyright 2019 Barefoot Networks, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+"""
+P4Runtime shell docker wrapper
+From: https://github.com/p4lang/p4runtime-shell/blob/master/p4runtime-sh-docker
+"""
+
+import argparse
+from collections import namedtuple
+import logging
+import os.path
+import sys
+import tempfile
+import shutil
+import subprocess
+
+DOCKER_IMAGE = 'p4lang/p4runtime-sh'
+TMP_DIR = os.path.dirname(os.path.abspath(__file__)) + '/.pipe_cfg'
+
+
+def main():
+    FwdPipeConfig = namedtuple('FwdPipeConfig', ['p4info', 'bin'])
+
+    def pipe_config(arg):
+        try:
+            paths = FwdPipeConfig(*[x for x in arg.split(',')])
+            if len(paths) != 2:
+                raise argparse.ArgumentError
+            return paths
+        except Exception:
+            raise argparse.ArgumentError(
+                "Invalid pipeline config, expected <p4info path>,<binary config path>")
+
+    parser = argparse.ArgumentParser(description='P4Runtime shell docker wrapper', add_help=False)
+    parser.add_argument('--grpc-addr',
+                        help='P4Runtime gRPC server address',
+                        metavar='<host>:<port>',
+                        type=str, action='store', default="localhost:50001")
+    parser.add_argument('--config',
+                        help='If you want the shell to push a pipeline config to the server first',
+                        metavar='<p4info path (text)>,<binary config path>',
+                        type=pipe_config, action='store', default=None)
+    parser.add_argument('-v', '--verbose', help='Increase output verbosity',
+                        action='store_true')
+    args, unknown_args = parser.parse_known_args()
+
+    docker_args = []
+    new_args = []
+
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+        new_args.append('--verbose')
+
+    if args.grpc_addr is not None:
+        if args.grpc_addr.startswith('localhost'):
+            args.grpc_addr = args.grpc_addr.replace("localhost", "host.docker.internal")
+        print("*** Connecting to P4Runtime server at {} ...".format(args.grpc_addr))
+        new_args.extend(["--grpc-addr", args.grpc_addr])
+
+    if args.config is not None:
+        if not os.path.isfile(args.config.p4info):
+            logging.critical("'{}' is not a valid file".format(args.config.p4info))
+            sys.exit(1)
+        if not os.path.isfile(args.config.bin):
+            logging.critical("'{}' is not a valid file".format(args.config.bin))
+            sys.exit(1)
+
+        mount_path = "/fwd_pipe_config"
+        fname_p4info = "p4info.pb.txt"
+        fname_bin = "config.bin"
+
+        os.mkdir(TMP_DIR)
+        logging.debug(
+            "Created temporary directory '{}', it will be mounted in the docker as '{}'".format(
+                TMP_DIR, mount_path))
+        shutil.copy(args.config.p4info, os.path.join(TMP_DIR, fname_p4info))
+        shutil.copy(args.config.bin, os.path.join(TMP_DIR, fname_bin))
+
+        docker_args.extend(["-v", "{}:{}".format(TMP_DIR, mount_path)])
+        new_args.extend(["--config", "{},{}".format(
+            os.path.join(mount_path, fname_p4info), os.path.join(mount_path, fname_bin))])
+
+    cmd = ["docker", "run", "-ti"]
+    cmd.extend(docker_args)
+    cmd.append(DOCKER_IMAGE)
+    cmd.extend(new_args)
+    cmd.extend(unknown_args)
+    logging.debug("Running cmd: {}".format(" ".join(cmd)))
+
+    subprocess.run(cmd)
+
+    if args.config is not None:
+        logging.debug("Cleaning up...")
+        try:
+            shutil.rmtree(TMP_DIR)
+        except Exception:
+            logging.error("Error when removing temporary directory '{}'".format(TMP_DIR))
+
+
+if __name__ == '__main__':
+    main()
