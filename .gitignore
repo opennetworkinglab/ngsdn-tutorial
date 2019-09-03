@@ -4,3 +4,6 @@ p4src/build
 app/target
 app/src/main/resources/p4info.txt
 app/src/main/resources/bmv2.json
+ptf/bmv2.log
+ptf/ptf.log
+ptf/ptf.pcap

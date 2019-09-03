@@ -1,0 +1,42 @@
+[
+    {
+        "ptf_port": 0,
+        "p4_port": 0,
+        "iface_name": "veth1"
+    },
+    {
+        "ptf_port": 1,
+        "p4_port": 1,
+        "iface_name": "veth3"
+    },
+    {
+        "ptf_port": 2,
+        "p4_port": 2,
+        "iface_name": "veth5"
+    },
+    {
+        "ptf_port": 3,
+        "p4_port": 3,
+        "iface_name": "veth7"
+    },
+    {
+        "ptf_port": 4,
+        "p4_port": 4,
+        "iface_name": "veth9"
+    },
+    {
+        "ptf_port": 5,
+        "p4_port": 5,
+        "iface_name": "veth11"
+    },
+    {
+        "ptf_port": 6,
+        "p4_port": 6,
+        "iface_name": "veth13"
+    },
+    {
+        "ptf_port": 7,
+        "p4_port": 7,
+        "iface_name": "veth15"
+    }
+]
