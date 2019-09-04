@@ -113,8 +113,9 @@ the exercises, here's a quick reference:
 | Make command        | Description                                            |
 |---------------------|------------------------------------------------------- |
 | `make pull-deps`    | Pull all required dependencies                         |
-| `make p4-build `    | Build the P4 program                                   |
-| `make app-build `   | Build ONOS app                                         |
+| `make p4-build`     | Build P4 program                                       |
+| `make p4-test`      | Run the PTF tests                                      |
+| `make app-build`    | Build ONOS app                                         |
 | `make start`        | Start containers (`mininet` and `onos`)                |
 | `make stop`         | Stop and remove all containers                         |
 | `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl+D to exit)|

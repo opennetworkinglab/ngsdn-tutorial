@@ -19,6 +19,10 @@
 # Carmelo Cascone (carmelo@opennetworking.org)
 #
 
+import logging
+# https://stackoverflow.com/questions/24812604/hide-scapy-warning-message-ipv6
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+
 import itertools
 import Queue
 import sys

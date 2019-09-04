@@ -72,9 +72,11 @@ netcfg:
 reset: stop
 	-rm -rf ./tmp
 
-clean: reset
+clean:
 	-rm -rf p4src/build
 	-rm -rf app/target
+
+deep-clean: clean
 	-docker container rm ${app_build_container_name}
 
 p4-build:
@@ -84,6 +86,9 @@ p4-build:
 		p4c-bm2-ss --arch v1model -o p4src/build/bmv2.json \
 		--p4runtime-files p4src/build/p4info.txt --Wdisable=unsupported \
 		p4src/main.p4
+
+p4-test:
+	@cd ptf && ./run_tests
 
 _create_mvn_container:
 	@if ! docker container ls -a --format '{{.Names}}' | grep -q ${app_build_container_name} ; then \
