@@ -4,7 +4,7 @@
       "basic": {
         "managementAddress": "grpc://mininet:50001?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.p4.srv6-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
       "srv6DeviceConfig": {
         "myStationMac": "00:aa:00:00:00:01",
@@ -16,7 +16,7 @@
       "basic": {
         "managementAddress": "grpc://mininet:50002?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.p4.srv6-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
       "srv6DeviceConfig": {
         "myStationMac": "00:aa:00:00:00:02",
@@ -28,7 +28,7 @@
       "basic": {
         "managementAddress": "grpc://mininet:50003?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.p4.srv6-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
       "srv6DeviceConfig": {
         "myStationMac": "00:bb:00:00:00:01",
@@ -40,7 +40,7 @@
       "basic": {
         "managementAddress": "grpc://mininet:50004?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.p4.srv6-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
       "srv6DeviceConfig": {
         "myStationMac": "00:bb:00:00:00:02",

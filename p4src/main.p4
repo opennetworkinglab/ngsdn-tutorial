@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-
-
 // Always start by including the P4 core library and the architecture
 // definition, v1model in this case.
-
 // https://github.com/p4lang/p4c/blob/master/p4include/core.p4
-#include <core.p4>
-
 // https://github.com/p4lang/p4c/blob/master/p4include/v1model.p4
+#include <core.p4>
 #include <v1model.p4>
-
 
 
 //------------------------------------------------------------------------------
@@ -33,8 +28,8 @@
 //------------------------------------------------------------------------------
 
 // CPU_PORT specifies the P4 port number associated to packet-in and packet-out.
-// All packets forwarded via this port will be delivered to the P4Runtime client
-// as PacketIn messages. Simialrly, PacketOut messages from the client will be
+// All packets forwarded via this port will be delivered to the controller as
+// PacketIn messages. Similarly, PacketOut messages from the controller will be
 // seen by the P4 pipeline as coming from the CPU_PORT.
 #define CPU_PORT 255
 
@@ -42,7 +37,7 @@
 // to the CPU port. Packets associated with this session ID will be cloned to
 // the CPU_PORT as well as being transmitted via their original egress port
 // (e.g. set by the bridging/routing/acl table). For cloning to work, the
-// P4Runtime client needs first to insert a CloneSessionEntry that maps this
+// P4Runtime controller needs first to insert a CloneSessionEntry that maps this
 // session ID to the CPU_PORT. See
 // https://s3-us-west-2.amazonaws.com/p4runtime/docs/v1.0.0/P4Runtime-Spec.html#sec-clonesessionentry
 #define CPU_CLONE_SESSION_ID 99
@@ -56,7 +51,7 @@
 
 typedef bit<9>   port_num_t;
 typedef bit<48>  mac_addr_t;
-typedef bit<16>  group_id_t;
+typedef bit<16>  mcast_group_id_t;
 typedef bit<32>  ipv4_addr_t;
 typedef bit<128> ipv6_addr_t;
 typedef bit<16>  l4_port_t;
@@ -172,7 +167,7 @@ header packet_out_t {
 }
 
 // We collect all headers under the same data structure, associated with each
-// packet. The goal of the parser is to populate this struct fields.
+// packet. The goal of the parser is to populate the fields of this struct.
 struct parsed_headers_t {
     packet_out_t  packet_out;
     packet_in_t   packet_in;
@@ -213,7 +208,8 @@ struct standard_metadata_t {
     bit<48> egress_global_timestamp;
     bit<16> mcast_grp; // ID for the mcast replication table
     bit<1>  checksum_error; // 1 indicates that verify_checksum() method failed
-    // Etc... See v1model.p4 for complete definition.
+
+    // Etc... See v1model.p4 for the complete definition.
 }
 */
 
@@ -222,7 +218,7 @@ struct standard_metadata_t {
 //------------------------------------------------------------------------------
 // PARSER IMPLEMENTATION
 //
-// Described a state machine with one "start" state and two final states,
+// Described as a state machine with one "start" state and two final states,
 // "accept" (indicating successful parsing) and "reject" (indicating a parsing
 // failure, not used here). Each intermediate state can specify the next state
 // by using a select statement over the header fields extracted, or other
@@ -236,7 +232,7 @@ parser ParserImpl (packet_in packet,
 {
 
     // We assume the first header will always be the Ethernet one, unless the
-    // the packet is a packet-out from the CPU_PORT.
+    // the packet is a packet-out coming from the CPU_PORT.
     state start {
         transition select(standard_metadata.ingress_port) {
             CPU_PORT: parse_packet_out;
@@ -316,6 +312,10 @@ parser ParserImpl (packet_in packet,
 // - L3 routing
 // - ACL
 // - NDP handling
+//
+// This block operates on the parsed headers (hdr), the user-defined metadata
+// (local_metadata), and the architecture-specific instrinsic metadata
+// (standard_metadata).
 //------------------------------------------------------------------------------
 
 control IngressPipeImpl (inout parsed_headers_t hdr,
@@ -335,20 +335,19 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     // destination address. There are two types of L2 entries that we
     // need to support:
     //
-    // 1. Broadcast/multicast entries: used replicate NDP Neighbor (NS) messages
-    //    to all host-facing ports;
+    // 1. Broadcast/multicast entries: used replicate NDP Neighbor Solicitation
+    //    (NS) messages to all host-facing ports;
     // 2. Unicast entries: which will be filled in by the control plane when the
     //    location (port) of new hosts is learned.
     //
-    // For (1), unlike ARP messages in IPv4, which are broadcasted to Ethernet
-    // destination address FF:FF:FF:FF:FF:FF, NDP messages use IPv6
-    // broadcast/multicast packets that are sent to special Ethernet addresses
-    // specified by RFC2464. These destination addresses are prefixed with 33:33
-    // and the last four octets are the last four octets of the IPv6 destination
-    // multicast address. The most straightforward way of matching on such IPv6
-    // broadcast/multicast packets, without digging in the details of RFC2464,
-    // is to use a ternary match on 33:33:**:**:**:**, where * means "don't
-    // care".
+    // For (1), unlike ARP messages in IPv4 which are broadcasted to Ethernet
+    // destination address FF:FF:FF:FF:FF:FF, NDP messages are sent to special
+    // Ethernet addresses specified by RFC2464. These destination addresses are
+    // prefixed with 33:33 and the last four octets are the last four octets of
+    // the IPv6 destination multicast address. The most straightforward way of
+    // matching on such IPv6 broadcast/multicast packets, without digging in the
+    // details of RFC2464, is to use a ternary match on 33:33:**:**:**:**, where
+    // * means "don't care".
     //
     // For this reason, we define two tables. One that matches in an exact
     // fashion (easier to scale on switch ASICs) and one that uses ternary
@@ -375,10 +374,10 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
 
     // --- l2_ternary_table (for broadcast/multicast entries) ------------------
 
-    action set_multicast_group(group_id_t gid) {
-        // gid will be used by the Packet Replication Engine (PRE) right after
-        // the ingress pipeline to replicate the packet to multiple egress
-        // ports, specified by the control plane by means of P4Runtime
+    action set_multicast_group(mcast_group_id_t gid) {
+        // gid will be used by the Packet Replication Engine (PRE)--located
+        // right after the ingress pipeline, to replicate the packet to multiple
+        // egress ports, specified by the control plane by means of P4Runtime
         // MulticastGroupEntry messages.
         standard_metadata.mcast_grp = gid;
         local_metadata.is_multicast = true;
@@ -403,8 +402,9 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     // address. We assume the following:
     //
     // * Not all packets need to be routed, but only those that have destination
-    //   MAC address the router MAC addres, which we call this the "my_station_table"
-    //   MAC. This is defined at runtime by the control plane.
+    //   MAC address the "router MAC" addres, which we call this the
+    //   "my_station" MAC. Such address is defined at runtime by the control
+    //   plane.
     // * If a packet matches a routing entry, it should be forwarded to a
     //   given next hop and the packet's Ethernet addresses should be modified
     //   accordingly (source set to my_station MAC and destination to the next
@@ -420,6 +420,7 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     // packet. Later in the control block, we define logic such that if an entry
     // in this table is hit, we will route the packet. Otherwise the routing
     // table will be skipped.
+
     table my_station_table {
         key = {
             hdr.ethernet.dst_addr: exact;
@@ -433,11 +434,12 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
 
     // To implement ECMP, we use Action Selectors, a v1model-specific construct.
     // A P4Runtime controller, can use action selectors to associate a group of
-    // actions to a table entry. The speficic action in the group will be
+    // actions to one table entry. The speficic action in the group will be
     // selected by perfoming a hash function over a pre-detemrined set of header
     // fields. Here we instantiate an action selector named "ecmp_selector" that
     // uses crc16 as the hash function, can hold up to 1024 entries (distinct
     // action specifications), and produces a selector key of size 16 bits.
+
     action_selector(HashAlgorithm.crc16, 32w1024, 32w16) ecmp_selector;
 
     action set_next_hop(mac_addr_t dmac) {
@@ -450,7 +452,6 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     table routing_v6_table {
       key = {
           hdr.ipv6.dst_addr:          lpm;
-
           // The following fields are not used for matching, but as input to the
           // ecmp_selector hash function.
           hdr.ipv6.dst_addr:          selector;
@@ -472,27 +473,20 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     //
     // Provides ways override on a previous forwarding decision, for example
     // requiring that a packet is cloned/sent to the CPU, or dropped.
-    //
-    // * Not all packets need to be routed, but only those that have destination
-    //   MAC address the router MAC addres, which we call this the "my_station_table"
-    //   MAC. This is defined at runtime by the control plane.
-    // * If a packet matches a routing entry, it should be forwarded to a
-    //   given next hop and the packet's Ethernet addresses should be modified
-    //   accordingly (source set to my_station MAC and destination to the next
-    //   hop one);
-    // * When routing packets to a different leaf across the spines, leaf
-    //   switches should be able to use ECMP to distribute traffic via multiple
-    //   links.
+
+    // --- acl_table -----------------------------------------------------------
 
     action send_to_cpu() {
         standard_metadata.egress_spec = CPU_PORT;
     }
 
     action clone_to_cpu() {
+        // Cloning is achieved by using a v1model-specific primitive...
+        // TODO: say a bit more, andy f has an excellent description of this in the bmv2 docs
         clone3(CloneType.I2E, CPU_CLONE_SESSION_ID, { standard_metadata.ingress_port });
     }
 
-    table acl {
+    table acl_table {
         key = {
             standard_metadata.ingress_port: ternary;
             hdr.ethernet.dst_addr:          ternary;
@@ -508,9 +502,22 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
             clone_to_cpu;
             drop;
         }
-        @name("acl_counter")
+        @name("acl_table_counter")
         counters = direct_counter(CounterType.packets_and_bytes);
     }
+
+    // *** NDP HANDLING
+    //
+    // The NDP protocol is the equivalent of ARP but for IPv6 networks. Here we
+    // provide tables that allow the switch to reply to NDP Neighboor Solitation
+    // (NS) requests entirelly in the data plane. That is, NDP Neighboor
+    // Advertisement (NA) replies can be generated by the switch itself, without
+    // forwarding the request to the target host. The control plane is
+    // respoinsible for instructing the switch with a mapping between IPv6 and
+    // MAC addreses. When an NDP NS packet is received, we use P4 to transform
+    // the same packet in NDP NA one and we send it back from the ingress port.
+
+    // --- acl_table -----------------------------------------------------------
 
     /*
      * NDP reply table and actions.
@@ -568,7 +575,7 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
             }
         }
 
-        acl.apply();
+        acl_table.apply();
     }
 }
 

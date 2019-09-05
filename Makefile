@@ -19,7 +19,7 @@ curr_dir_sha := $(shell echo -n "$(curr_dir)" | shasum | cut -c1-7)
 app_build_container_name := app-build-${curr_dir_sha}
 onos_url := http://localhost:8181/onos
 onos_curl := curl --fail -sSL --user onos:rocks --noproxy localhost
-app_name := org.p4.srv6-tutorial
+app_name := org.onosproject.ngsdn-tutorial
 
 default:
 	$(error Please specify a make target (see README.md))

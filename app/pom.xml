@@ -19,24 +19,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.p4</groupId>
-    <artifactId>srv6-tutorial</artifactId>
+    <groupId>org.onosproject</groupId>
+    <artifactId>ngsdn-tutorial</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
-    <description>P4D2 SRv6 tutorial app</description>
-    <url>http://p4.org</url>
+    <description>NG-SDN tutorial app</description>
+    <url>http://www.onosproject.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <onos.version>2.2.0</onos.version>
-        <onos.app.name>org.p4.srv6-tutorial</onos.app.name>
-        <onos.app.title>P4D2 SRv6 Tutorial App</onos.app.title>
+        <onos.app.name>org.onosproject.ngsdn-tutorial</onos.app.name>
+        <onos.app.title>NG-SDN Tutorial App</onos.app.title>
         <onos.app.origin>p4.org</onos.app.origin>
         <onos.app.category>Traffic Steering</onos.app.category>
-        <onos.app.url>http://p4.org</onos.app.url>
+        <onos.app.url>http://www.onosproject.org</onos.app.url>
         <onos.app.readme>
-            Provides SRv6 capabilities to a leaf-spine network of P4 switches
+            Provides IPv6 routing capabilities to a leaf-spine network of P4 switches
         </onos.app.readme>
         <onos.app.requires>
             org.onosproject.drivers.bmv2,
@@ -44,8 +44,6 @@
             org.onosproject.hostprovider,
             org.onosproject.gui
         </onos.app.requires>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -159,7 +157,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Karaf-Commands>org.p4.p4d2.tutorial.cli</Karaf-Commands>
+                        <Karaf-Commands>org.onosproject.ngsdn.tutorial.cli</Karaf-Commands>
                     </instructions>
                 </configuration>
             </plugin>

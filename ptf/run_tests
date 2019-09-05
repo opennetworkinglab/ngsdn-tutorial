@@ -17,7 +17,7 @@ trap stop INT
 
 # Start container. Entrypoint starts stratum_bmv2. We put that in the background
 # and execute the PTF scripts separately.
-echo "Starting BMv2 simple_switch in Docker (${runName})..."
+echo "*** Starting BMv2 simple_switch in Docker (${runName})..."
 docker run --name "${runName}" -d --privileged --rm \
     -v "${PTF_DIR}":/ptf -w /ptf \
     -v "${P4C_OUT}":/p4c-out \
@@ -28,7 +28,7 @@ sleep 2
 
 set +e
 
-printf "Starting tests...\n"
+printf "*** Starting tests...\n"
 docker exec "${runName}" ./lib/runner.py \
     --bmv2-json /p4c-out/bmv2.json \
     --p4info /p4c-out/p4info.txt \

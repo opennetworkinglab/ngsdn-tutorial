@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial.pipeconf;
+package org.onosproject.ngsdn.tutorial.pipeconf;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -54,7 +54,7 @@ import static org.onosproject.net.PortNumber.FLOOD;
 import static org.onosproject.net.flow.instructions.Instruction.Type.OUTPUT;
 import static org.onosproject.net.flow.instructions.Instructions.OutputInstruction;
 import static org.onosproject.net.pi.model.PiPacketOperationType.PACKET_OUT;
-import static org.p4.p4d2.tutorial.AppConstants.CPU_PORT_ID;
+import static org.onosproject.ngsdn.tutorial.AppConstants.CPU_PORT_ID;
 
 
 /**

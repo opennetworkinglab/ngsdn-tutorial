@@ -1,4 +1,4 @@
-package org.p4.p4d2.tutorial;
+package org.onosproject.ngsdn.tutorial;
 
 import com.google.common.collect.Lists;
 import org.onlab.util.SharedScheduledExecutors;
@@ -20,8 +20,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.p4.p4d2.tutorial.common.Srv6DeviceConfig;
-import org.p4.p4d2.tutorial.pipeconf.PipeconfLoader;
+import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.pipeconf.PipeconfLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +30,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static org.p4.p4d2.tutorial.AppConstants.APP_NAME;
-import static org.p4.p4d2.tutorial.AppConstants.CLEAN_UP_DELAY;
-import static org.p4.p4d2.tutorial.AppConstants.DEFAULT_CLEAN_UP_RETRY_TIMES;
-import static org.p4.p4d2.tutorial.common.Utils.sleep;
+import static org.onosproject.ngsdn.tutorial.AppConstants.APP_NAME;
+import static org.onosproject.ngsdn.tutorial.AppConstants.CLEAN_UP_DELAY;
+import static org.onosproject.ngsdn.tutorial.AppConstants.DEFAULT_CLEAN_UP_RETRY_TIMES;
+import static org.onosproject.ngsdn.tutorial.common.Utils.sleep;
 
 /**
  * A component which among other things registers the Srv6DeviceConfig to the

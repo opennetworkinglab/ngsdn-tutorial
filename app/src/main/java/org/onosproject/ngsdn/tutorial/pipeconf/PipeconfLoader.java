@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial.pipeconf;
+package org.onosproject.ngsdn.tutorial.pipeconf;
 
 import org.onosproject.net.behaviour.Pipeliner;
 import org.onosproject.net.driver.DriverAdminService;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 import static org.onosproject.net.pi.model.PiPipeconf.ExtensionType.BMV2_JSON;
 import static org.onosproject.net.pi.model.PiPipeconf.ExtensionType.P4_INFO_TEXT;
-import static org.p4.p4d2.tutorial.AppConstants.PIPECONF_ID;
+import static org.onosproject.ngsdn.tutorial.AppConstants.PIPECONF_ID;
 
 /**
  * Component that builds and register the pipeconf at app activation.

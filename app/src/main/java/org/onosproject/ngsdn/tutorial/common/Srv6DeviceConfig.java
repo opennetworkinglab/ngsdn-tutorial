@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial.common;
+package org.onosproject.ngsdn.tutorial.common;
 
 import org.onlab.packet.Ip6Address;
 import org.onlab.packet.MacAddress;
