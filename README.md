@@ -2,7 +2,7 @@
 
 Welcome to Next-Gen SDN tutorial!
 
-This tutorial is targeted to developers who want to learn the basics of the
+This tutorial is targeted to developers who want to learn about the
 building blocks of the NG-SDN architecture, such as:
 
 * Data plane programming and control via P4 and P4Runtime
@@ -15,72 +15,81 @@ to build an IPv6-based leaf-spine data center fabric.
 
 ## Slides
 
-TODO
-
 Tutorial slides are available [online](ADD SLIDES URL). These slides provide an
 introduction to each exercise. We suggest you look at it before starting to work
 on the exercises.
 
-## Tutorial VM
+## System requirements
 
-TODO
+To facilitate access to the tools required to complete the exercises, we provide
+two options for you to choose from:
 
-To complete the exercises, you will need to download and run this tutorial VM
-(XX GB):
- * ADD LINK TO VM
+1. Download a pre-packaged VM with all included; **OR**
+2. Manually install Docker and other dependencies.
 
-To run the VM you can use any modern x86 virtualization system. The VM has been
-tested with VirtualBox v6.0.6. To download VirtualBox and import the VM use the
+### Option 1 - Download tutorial VM
+
+Use the following link to download the VM (4 GB):
+* <http://bit.ly/ngsdn-tutorial-ova>
+
+The VM is in .ova format and has been created using VirtualBox v5.2.32. To run
+the VM you can use any modern virtualization system, although we recommend using
+VirtualBox. For instructions on how to get VirtualBox and import the VM, use the
 following links:
 
- * https://www.virtualbox.org/wiki/Downloads
- * https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html
+* <https://www.virtualbox.org/wiki/Downloads>
+* <https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html>
 
-### Recommended system requirements
+**Recommended system requirements:**
 
-The VM is configured with 4 GB of RAM and 4 CPU cores, while the disk has size
-of approx. 8 GB. These are the recommended minimum requirements to be able to
-run Ubuntu along with a Mininet network of 1-10 BMv2 devices controlled by 1
-ONOS instance. For a flawless experience, we recommend running the VM on a host
-system that has at least the double of resources.
+The current configuration of the VM is 4 GB of RAM and 4 core CPU. These are the
+recommended minimum system requirements to complete the exercises. When
+imported, the VM takes approx. 8 GB of HDD space. For a smooth experience, we
+recommend running the VM on a host system that has at least the double of
+resources.
 
-### Use Docker instead of VM
+**VM user credentials**
 
-TODO Add instructions to skip downloading the VM but use Docker instead.
+Use credentials `sdn`/`rocks` to log in the Ubuntu system.
 
-### VM user credentials
+### Option 2 - Manually install Docker and other dependencies
 
-Use the following credentials to log in the Ubuntu system:
+All exercises can be executed by installing the following dependencies:
 
- * **Username:** `sdn`
- * **Password:** `rocks`
+* Docker v1.13.0+ (with docker-compose)
+* make
+* Python 3
+* Bash-like Unix shell
 
-### Get this tutorial repo
+**Note for Windows users**: all scripts have been tested on macOS and Ubuntu.
+Although we think they should work on Windows, we have not tested it. For this
+reason, we advise Windows users to prefer Option 1.
 
-To work on the exercises you will need to clone this repo inside the VM:
+## Get this repo or pull latest changes
+
+To work on the exercises you will need to clone this repo:
 
     cd ~
     git clone https://github.com/opennetworkinglab/ngsdn-tutorial
 
-If the `tutorial` directory is already present, make sure to update its
+If the `ngsdn-tutorial` directory is already present, make sure to update its
 content:
 
     cd ~/ngsdn-tutorial
     git pull origin master
 
-### Download / upgrade dependencies
+## Download / upgrade dependencies
 
 The VM may have shipped with an older version of the dependencies than we would
-like to use for the exercises. You can upgrade to the latest version used for
-the tutorial using the following command:
+like to use for the exercises. You can upgrade to the latest version using the
+following command:
 
     cd ~/ngsdn-tutorial
     make pull-deps
 
-This command will download all necessary dependencies from the Internet,
-allowing you to work off-line on the exercises. For this reason, we recommend
-running this step ahead of the tutorial with a reliable Internet connection.
-
+This command will download all necessary Docker images (~1.5 GB) allowing you to
+work off-line on the exercises. For this reason, we recommend running this step
+ahead of the tutorial with a reliable Internet connection.
 
 ## Using an IDE to work on the exercises
 
