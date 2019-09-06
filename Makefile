@@ -51,6 +51,7 @@ _docker_pull_all:
 pull-deps: _docker_pull_all _create_mvn_container _mvn_package
 
 start:
+	@mkdir -p tmp
 	docker-compose up -d
 
 stop:
@@ -118,6 +119,7 @@ _copy_p4c_out:
 
 _mvn_package:
 	$(info *** Building ONOS app...)
+	@mkdir -p app/target
 	@docker start -a -i ${app_build_container_name}
 
 app-build: p4-build _copy_p4c_out _create_mvn_container _mvn_package
