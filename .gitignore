@@ -8,3 +8,4 @@ ptf/bmv2.log
 ptf/ptf.log
 ptf/ptf.pcap
 **/*.iml
+**/*.pyc
