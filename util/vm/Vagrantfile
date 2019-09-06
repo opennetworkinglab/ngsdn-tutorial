@@ -1,0 +1,40 @@
+REQUIRED_PLUGINS = %w( vagrant-vbguest vagrant-reload vagrant-disksize )
+
+Vagrant.configure(2) do |config|
+
+  # Install plugins if missing...
+  _retry = false
+  REQUIRED_PLUGINS.each do |plugin|
+    unless Vagrant.has_plugin? plugin
+      system "vagrant plugin install #{plugin}"
+      _retry = true
+    end
+  end
+
+  if (_retry)
+    exec "vagrant " + ARGV.join(' ')
+  end
+
+  # Common config.
+  config.vm.box = "lasp/ubuntu16.04-desktop"
+  config.vbguest.auto_update = true
+  config.disksize.size = '50GB'
+  config.vm.synced_folder ".", "/vagrant", disabled: false, type: "virtualbox"
+  config.vm.network "private_network", :type => 'dhcp', :adapter => 2
+
+  config.vm.define "default" do |d|
+    d.vm.hostname = "tutorial-vm"
+    d.vm.provider "virtualbox" do |vb|
+      vb.name = "ONF NG-SDN Tutorial " + Time.now.strftime("(%Y-%m-%d)")
+      vb.gui = true
+      vb.cpus = 8
+      vb.memory = 8192
+      vb.customize ['modifyvm', :id, '--clipboard', 'bidirectional']
+      vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
+      vb.customize ["modifyvm", :id, "--graphicscontroller", "vboxvga"]
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+    end
+    d.vm.provision "shell", path: "root-bootstrap.sh"
+    d.vm.provision "shell", inline: "su sdn '/vagrant/user-bootstrap.sh'"
+  end
+end
