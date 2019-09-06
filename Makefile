@@ -104,6 +104,7 @@ _create_mvn_container:
 
 _copy_p4c_out:
 	$(info *** Copying p4c outputs to app resources...)
+	@mkdir -p app/src/main/resources
 	cp -f p4src/build/p4info.txt app/src/main/resources/
 	cp -f p4src/build/bmv2.json app/src/main/resources/
 
