@@ -4,6 +4,8 @@ P4C_IMG := opennetworking/p4c:stable
 MN_STRATUM_IMG := opennetworking/mn-stratum:latest
 MAVEN_IMG := maven:3.6.1-jdk-11-slim
 PTF_IMG := onosproject/fabric-p4test
+GNMI_CLI_IMG := docker.pkg.github.com/opennetworkinglab/ngsdn-tutorial/gnmi-cli:latest
+YANG_IMG := docker.pkg.github.com/opennetworkinglab/ngsdn-tutorial/yang-tools:latest
 
 ONOS_SHA := sha256:c1d18e6957a785d0234855eb8c70909bfc68849338f0567e12a6ae7ce6f4ba91
 P4RT_SH_SHA := sha256:6ae50afb5bde620acb9473ce6cd7b990ff6cc63fe4113cf5584c8e38fe42176c
@@ -11,6 +13,8 @@ P4C_SHA := sha256:8f9d27a6edf446c3801db621359fec5de993ebdebc6844d8b1292e369be5df
 MN_STRATUM_SHA := sha256:ae7c59885509ece8062e196e6a8fb6aa06386ba25df646ed27c765d92d131692
 MAVEN_SHA := sha256:ca67b12d638fe1b8492fa4633200b83b118f2db915c1f75baf3b0d2ef32d7263
 PTF_SHA := sha256:227207ff9d15f5e45c44c7904e815efdb3cea0b4e5644ac0878d41dd54aca78d
+GNMI_CLI_SHA := sha256:f61b3698ead42b0fda90a44c10c1d51496186bd8ab15ff8dbf5f7c01679f0100
+YANG_SHA := sha256:704380e2c8db385c3b26ae074116a84259a7578789710d199d0d2ba34fd283de
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 curr_dir := $(patsubst %/,%,$(dir $(mkfile_path)))
@@ -31,8 +35,10 @@ _docker_pull_all:
 	docker pull ${MN_STRATUM_IMG}@${MN_STRATUM_SHA}
 	docker pull ${MAVEN_IMG}@${MAVEN_SHA}
 	docker pull ${PTF_IMG}@${PTF_SHA}
+	docker pull ${GNMI_CLI_IMG}@${GNMI_CLI_SHA}
+	docker pull ${YANG_IMG}@${YANG_SHA}
 
-# Pul lall Docker images and build app to seed mvn repo inside container, i.e.
+# Pull all Docker images and build app to seed mvn repo inside container, i.e.
 # download deps
 pull-deps: _docker_pull_all _create_mvn_container _mvn_package
 
@@ -122,3 +128,9 @@ app-uninstall:
 	@echo
 
 app-reload: app-uninstall app-install
+
+mn-single:
+	docker run --privileged --rm -it -v /tmp/mn-stratum:/tmp -p 50001:50001 ${MN_STRATUM_IMG}
+
+yang-tools:
+	docker run --rm -it -v ${curr_dir}/yang/demo-port.yang:/models/demo-port.yang ${YANG_IMG}
