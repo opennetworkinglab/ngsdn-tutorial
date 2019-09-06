@@ -60,7 +60,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.common.FabricDeviceConfig;
 import org.onosproject.ngsdn.tutorial.common.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -571,11 +571,6 @@ public class Ipv6RoutingComponent {
             final MacAddress leafMac = getMyStationMac(leafId);
             final Set<Ip6Prefix> subnetsToRoute = getInterfaceIpv6Prefixes(leafId);
 
-            // Since we're here, we also add a route for SRv6, to forward
-            // packets with IPv6 dst the SID of a leaf switch.
-            final Ip6Address leafSid = getDeviceSid(leafId);
-            subnetsToRoute.add(Ip6Prefix.valueOf(leafSid, 128));
-
             // Create a group with only one member.
             int groupId = macToGroupId(leafMac);
 
@@ -628,24 +623,6 @@ public class Ipv6RoutingComponent {
                 .collect(Collectors.toList());
 
         insertInOrder(ecmpGroup, flowRules);
-
-        // Since we're here, we also add a route for SRv6, to forward
-        // packets with IPv6 dst the SID of a spine switch, in this case using a
-        // single-member group.
-        stream(deviceService.getDevices())
-                .map(Device::id)
-                .filter(this::isSpine)
-                .forEach(spineId -> {
-                    MacAddress spineMac = getMyStationMac(spineId);
-                    Ip6Address spineSid = getDeviceSid(spineId);
-                    int spineGroupId = macToGroupId(spineMac);
-                    GroupDescription group = createNextHopGroup(
-                            spineGroupId, Collections.singleton(spineMac), leafId);
-                    FlowRule routingRule = createRoutingRule(
-                            leafId, Ip6Prefix.valueOf(spineSid, 128),
-                            spineGroupId);
-                    insertInOrder(group, Collections.singleton(routingRule));
-                });
     }
 
     //--------------------------------------------------------------------------
@@ -660,7 +637,7 @@ public class Ipv6RoutingComponent {
      * @return true if the device is a spine, false otherwise
      */
     private boolean isSpine(DeviceId deviceId) {
-        return getDeviceConfig(deviceId).map(Srv6DeviceConfig::isSpine)
+        return getDeviceConfig(deviceId).map(FabricDeviceConfig::isSpine)
                 .orElseThrow(() -> new ItemNotFoundException(
                         "Missing isSpine config for " + deviceId));
     }
@@ -684,20 +661,20 @@ public class Ipv6RoutingComponent {
      */
     private MacAddress getMyStationMac(DeviceId deviceId) {
         return getDeviceConfig(deviceId)
-                .map(Srv6DeviceConfig::myStationMac)
+                .map(FabricDeviceConfig::myStationMac)
                 .orElseThrow(() -> new ItemNotFoundException(
                         "Missing myStationMac config for " + deviceId));
     }
 
     /**
-     * Returns the Srv6 config object for the given device.
+     * Returns the fabric config object for the given device.
      *
      * @param deviceId the device ID
-     * @return Srv6  device config
+     * @return fabric device config
      */
-    private Optional<Srv6DeviceConfig> getDeviceConfig(DeviceId deviceId) {
-        Srv6DeviceConfig config = networkConfigService.getConfig(
-                deviceId, Srv6DeviceConfig.class);
+    private Optional<FabricDeviceConfig> getDeviceConfig(DeviceId deviceId) {
+        FabricDeviceConfig config = networkConfigService.getConfig(
+                deviceId, FabricDeviceConfig.class);
         return Optional.ofNullable(config);
     }
 
@@ -747,19 +724,6 @@ public class Ipv6RoutingComponent {
             log.error("Interrupted!", e);
             Thread.currentThread().interrupt();
         }
-    }
-
-    /**
-     * Gets Srv6 SID for the given device.
-     *
-     * @param deviceId the device ID
-     * @return SID for the device
-     */
-    private Ip6Address getDeviceSid(DeviceId deviceId) {
-        return getDeviceConfig(deviceId)
-                .map(Srv6DeviceConfig::mySid)
-                .orElseThrow(() -> new ItemNotFoundException(
-                        "Missing mySid config for " + deviceId));
     }
 
     /**
