@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.common.FabricDeviceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,10 +122,10 @@ public class NdpReplyComponent {
     }
 
     private void setUpDevice(DeviceId deviceId) {
-        Srv6DeviceConfig config = configService.getConfig(deviceId, Srv6DeviceConfig.class);
+        FabricDeviceConfig config = configService.getConfig(deviceId, FabricDeviceConfig.class);
         if (config == null) {
             // Config not available yet
-            throw new ItemNotFoundException("Missing Srv6Config for " + deviceId);
+            throw new ItemNotFoundException("Missing FabricDeviceConfig for " + deviceId);
         }
 
         final MacAddress deviceMac = config.myStationMac();

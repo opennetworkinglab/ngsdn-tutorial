@@ -47,7 +47,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.common.FabricDeviceConfig;
 import org.onosproject.ngsdn.tutorial.common.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -423,15 +423,15 @@ public class L2BridgingComponent {
         // "devices": {
         //   "device:spine1": {
         //     ...
-        //     "srv6DeviceConfig": {
+        //     "fabricDeviceConfig": {
         //       "myStationMac": "...",
         //       "mySid": "...",
         //       "isSpine": true
         //     }
         //   },
         //   ...
-        final Srv6DeviceConfig cfg = configService.getConfig(
-                deviceId, Srv6DeviceConfig.class);
+        final FabricDeviceConfig cfg = configService.getConfig(
+                deviceId, FabricDeviceConfig.class);
         return cfg != null && cfg.isSpine();
     }
 

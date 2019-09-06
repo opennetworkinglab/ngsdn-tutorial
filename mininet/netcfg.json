@@ -6,9 +6,8 @@
         "driver": "stratum-bmv2",
         "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
-      "srv6DeviceConfig": {
+      "fabricDeviceConfig": {
         "myStationMac": "00:aa:00:00:00:01",
-        "mySid": "3:101:2::",
         "isSpine": false
       }
     },
@@ -18,9 +17,8 @@
         "driver": "stratum-bmv2",
         "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
-      "srv6DeviceConfig": {
+      "fabricDeviceConfig": {
         "myStationMac": "00:aa:00:00:00:02",
-        "mySid": "3:102:2::",
         "isSpine": false
       }
     },
@@ -30,9 +28,8 @@
         "driver": "stratum-bmv2",
         "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
-      "srv6DeviceConfig": {
+      "fabricDeviceConfig": {
         "myStationMac": "00:bb:00:00:00:01",
-        "mySid": "3:201:2::",
         "isSpine": true
       }
     },
@@ -42,9 +39,8 @@
         "driver": "stratum-bmv2",
         "pipeconf": "org.onosproject.ngsdn-tutorial"
       },
-      "srv6DeviceConfig": {
+      "fabricDeviceConfig": {
         "myStationMac": "00:bb:00:00:00:02",
-        "mySid": "3:202:2::",
         "isSpine": true
       }
     }

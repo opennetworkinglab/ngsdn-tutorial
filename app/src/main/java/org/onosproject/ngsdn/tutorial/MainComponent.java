@@ -20,7 +20,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.common.FabricDeviceConfig;
 import org.onosproject.ngsdn.tutorial.pipeconf.PipeconfLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.DEFAULT_CLEAN_UP_RETRY
 import static org.onosproject.ngsdn.tutorial.common.Utils.sleep;
 
 /**
- * A component which among other things registers the Srv6DeviceConfig to the
+ * A component which among other things registers the fabricDeviceConfig to the
  * netcfg subsystem.
  */
 @Component(immediate = true, service = MainComponent.class)
@@ -68,12 +68,12 @@ public class MainComponent {
     @Reference(cardinality = ReferenceCardinality.MANDATORY)
     private ComponentConfigService compCfgService;
 
-    private final ConfigFactory<DeviceId, Srv6DeviceConfig> srv6ConfigFactory =
-            new ConfigFactory<DeviceId, Srv6DeviceConfig>(
-                    SubjectFactories.DEVICE_SUBJECT_FACTORY, Srv6DeviceConfig.class, Srv6DeviceConfig.CONFIG_KEY) {
+    private final ConfigFactory<DeviceId, FabricDeviceConfig> fabricConfigFactory =
+            new ConfigFactory<DeviceId, FabricDeviceConfig>(
+                    SubjectFactories.DEVICE_SUBJECT_FACTORY, FabricDeviceConfig.class, FabricDeviceConfig.CONFIG_KEY) {
                 @Override
-                public Srv6DeviceConfig createConfig() {
-                    return new Srv6DeviceConfig();
+                public FabricDeviceConfig createConfig() {
+                    return new FabricDeviceConfig();
                 }
             };
 
@@ -97,13 +97,13 @@ public class MainComponent {
         compCfgService.preSetProperty("org.onosproject.provider.host.impl.HostLocationProvider",
                                       "requestIpv6ND", "true", false);
 
-        configRegistry.registerConfigFactory(srv6ConfigFactory);
+        configRegistry.registerConfigFactory(fabricConfigFactory);
         log.info("Started");
     }
 
     @Deactivate
     protected void deactivate() {
-        configRegistry.unregisterConfigFactory(srv6ConfigFactory);
+        configRegistry.unregisterConfigFactory(fabricConfigFactory);
 
         cleanUp();
 

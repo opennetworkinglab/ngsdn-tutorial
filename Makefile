@@ -113,7 +113,7 @@ app-install:
 	$(info *** Installing and activating app in ONOS...)
 	${onos_curl} -X POST -HContent-Type:application/octet-stream \
 		'${onos_url}/v1/applications?activate=true' \
-		--data-binary @app/target/srv6-tutorial-1.0-SNAPSHOT.oar
+		--data-binary @app/target/ngsdn-tutorial-1.0-SNAPSHOT.oar
 	@echo
 
 app-uninstall:
