@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.p4.p4d2.tutorial.cli;
+package org.onosproject.ngsdn.tutorial.cli;
 
 import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
@@ -24,7 +24,7 @@ import org.onosproject.cli.net.DeviceIdCompleter;
 import org.onosproject.net.Device;
 import org.onosproject.net.DeviceId;
 import org.onosproject.net.device.DeviceService;
-import org.p4.p4d2.tutorial.Srv6Component;
+import org.onosproject.ngsdn.tutorial.Srv6Component;
 
 /**
  * SRv6 Transit Clear Command

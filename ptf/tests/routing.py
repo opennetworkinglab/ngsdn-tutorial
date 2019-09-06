@@ -64,7 +64,7 @@ class IPv6RoutingTest(P4RuntimeTest):
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="IngressPipeImpl.l2_my_station",
+            table_name="IngressPipeImpl.my_station_table",
             match_fields={
                 # Exact match.
                 "hdr.ethernet.dst_addr": pkt[Ether].dst
@@ -83,7 +83,7 @@ class IPv6RoutingTest(P4RuntimeTest):
             group_id=1,
             actions=[
                 # List of tuples (action name, action param dict)
-                ("IngressPipeImpl.set_l2_next_hop", {"dmac": next_hop_mac}),
+                ("IngressPipeImpl.set_next_hop", {"dmac": next_hop_mac}),
             ]
         ))
         # ---- END SOLUTION ----
@@ -94,7 +94,7 @@ class IPv6RoutingTest(P4RuntimeTest):
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="IngressPipeImpl.l3_table",
+            table_name="IngressPipeImpl.routing_v6_table",
             match_fields={
                 # LPM match (value, prefix)
                 "hdr.ipv6.dst_addr": (pkt[IPv6].dst, 128)

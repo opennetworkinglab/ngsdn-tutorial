@@ -19,7 +19,7 @@ curr_dir_sha := $(shell echo -n "$(curr_dir)" | shasum | cut -c1-7)
 app_build_container_name := app-build-${curr_dir_sha}
 onos_url := http://localhost:8181/onos
 onos_curl := curl --fail -sSL --user onos:rocks --noproxy localhost
-app_name := org.p4.srv6-tutorial
+app_name := org.onosproject.ngsdn-tutorial
 
 default:
 	$(error Please specify a make target (see README.md))
@@ -90,6 +90,7 @@ p4-build:
 p4-test:
 	@cd ptf && ./run_tests
 
+# Create container once, use it many times to preserve mvn repo cache.
 _create_mvn_container:
 	@if ! docker container ls -a --format '{{.Names}}' | grep -q ${app_build_container_name} ; then \
 		docker create -v ${curr_dir}/app:/mvn-src -w /mvn-src --name ${app_build_container_name} ${MAVEN_IMG} mvn clean package; \

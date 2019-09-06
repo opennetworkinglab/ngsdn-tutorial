@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial.pipeconf;
+package org.onosproject.ngsdn.tutorial.pipeconf;
 
 import org.onosproject.net.DeviceId;
 import org.onosproject.net.PortNumber;
@@ -36,14 +36,14 @@ import org.onosproject.net.group.GroupService;
 import org.onosproject.net.pi.model.PiActionId;
 import org.onosproject.net.pi.model.PiTableId;
 import org.onosproject.net.pi.runtime.PiAction;
-import org.p4.p4d2.tutorial.common.Utils;
+import org.onosproject.ngsdn.tutorial.common.Utils;
 import org.slf4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.onosproject.net.flow.instructions.Instruction.Type.OUTPUT;
-import static org.p4.p4d2.tutorial.AppConstants.CPU_CLONE_SESSION_ID;
+import static org.onosproject.ngsdn.tutorial.AppConstants.CPU_CLONE_SESSION_ID;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -53,7 +53,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class PipelinerImpl extends AbstractHandlerBehaviour implements Pipeliner {
 
     // From the P4Info file
-    private static final String ACL_TABLE = "IngressPipeImpl.acl";
+    private static final String ACL_TABLE = "IngressPipeImpl.acl_table";
     private static final String CLONE_TO_CPU = "IngressPipeImpl.clone_to_cpu";
 
     private final Logger log = getLogger(getClass());

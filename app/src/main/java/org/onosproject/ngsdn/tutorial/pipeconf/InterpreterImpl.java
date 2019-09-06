@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial.pipeconf;
+package org.onosproject.ngsdn.tutorial.pipeconf;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -54,7 +54,7 @@ import static org.onosproject.net.PortNumber.FLOOD;
 import static org.onosproject.net.flow.instructions.Instruction.Type.OUTPUT;
 import static org.onosproject.net.flow.instructions.Instructions.OutputInstruction;
 import static org.onosproject.net.pi.model.PiPacketOperationType.PACKET_OUT;
-import static org.p4.p4d2.tutorial.AppConstants.CPU_PORT_ID;
+import static org.onosproject.ngsdn.tutorial.AppConstants.CPU_PORT_ID;
 
 
 /**
@@ -75,9 +75,8 @@ public class InterpreterImpl extends AbstractHandlerBehaviour
                     .put(Criterion.Type.ETH_SRC, "hdr.ethernet.src_addr")
                     .put(Criterion.Type.ETH_TYPE, "hdr.ethernet.ether_type")
                     .put(Criterion.Type.IPV6_DST, "hdr.ipv6.dst_addr")
-                    .put(Criterion.Type.IP_PROTO, "local_metadata.ip_proto")
-                    .put(Criterion.Type.ICMPV4_TYPE, "local_metadata.icmp_type")
-                    .put(Criterion.Type.ICMPV6_TYPE, "local_metadata.icmp_type")
+                    .put(Criterion.Type.IP_PROTO, "hdr.ipv6.next_hdr")
+                    .put(Criterion.Type.ICMPV6_TYPE, "hdr.icmpv6.type")
                     .build();
 
     /**

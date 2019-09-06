@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial.common;
+package org.onosproject.ngsdn.tutorial.common;
 
 import org.onosproject.core.ApplicationId;
 import org.onosproject.net.DeviceId;
@@ -48,7 +48,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.onosproject.net.group.DefaultGroupBucket.createAllGroupBucket;
 import static org.onosproject.net.group.DefaultGroupBucket.createCloneGroupBucket;
-import static org.p4.p4d2.tutorial.AppConstants.DEFAULT_FLOW_RULE_PRIORITY;
+import static org.onosproject.ngsdn.tutorial.AppConstants.DEFAULT_FLOW_RULE_PRIORITY;
 
 public final class Utils {
 

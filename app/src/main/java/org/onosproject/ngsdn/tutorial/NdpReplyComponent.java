@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial;
+package org.onosproject.ngsdn.tutorial;
 
 import org.onlab.packet.Ip6Address;
 import org.onlab.packet.IpAddress;
@@ -50,15 +50,15 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.p4.p4d2.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static org.p4.p4d2.tutorial.AppConstants.DEFAULT_FLOW_RULE_PRIORITY;
-import static org.p4.p4d2.tutorial.AppConstants.INITIAL_SETUP_DELAY;
+import static org.onosproject.ngsdn.tutorial.AppConstants.DEFAULT_FLOW_RULE_PRIORITY;
+import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
 
 /**
  * App component that configures devices to generate NDP Neighbor Advertisement

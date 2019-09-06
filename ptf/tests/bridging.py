@@ -123,7 +123,7 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
 
         # ACL entry to clone ARPs
         self.insert(self.helper.build_table_entry(
-            table_name="IngressPipeImpl.acl",
+            table_name="IngressPipeImpl.acl_table",
             match_fields={
                 # Ternary match.
                 "hdr.ethernet.ether_type": (ARP_ETH_TYPE, 0xffff)
@@ -134,12 +134,12 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
 
         # ACL entry to clone NDP Neighbor Solicitation
         self.insert(self.helper.build_table_entry(
-            table_name="IngressPipeImpl.acl",
+            table_name="IngressPipeImpl.acl_table",
             match_fields={
                 # Ternary match.
                 "hdr.ethernet.ether_type": (IPV6_ETH_TYPE, 0xffff),
-                "local_metadata.ip_proto": (ICMPV6_IP_PROTO, 0xff),
-                "local_metadata.icmp_type": (NS_ICMPV6_TYPE, 0xff)
+                "hdr.ipv6.next_hdr": (ICMPV6_IP_PROTO, 0xff),
+                "hdr.icmpv6.type": (NS_ICMPV6_TYPE, 0xff)
             },
             action_name="IngressPipeImpl.clone_to_cpu",
             priority=DEFAULT_PRIORITY
@@ -215,7 +215,7 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
 
         # ACL entry to clone ARPs
         self.insert(self.helper.build_table_entry(
-            table_name="IngressPipeImpl.acl",
+            table_name="IngressPipeImpl.acl_table",
             match_fields={
                 # Ternary match.
                 "hdr.ethernet.ether_type": (ARP_ETH_TYPE, 0xffff)
@@ -226,12 +226,12 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
 
         # ACL entry to clone NDP Neighbor Solicitation
         self.insert(self.helper.build_table_entry(
-            table_name="IngressPipeImpl.acl",
+            table_name="IngressPipeImpl.acl_table",
             match_fields={
                 # Ternary match.
                 "hdr.ethernet.ether_type": (IPV6_ETH_TYPE, 0xffff),
-                "local_metadata.ip_proto": (ICMPV6_IP_PROTO, 0xff),
-                "local_metadata.icmp_type": (NA_ICMPV6_TYPE, 0xff)
+                "hdr.ipv6.next_hdr": (ICMPV6_IP_PROTO, 0xff),
+                "hdr.icmpv6.type": (NA_ICMPV6_TYPE, 0xff)
             },
             action_name="IngressPipeImpl.clone_to_cpu",
             priority=DEFAULT_PRIORITY

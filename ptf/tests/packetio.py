@@ -111,7 +111,7 @@ class PacketInTest(P4RuntimeTest):
         # clone_to_cpu action.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="IngressPipeImpl.acl",
+            table_name="IngressPipeImpl.acl_table",
             match_fields={
                 # Ternary match.
                 "hdr.ethernet.ether_type": (eth_type, 0xffff)

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.p4.p4d2.tutorial.cli;
+package org.onosproject.ngsdn.tutorial.cli;
 
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.api.console.CommandLine;
@@ -23,7 +23,7 @@ import org.apache.karaf.shell.support.completers.StringsCompleter;
 import org.onosproject.cli.AbstractShellCommand;
 import org.onosproject.net.config.NetworkConfigService;
 import org.onosproject.net.device.DeviceService;
-import org.p4.p4d2.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
 
 import java.util.List;
 import java.util.Objects;

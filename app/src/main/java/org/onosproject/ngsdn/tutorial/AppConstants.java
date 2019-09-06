@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.p4.p4d2.tutorial;
+package org.onosproject.ngsdn.tutorial;
 
 import org.onosproject.net.pi.model.PiPipeconfId;
 
 public class AppConstants {
 
-    public static final String APP_NAME = "org.p4.srv6-tutorial";
-    public static final PiPipeconfId PIPECONF_ID = new PiPipeconfId("org.p4.srv6-tutorial");
+    public static final String APP_NAME = "org.onosproject.ngsdn-tutorial";
+    public static final PiPipeconfId PIPECONF_ID = new PiPipeconfId("org.onosproject.ngsdn-tutorial");
 
     public static final int DEFAULT_FLOW_RULE_PRIORITY = 10;
     public static final int INITIAL_SETUP_DELAY = 2; // Seconds.

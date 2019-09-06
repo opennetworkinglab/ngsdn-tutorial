@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.p4.p4d2.tutorial;
+package org.onosproject.ngsdn.tutorial;
 
 import com.google.common.collect.Lists;
 import org.onlab.packet.Ip6Address;
@@ -41,8 +41,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.p4.p4d2.tutorial.common.Srv6DeviceConfig;
-import org.p4.p4d2.tutorial.common.Utils;
+import org.onosproject.ngsdn.tutorial.common.Srv6DeviceConfig;
+import org.onosproject.ngsdn.tutorial.common.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.collect.Streams.stream;
-import static org.p4.p4d2.tutorial.AppConstants.INITIAL_SETUP_DELAY;
+import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
 
 /**
  * Application which handles SRv6 segment routing.
