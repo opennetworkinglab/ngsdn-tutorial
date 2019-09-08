@@ -1,6 +1,6 @@
 #!/bin/bash
 docker run --rm --network host \
-  docker.pkg.github.com/opennetworkinglab/ngsdn-tutorial/gnmi-cli:latest $@ |
+  bocon/gnmi-cli:latest $@ |
   docker run --rm -i \
-  docker.pkg.github.com/opennetworkinglab/ngsdn-tutorial/yang-tools:latest oc-pb-decoder |
+  bocon/yang-tools:latest oc-pb-decoder |
   less
