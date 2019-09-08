@@ -21,10 +21,22 @@
 #include <core.p4>
 #include <v1model.p4>
 
+// *** V1MODEL
+//
+// V1Model is a P4_16 architecture that defines 7 processing blocks.
+//
+//   +------+  +------+  +-------+  +-------+  +------+  +------+  +--------+
+// ->|PARSER|->|VERIFY|->|INGRESS|->|TRAFFIC|->|EGRESS|->|CKSUM |->+DEPARSER|->
+//   |      |  |CKSUM |  |PIPE   |  |MANAGER|  |PIPE  |  |UPDATE|  |        |
+//   +------+  +------+  +-------+  +--------  +------+  +------+  +--------+
+//
+// All block are P4 programmable, except for the Traffic Manager, which is
+// fixed-function. In the rest of this P4 program, we provide an implementation
+// for each one of the 6 programmable blocks.
 
 //------------------------------------------------------------------------------
 // PRE-PROCESSOR constants
-// Can be defined at compile time with the -D flag.
+// Can be defined at compile time.
 //------------------------------------------------------------------------------
 
 // CPU_PORT specifies the P4 port number associated to packet-in and packet-out.
@@ -43,7 +55,6 @@
 #define CPU_CLONE_SESSION_ID 99
 
 
-
 //------------------------------------------------------------------------------
 // TYPEDEF DECLARATIONS
 // To favor readability.
@@ -55,7 +66,6 @@ typedef bit<16>  mcast_group_id_t;
 typedef bit<32>  ipv4_addr_t;
 typedef bit<128> ipv6_addr_t;
 typedef bit<16>  l4_port_t;
-
 
 
 //------------------------------------------------------------------------------
@@ -76,7 +86,6 @@ const bit<8> NDP_OPT_TARGET_LL_ADDR = 2;
 const bit<32> NDP_FLAG_ROUTER = 0x80000000;
 const bit<32> NDP_FLAG_SOLICITED = 0x40000000;
 const bit<32> NDP_FLAG_OVERRIDE = 0x20000000;
-
 
 
 //------------------------------------------------------------------------------
@@ -181,14 +190,12 @@ struct parsed_headers_t {
 }
 
 
-
 //------------------------------------------------------------------------------
 // USER-DEFINED METADATA
 // User-defined data structures associated with each packet.
 //------------------------------------------------------------------------------
 
 struct local_metadata_t {
-    bool       skip_l2;
     l4_port_t  l4_src_port;
     l4_port_t  l4_dst_port;
     bool       is_multicast;
@@ -214,9 +221,8 @@ struct standard_metadata_t {
 */
 
 
-
 //------------------------------------------------------------------------------
-// PARSER IMPLEMENTATION
+// 1. PARSER IMPLEMENTATION
 //
 // Described as a state machine with one "start" state and two final states,
 // "accept" (indicating successful parsing) and "reject" (indicating a parsing
@@ -304,25 +310,45 @@ parser ParserImpl (packet_in packet,
 }
 
 //------------------------------------------------------------------------------
-// INGRESS PIPELINE IMPLEMENTATION
+// 2. CHECKSUM VERIFICATION
+//
+// Used to verify the checksum of incoming packets.
+//------------------------------------------------------------------------------
+
+control VerifyChecksumImpl(inout parsed_headers_t hdr,
+                           inout local_metadata_t meta)
+{
+    // Not used here. We assume all packets have valid checksum, if not, we let
+    // end hosts detect errors.
+    apply { /* EMPTY */ }
+}
+
+
+//------------------------------------------------------------------------------
+// 3. INGRESS PIPELINE IMPLEMENTATION
 //
 // All packets will be processed by this pipeline right after the parser block.
-// Provides logic for:
+// It provides the logic for forwarding behaviors such as:
 // - L2 bridging
 // - L3 routing
 // - ACL
 // - NDP handling
+//
+// The first part of the block defines the match-action tables needed for the
+// different behaviors, while the implementation is concluded with the *apply*
+// statement, where we specify in which order tables should be applied to
+// packets.
 //
 // This block operates on the parsed headers (hdr), the user-defined metadata
 // (local_metadata), and the architecture-specific instrinsic metadata
 // (standard_metadata).
 //------------------------------------------------------------------------------
 
-control IngressPipeImpl (inout parsed_headers_t hdr,
-                         inout local_metadata_t local_metadata,
+control IngressPipeImpl (inout parsed_headers_t    hdr,
+                         inout local_metadata_t    local_metadata,
                          inout standard_metadata_t standard_metadata) {
 
-    // Drop action definition, shared by many tables. Hence we define it here.
+    // Drop action definition, shared by many tables. Hence we define it on top.
     action drop() {
         // Sets an architecture-specific metadata field to signal that the
         // packet should be dropped at the end of this pipeline.
@@ -335,23 +361,24 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     // destination address. There are two types of L2 entries that we
     // need to support:
     //
-    // 1. Broadcast/multicast entries: used replicate NDP Neighbor Solicitation
-    //    (NS) messages to all host-facing ports;
-    // 2. Unicast entries: which will be filled in by the control plane when the
+    // 1. Unicast entries: which will be filled in by the control plane when the
     //    location (port) of new hosts is learned.
+    // 2. Broadcast/multicast entries: used replicate NDP Neighbor Solicitation
+    //    (NS) messages to all host-facing ports;
     //
-    // For (1), unlike ARP messages in IPv4 which are broadcasted to Ethernet
+    // For (2), unlike ARP messages in IPv4 which are broadcasted to Ethernet
     // destination address FF:FF:FF:FF:FF:FF, NDP messages are sent to special
-    // Ethernet addresses specified by RFC2464. These destination addresses are
-    // prefixed with 33:33 and the last four octets are the last four octets of
-    // the IPv6 destination multicast address. The most straightforward way of
-    // matching on such IPv6 broadcast/multicast packets, without digging in the
-    // details of RFC2464, is to use a ternary match on 33:33:**:**:**:**, where
-    // * means "don't care".
+    // Ethernet addresses specified by RFC2464. These addresses are prefixed
+    // with 33:33 and the last four octets are the last four octets of the IPv6
+    // destination multicast address. The most straightforward way of matching
+    // on such IPv6 broadcast/multicast packets, without digging in the details
+    // of RFC2464, is to use a ternary match on 33:33:**:**:**:**, where * means
+    // "don't care".
     //
     // For this reason, we define two tables. One that matches in an exact
-    // fashion (easier to scale on switch ASICs) and one that uses ternary
-    // matching (which requires more expensive TCAM memories, usually smaller).
+    // fashion (easier to scale on switch ASIC SRAMs) and one that uses ternary
+    // matching (which requires more expensive TCAM memories, usually much
+    // smaller).
 
     // --- l2_exact_table (for unicast entries) --------------------------------
 
@@ -368,6 +395,9 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
             @defaultonly drop;
         }
         const default_action = drop;
+        // The @name annotation is used here to provide a name to this table
+        // counter, as it will be needed by the compiler to generate the
+        // corresponding P4Info entity.
         @name("l2_exact_table_counter")
         counters = direct_counter(CounterType.packets_and_bytes);
     }
@@ -375,10 +405,10 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     // --- l2_ternary_table (for broadcast/multicast entries) ------------------
 
     action set_multicast_group(mcast_group_id_t gid) {
-        // gid will be used by the Packet Replication Engine (PRE)--located
-        // right after the ingress pipeline, to replicate the packet to multiple
-        // egress ports, specified by the control plane by means of P4Runtime
-        // MulticastGroupEntry messages.
+        // gid will be used by the Packet Replication Engine (PRE) in the
+        // Traffic Manager--located right after the ingress pipeline, to
+        // replicate a packet to multiple egress ports, specified by the control
+        // plane by means of P4Runtime MulticastGroupEntry messages.
         standard_metadata.mcast_grp = gid;
         local_metadata.is_multicast = true;
     }
@@ -402,9 +432,8 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     // address. We assume the following:
     //
     // * Not all packets need to be routed, but only those that have destination
-    //   MAC address the "router MAC" addres, which we call this the
-    //   "my_station" MAC. Such address is defined at runtime by the control
-    //   plane.
+    //   MAC address the "router MAC" addres, which we call "my_station" MAC.
+    //   Such address is defined at runtime by the control plane.
     // * If a packet matches a routing entry, it should be forwarded to a
     //   given next hop and the packet's Ethernet addresses should be modified
     //   accordingly (source set to my_station MAC and destination to the next
@@ -417,9 +446,9 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
 
     // Matches on all possible my_station MAC addresses associated with this
     // switch. This table defines only one action that does nothing to the
-    // packet. Later in the control block, we define logic such that if an entry
-    // in this table is hit, we will route the packet. Otherwise the routing
-    // table will be skipped.
+    // packet. Later in the apply block, we define logic such that packets are
+    // routed if and only if this table is "hit", i.e. a matching entry is found
+    // for the given packet.
 
     table my_station_table {
         key = {
@@ -449,6 +478,7 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
         hdr.ipv6.hop_limit = hdr.ipv6.hop_limit - 1;
     }
 
+    // Look for the "implementation" property in the table definition.
     table routing_v6_table {
       key = {
           hdr.ipv6.dst_addr:          lpm;
@@ -471,8 +501,12 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
 
     // *** ACL
     //
-    // Provides ways override on a previous forwarding decision, for example
+    // Provides ways to override on a previous forwarding decision, for example
     // requiring that a packet is cloned/sent to the CPU, or dropped.
+    //
+    // We use this table to clone all NDP packets to the control plane, so to
+    // enable host discovery. When the location of a new host is discovered, the
+    // controller is expected to insert an entry in the l2_exact_table.
 
     // --- acl_table -----------------------------------------------------------
 
@@ -481,8 +515,10 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
     }
 
     action clone_to_cpu() {
-        // Cloning is achieved by using a v1model-specific primitive...
-        // TODO: say a bit more, andy f has an excellent description of this in the bmv2 docs
+        // Cloning is achieved by using a v1model-specific primitive. Here we
+        // set the type of clone operation (ingress-to-egress pipeline), the
+        // clone session ID (the CPU one), and the metadata fields we want to
+        // preserve for the cloned packet replica.
         clone3(CloneType.I2E, CPU_CLONE_SESSION_ID, { standard_metadata.ingress_port });
     }
 
@@ -508,39 +544,44 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
 
     // *** NDP HANDLING
     //
-    // The NDP protocol is the equivalent of ARP but for IPv6 networks. Here we
-    // provide tables that allow the switch to reply to NDP Neighboor Solitation
-    // (NS) requests entirelly in the data plane. That is, NDP Neighboor
-    // Advertisement (NA) replies can be generated by the switch itself, without
-    // forwarding the request to the target host. The control plane is
-    // respoinsible for instructing the switch with a mapping between IPv6 and
-    // MAC addreses. When an NDP NS packet is received, we use P4 to transform
-    // the same packet in NDP NA one and we send it back from the ingress port.
+    // NDP Handling will be the focus of exercise 4. It's OK if you skip this
+    // block now if you are still working on a previous exercise.
+    //
+    // Since we require switches in our fabric to behave as a traditional IPv6
+    // routers, these should be able to reply to NDP Router Solitation
+    // packets sent by the attached hosts.
+    //
+    // Indeed, the NDP protocol is the equivalent of ARP but for IPv6 networks.
+    // When a host is configured to use this switch as its IPv6 gateway, it will
+    // need to learn the switch MAC address (my_station) to be able to forward
+    // packets to it. Hosts will send NDP Router Solitation (RS) packets for the switch IPv6
+    // address, while the switch is expected to send back a NDP Router
+    // Advertisement (RA) packet with it's MAC address.
+    //
+    // FIXME need table explanation or should we leave that to exercise 4?
 
-    // --- acl_table -----------------------------------------------------------
+    // --- ndp_reply_table ------------------------------------------------------
 
-    /*
-     * NDP reply table and actions.
-     * Handles NDP router solicitation message and send router advertisement to the sender.
-     */
+    // Action to transform an NDP NS packet into an NDP NA one for the given
+    // target MAC address. The action also sets the egress port to the ingress
+    // one where the NDP NS packet was received.
+
     action ndp_ns_to_na(mac_addr_t target_mac) {
         hdr.ethernet.src_addr = target_mac;
         hdr.ethernet.dst_addr = IPV6_MCAST_01;
         ipv6_addr_t host_ipv6_tmp = hdr.ipv6.src_addr;
         hdr.ipv6.src_addr = hdr.ndp.target_addr;
         hdr.ipv6.dst_addr = host_ipv6_tmp;
+        hdr.ipv6.next_hdr = PROTO_ICMPV6;
         hdr.icmpv6.type = ICMP6_TYPE_NA;
         hdr.ndp.flags = NDP_FLAG_ROUTER | NDP_FLAG_OVERRIDE;
         hdr.ndp_option.setValid();
         hdr.ndp_option.type = NDP_OPT_TARGET_LL_ADDR;
         hdr.ndp_option.length = 1;
         hdr.ndp_option.value = target_mac;
-        hdr.ipv6.next_hdr = PROTO_ICMPV6;
         standard_metadata.egress_spec = standard_metadata.ingress_port;
-        local_metadata.skip_l2 = true;
     }
 
-    direct_counter(CounterType.packets_and_bytes) ndp_reply_table_counter;
     table ndp_reply_table {
         key = {
             hdr.ndp.target_addr: exact;
@@ -548,57 +589,113 @@ control IngressPipeImpl (inout parsed_headers_t hdr,
         actions = {
             ndp_ns_to_na;
         }
-        counters = ndp_reply_table_counter;
+        @name("ndp_reply_table_counter")
+        counters = direct_counter(CounterType.packets_and_bytes);
     }
 
+
+    // *** APPLY BLOCK STATEMENT
+    //
+    // The apply { ... } block defines the main function applied to every packet
+    // that goes though a given control, the ingress pipeline in this case.
+    //
+    // This is where we define which tables a packets should traverse and in
+    // which order. It contains a sequence of statements and declarations, which
+    // are executed sequentially.
+
     apply {
+
+        // If this is a packet-out from the controller...
         if (hdr.packet_out.isValid()) {
+            // Set the egress port to that found in the packet-out metadata...
             standard_metadata.egress_spec = hdr.packet_out.egress_port;
+            // Remove the packet-out header...
             hdr.packet_out.setInvalid();
+            // Exit the pipeline here, no need to go through other tables.
             exit;
         }
 
-        if (hdr.icmpv6.isValid() && hdr.icmpv6.type == ICMP6_TYPE_NS) {
-            ndp_reply_table.apply();
-        }
+        bool do_l3_l2 = true;
 
-        if (my_station_table.apply().hit && hdr.ipv6.isValid()) {
-            routing_v6_table.apply();
-            if(hdr.ipv6.hop_limit == 0) {
-                drop();
+        // If this is an NDP NS packet, attempt to generate a reply using the
+        // ndp_reply_table. If a matching entry is found, unset the
+        // "do_l3_l2" flag to skip the L3 and L2 tables.
+        if (hdr.icmpv6.isValid() && hdr.icmpv6.type == ICMP6_TYPE_NS) {
+            if (ndp_reply_table.apply().hit) {
+                do_l3_l2 = false;
             }
         }
 
-        if (!local_metadata.skip_l2 && standard_metadata.drop != 1w1) {
+        if (do_l3_l2) {
+
+            // Apply the L3 routing table to IPv6 packets, only if the
+            // destination MAC is found in the my_station_table.
+            if (hdr.ipv6.isValid() && my_station_table.apply().hit) {
+                routing_v6_table.apply();
+
+                // Checl TTL, drop packet if necessary to avoid loops.
+                if(hdr.ipv6.hop_limit == 0) { drop(); }
+            }
+
+
+            // L2 bridging. Apply the execat table first (for unicast entries)..
             if (!l2_exact_table.apply().hit) {
+                // If an entry is NOT found, apply the ternary one in case this
+                // is a multicast/broadcast NDP NS packet for another host
+                // attached to this switch.
                 l2_ternary_table.apply();
             }
         }
 
+        // Lastly, apply the ACL table.
         acl_table.apply();
     }
 }
+
+//------------------------------------------------------------------------------
+// 4. EGRESS PIPELINE
+//
+// In the v1model architecture, after the ingress pipeline, packets are
+// processed by the Traffic Manager, which provides capabilities such as
+// replication (for multicast or clone session), queuing, and scheduling.
+//
+// After the Traffic Manager, packets are processed by a so-called egress
+// pipeline. Differently from the ingress one, egress tables can match on the
+// egress_port intrinsic metdata as set by the Traffic Manager. If the Traffic
+// Manager is configured to replicate the packet to multiple ports, the egress
+// pipeline will see all replicas, each one with its own egress_port value.
+//
+// +---------------------+     +-------------+        +----------------------+
+// | INGRESS PIPE        |     | TM          |        | EGRESS PIPE          |
+// | ------------------- | pkt | ----------- | pkt(s) | -------------------- |
+// | Set egress_spec,    |---->| Queues      |------->| Match on egress port |
+// | mcast_grp, or clone |     | Replication |        |                      |
+// | sess                |     |             |        |                      |
+// +---------------------+     +-------------+        +----------------------+
+//
+// Similarly to the ingress pipeline, the egress one operates on the parsed
+// headers (hdr), the user-defined metadata (local_metadata), and the
+// architecture-specific instrinsic one (standard_metadata) which now
+// defines a read-only "egress_port" field.
+//------------------------------------------------------------------------------
 
 control EgressPipeImpl (inout parsed_headers_t hdr,
                         inout local_metadata_t local_metadata,
                         inout standard_metadata_t standard_metadata) {
     apply {
-        // TODO EXERCISE 1
-        // Implement logic such that if the packet is to be forwarded to the CPU
-        // port, i.e. we requested a packet-in in the ingress pipeline
-        // (standard_metadata.egress_port == CPU_PORT):
-        // 1. Set packet_in header as valid
-        // 2. Set the packet_in.ingress_port field to the original packet's
-        //    ingress port (standard_metadata.ingress_port).
-        // ---- START SOLUTION ----
+        // If this is a packet-in to the controller, e.g., if in ingress we
+        // matched on the ACL table with action send/clone_to_cpu...
         if (standard_metadata.egress_port == CPU_PORT) {
+            // Add packet_in header and set relevant fields, such as the
+            // switch ingress port where the packet was received.
             hdr.packet_in.setValid();
             hdr.packet_in.ingress_port = standard_metadata.ingress_port;
         }
-        // ---- END SOLUTION ----
 
-        // Perform ingress port pruning for multicast packets. E.g., do not
-        // broadcast ARP requests onthe ingress port.
+        // If this is a multicast packet (flag set by l2_ternary_table), make
+        // sure we are not replicating the packet on the same port where it was
+        // received. This is useful to avoid broadcasting NDP requests on the
+        // ingress port.
         if (local_metadata.is_multicast == true &&
               standard_metadata.ingress_port == standard_metadata.egress_port) {
             mark_to_drop(standard_metadata);
@@ -606,10 +703,19 @@ control EgressPipeImpl (inout parsed_headers_t hdr,
     }
 }
 
+//------------------------------------------------------------------------------
+// 5. CHECKSUM UPDATE
+//
+// Provide logic to update the checksum of outgoing packets.
+//------------------------------------------------------------------------------
+
 control ComputeChecksumImpl(inout parsed_headers_t hdr,
-                            inout local_metadata_t meta)
+                            inout local_metadata_t local_metadata)
 {
     apply {
+        // The folllwing function is use to update the ICMPv6 checksum of NDP NA
+        // packets generated by the ndp_reply_table in the ingress pipeline.
+        // This function is executed only if the NDP header is present.
         update_checksum(hdr.ndp.isValid(),
             {
                 hdr.ipv6.src_addr,
@@ -631,16 +737,14 @@ control ComputeChecksumImpl(inout parsed_headers_t hdr,
     }
 }
 
-control VerifyChecksumImpl(inout parsed_headers_t hdr,
-                           inout local_metadata_t meta)
-{
-    apply {}
-}
 
 //------------------------------------------------------------------------------
-// DEPARSER
-// Specifies the order of headers on the wire. Only headers that are marked as
-// "valid" will be emitted on the wire, otherwise, they are skipped.
+// 6. DEPARSER
+//
+// This is the last block of the V1Model architecture. The deparser specifies in
+// which order headers should be serialized on the wire. When calling the emit
+// primitive, only headers that are marked as "valid" are serialized, otherwise,
+// they are ignored.
 //------------------------------------------------------------------------------
 
 control DeparserImpl(packet_out packet, in parsed_headers_t hdr) {
@@ -655,6 +759,13 @@ control DeparserImpl(packet_out packet, in parsed_headers_t hdr) {
         packet.emit(hdr.ndp_option);
     }
 }
+
+//------------------------------------------------------------------------------
+// V1MODEL SWITCH INSTANTIATION
+//
+// Finally, we instantiate a v1model switch with all the control block
+// instances defined so far.
+//------------------------------------------------------------------------------
 
 V1Switch(
     ParserImpl(),
