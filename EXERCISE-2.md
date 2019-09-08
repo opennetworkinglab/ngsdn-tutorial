@@ -80,7 +80,7 @@ bash-4.4# pyang -f dsdl demo-port.yang | xmllint --format -
 
 The first part of the schema describes the tree structure, and the second part describes the value constraints for the leaf nodes.
 
-*Extra credit:* Try adding new speed identity (e.g. `SPEED_100G`) or changing the range of value `port-number`s in `demo-port.yang`, then rerun `pyang`. Do you see your changes reflected in the DSDL schema?
+*Extra credit:* Try adding new speed identity (e.g. `SPEED_100G`) or changing the range for `port-number` values in `demo-port.yang`, then rerun `pyang -f dsdl`. Do you see your changes reflected in the DSDL schema?
 
 ------
 
@@ -174,16 +174,18 @@ First, Make sure that your Mininet container is still running.
 ```
 $ make start
 docker-compose up -d
+ngsdn-tutorial_mininet_1 is up-to-date
+ngsdn-tutorial_onos_1 is up-to-date
+```
+
+If you see the following output, then Mininet not running:
+
+```
 Starting ngsdn-tutorial_mininet_1 ... done
 Starting ngsdn-tutorial_onos_1    ... done
 ```
 
-If you see the following output, then Mininet was already running:
-
-```
-ngsdn-tutorial_mininet_1 is up-to-date
-ngsdn-tutorial_onos_1 is up-to-date
-```
+You will need to go back to Exercise 1 and install forwarding rules to re-establish pings between `h1a` and `h1b` for later parts of this exercise.
 
 Next, we will use a [gNMI client CLI](https://github.com/Yi-Tseng/Yi-s-gNMI-tool) to read the all of the configuration from the first Stratum switch in our Mininet networking:
 
