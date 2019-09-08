@@ -240,7 +240,8 @@ One of the benefits to gNMI is it's "schema-less" encoding that allows clients o
 First, let's try out the schema-less representation by requesting the configuration port between `leaf1` and `h1a`:
 
 ```
-$ util/gnmi-cli --grpc-addr localhost:50001 get /interfaces/interface[name=leaf1-eth3]/config/enabled
+$ util/gnmi-cli --grpc-addr localhost:50001 get \
+/interfaces/interface[name=leaf1-eth3]/config/enabled
 ```
 
 You should see this response:
@@ -400,7 +401,8 @@ Finally, we will monitor link events using gNMI's on-change subscriptions.
 Start a subscription for the operational status of the first switch's first port:
 
 ```
-$ util/gnmi-cli --grpc-addr localhost:50001 sub-onchange \ /interfaces/interface[name=leaf1-eth3]/state/oper-status
+$ util/gnmi-cli --grpc-addr localhost:50001 sub-onchange \
+/interfaces/interface[name=leaf1-eth3]/state/oper-status
 ```
 
 You should immediately see a response which indicates that port 1 is `UP`:
