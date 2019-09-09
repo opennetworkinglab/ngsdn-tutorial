@@ -90,6 +90,8 @@ reset: stop
 clean:
 	-rm -rf p4src/build
 	-rm -rf app/target
+	-rm -rf app/src/main/resources/bmv2.json
+	-rm -rf app/src/main/resources/p4info.txt
 
 deep-clean: clean
 	-docker container rm ${app_build_container_name}
