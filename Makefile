@@ -76,7 +76,7 @@ mn-cli:
 	-@docker attach --detach-keys "ctrl-d" $(shell docker-compose ps -q mininet) || echo "*** Detached from Mininet CLI"
 
 mn-log:
-	docker-compose logs -f mininet
+	docker logs -f mininet
 
 netcfg:
 	$(info *** Pushing netcfg.json to ONOS...)
