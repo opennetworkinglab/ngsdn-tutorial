@@ -96,6 +96,8 @@ public class MainComponent {
                                       "fallbackGroupPollFrequency", "3", false);
         compCfgService.preSetProperty("org.onosproject.provider.host.impl.HostLocationProvider",
                                       "requestIpv6ND", "true", false);
+        compCfgService.preSetProperty("org.onosproject.provider.lldp.impl.LldpLinkProvider",
+                                      "useBddp", "false", false);
 
         configRegistry.registerConfigFactory(fabricConfigFactory);
         log.info("Started");
