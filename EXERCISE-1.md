@@ -179,7 +179,7 @@ configured to be part of the same IPv6 subnet. In the next step you will be
 asked to use P4Runtime to insert L2 bridging entries to be able to ping between
 two hosts of this subnet.
 
-<img alt="Topology diagram" src="mininet/topo.png" width="80%">
+<img alt="Topology diagram" src="mininet/topo.png" width="100%">
 
 ## 4. Program leaf1 using P4Runtime
 
