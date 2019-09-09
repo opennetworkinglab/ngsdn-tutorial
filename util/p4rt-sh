@@ -67,8 +67,6 @@ def main():
         new_args.append('--verbose')
 
     if args.grpc_addr is not None:
-        if args.grpc_addr.startswith('localhost'):
-            args.grpc_addr = args.grpc_addr.replace("localhost", "host.docker.internal")
         print("*** Connecting to P4Runtime server at {} ...".format(args.grpc_addr))
         new_args.extend(["--grpc-addr", args.grpc_addr])
 
@@ -95,7 +93,7 @@ def main():
         new_args.extend(["--config", "{},{}".format(
             os.path.join(mount_path, fname_p4info), os.path.join(mount_path, fname_bin))])
 
-    cmd = ["docker", "run", "-ti"]
+    cmd = ["docker", "run", "-ti", "--network", "host"]
     cmd.extend(docker_args)
     cmd.append(DOCKER_IMAGE)
     cmd.extend(new_args)
