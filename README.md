@@ -124,42 +124,27 @@ the exercises, here's a quick reference:
 | `make pull-deps`    | Pull all required dependencies                         |
 | `make p4-build`     | Build P4 program                                       |
 | `make p4-test`      | Run the PTF tests                                      |
-| `make app-build`    | Build ONOS app                                         |
-| `make start`        | Start containers (`mininet` and `onos`)                |
-| `make stop`         | Stop and remove all containers                         |
+| `make start`        | Start Mininet and ONOS containers                      |
+| `make stop`         | Stop all containers                                    |
 | `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl+D to exit)|
-| `make onos-ui`      | Open the ONOS Web UI (user `onos` password `rocks`)    |
-| `make mn-cli`       | Access the Mininet CLI (Ctrl+P Ctrl+Q to exit)         |
 | `make onos-log`     | Show the ONOS log                                      |
+| `make mn-cli`       | Access the Mininet CLI (ctrl+C to exit)                |
 | `make mn-log`       | Show the Mininet log (i.e., the CLI output)            |
-| `make netcfg`       | Push netcfg.json file (network config) to ONOS         |
+| `make app-build`    | Build custom ONOS app                                  |
 | `make app-reload`   | Install and activate the ONOS app                      |
-| `make reset`        | Reset the tutorial environment (to start from scratch) |
-
-### P4Runtime shell
-
-TODO add description
-
-Usage:
-
-```bash
-./util/p4rt-sh --grpc-addr localhost:50001 --config p4src/build/p4info.txt,p4src/build/bmv2.json
-```
+| `make netcfg`       | Push netcfg.json file (network config) to ONOS         |
+| `make reset`        | Stop containers and remove any state associated        |
 
 ## Exercises
 
 Click on the exercise name to see the instructions:
 
  1. [P4 and P4Runtime basics](./EXERCISE-1.md)
- 2. [OpenConfig and gNMI Basic](./EXERCISE-2.md)
- 3. [Running ONOS](./EXERCISE-3.md)
+ 2. [Yang, OpenConfig, and gNMI basics](./EXERCISE-2.md)
+ 3. [Using ONOS as the control plane](./EXERCISE-3.md)
  4. [Modify ONOS app](./EXERCISE-4.md)
 
 ## Solutions
 
-TODO do we really need this?
-
 You can find solutions for each exercise in the [solution](solution) directory.
-Feel free to compare your implementation to the reference one whenever you feel
-stuck. To use the solution code that is provided, simply use the same **make**
-commands in the solution directory.
+Feel free to compare your solution to the reference one whenever you feel stuck.

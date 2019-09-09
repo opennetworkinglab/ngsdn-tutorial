@@ -66,7 +66,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
  */
 @Component(
         immediate = true,
-        enabled = true
+        enabled = false
 )
 public class NdpReplyComponent {
 

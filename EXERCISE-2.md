@@ -1,6 +1,7 @@
-# Exercise 2
+# Exercise 2 - Yang, OpenConfig, and gNMI basics
 
-This set of exercises is designed to give you more exposure to YANG and gNMI.
+This set of exercises is designed to give you more exposure to Yang, OpenConfig,
+and gNMI.
 
 ## Part 1: Understanding the YANG language
 
@@ -388,7 +389,7 @@ In another window, open the Mininet CLI and start a ping:
 ```
 $ make mn-cli
 *** Attaching to Mininet CLI...
-*** To detach press ctrl+P ctrl+Q (Mininet will keep running)
+*** To detach press ctrl+C (Mininet will keep running)
 mininet> h1a ping h1b
 ```
 

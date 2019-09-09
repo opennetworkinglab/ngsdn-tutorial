@@ -51,13 +51,13 @@ _docker_pull_all:
 pull-deps: _docker_pull_all _create_mvn_container _mvn_package
 
 start:
-	@mkdir -p tmp
+	@mkdir -p tmp/onos
 	docker-compose up -d
 
 stop:
 	docker-compose down -t0
 
-restart: stop start
+restart: reset start
 
 onos-cli:
 	$(info *** Connecting to the ONOS CLI... password: rocks)
@@ -72,8 +72,8 @@ onos-ui:
 
 mn-cli:
 	$(info *** Attaching to Mininet CLI...)
-	$(info *** To detach press ctrl+P ctrl+Q (Mininet will keep running))
-	-@docker attach $(shell docker-compose ps -q mininet) || echo "*** Detached from Mininet CLI"
+	$(info *** To detach press ctrl+C (Mininet will keep running))
+	-@docker attach --detach-keys "ctrl-c" $(shell docker-compose ps -q mininet) || echo "*** Detached from Mininet CLI"
 
 mn-log:
 	docker-compose logs -f mininet
@@ -94,7 +94,7 @@ clean:
 deep-clean: clean
 	-docker container rm ${app_build_container_name}
 
-p4-build:
+p4-build: p4src/main.p4
 	$(info *** Building P4 program...)
 	@mkdir -p p4src/build
 	docker run --rm -v ${curr_dir}:/workdir -w /workdir ${P4C_IMG} \
@@ -135,7 +135,7 @@ app-install:
 	@echo
 
 app-uninstall:
-	$(info *** Uninstalling app from ONOS...)
+	$(info *** Uninstalling app from ONOS (if present)...)
 	-${onos_curl} -X DELETE ${onos_url}/v1/applications/${app_name}
 	@echo
 

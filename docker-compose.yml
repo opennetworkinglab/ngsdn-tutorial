@@ -24,6 +24,8 @@ services:
     ports:
       - "8181:8181" # HTTP
       - "8101:8101" # SSH (CLI)
+    volumes:
+      - ./tmp/onos:/root/onos/apache-karaf-4.2.6/data/tmp
     environment:
       - ONOS_APPS=gui,drivers.bmv2,lldpprovider,hostprovider
     links:
