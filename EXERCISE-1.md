@@ -25,7 +25,7 @@ back at the P4 program to understand the different parts in more details.
 
 **Parser**
 
-* List all the protocols headers that can be extracted from a packet.
+* List all the protocol headers that can be extracted from a packet.
 * Which header is expected to be the first one when parsing a new packet?
 * In which case is the NDP header extracted?
 
