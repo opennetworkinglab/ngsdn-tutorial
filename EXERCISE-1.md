@@ -57,7 +57,7 @@ back at the P4 program to understand the different parts in more details.
 ## 2. Compile P4 program
 
 The next step is to compile the P4 program for the BMv2 `simple_switch` target.
-For this, we will use the open source P4_16 compiler (p4c)[p4c] which includes a
+For this, we will use the open source P4_16 compiler ([p4c][p4c]) which includes a
 backend for this specific target, named `p4c-bm2-ss`.
 
 To compile the program, open a terminal window on the tutorial repo and type the
@@ -169,8 +169,7 @@ mininet    | *** Starting CLI:
 
 You can ignore the "*** Error setting resource limits...".
 
-The parameters to start the mininet container are specified in [docker
--compose.yml](docker-compose.yml). The container is configured to execute the
+The parameters to start the mininet container are specified in [docker-compose.yml](docker-compose.yml). The container is configured to execute the
 topology script defined in [mininet/topo.py](mininet/topo.py).
 
 The topology includes 4 switches, arranged in a 2x2 fabric topology, as well as
