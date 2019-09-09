@@ -175,7 +175,7 @@ public class NdpReplyComponent {
         final Collection<FlowRule> flowRules = interfaces.stream()
                 .map(this::getIp6Addresses)
                 .flatMap(Collection::stream)
-                .map(iaddr -> buildNdpReplyFlowRule(deviceId, deviceMac, iaddr))
+                .map(ipv6addr -> buildNdpReplyFlowRule(deviceId, ipv6addr, deviceMac))
                 .collect(Collectors.toSet());
 
         installRules(flowRules);

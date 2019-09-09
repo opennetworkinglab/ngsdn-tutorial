@@ -166,3 +166,5 @@ solution-revert:
 	-mv ptf/tests/ndp.py.bak ptf/tests/ndp.py
 	-rm -f app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
 	-mv app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java.bak app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
+
+solution-check: solution-apply p4-build p4-test app-build solution-revert
