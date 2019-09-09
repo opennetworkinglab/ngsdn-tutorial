@@ -104,7 +104,7 @@ p4-build: p4src/main.p4
 	@echo "*** P4 program compiled successfully! Output files are in p4src/build"
 
 p4-test:
-	@cd ptf && ./run_tests
+	@cd ptf && ./run_tests $(TEST)
 
 # Create container once, use it many times to preserve mvn repo cache.
 _create_mvn_container:
@@ -167,4 +167,16 @@ solution-revert:
 	-rm -f app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
 	-mv app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java.bak app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
 
-solution-check: solution-apply p4-build p4-test app-build solution-revert
+check: check-starter check-solution
+
+check-starter:
+	make p4-build
+	make p4-test TEST="all ^ndp"
+	make app-build
+
+check-solution:
+	make solution-apply
+	make p4-build
+	make p4-test
+	make app-build
+	make solution-revert
