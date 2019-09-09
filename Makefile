@@ -169,16 +169,37 @@ solution-revert:
 	-rm -f app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
 	-mv app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java.bak app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
 
-check: check-starter check-solution
-
-check-starter:
-	make p4-build
-	make p4-test TEST="all ^ndp"
-	make app-build
-
 check-solution:
+	make reset
 	make solution-apply
+	make start
 	make p4-build
 	make p4-test
 	make app-build
+	sleep 30
+	make app-reload
+	sleep 10
+	make netcfg
+	sleep 10
+	# The first ping might fail because of a known race condition in the
+	# L2BridgingComponenet. Ping all hosts.
+	-util/mn-cmd h1a ping -c 1 2001:1:1::b
+	util/mn-cmd h1a ping -c 1 2001:1:1::b
+	-util/mn-cmd h1b ping -c 1 2001:1:1::c
+	util/mn-cmd h1b ping -c 1 2001:1:1::c
+	-util/mn-cmd h2 ping -c 1 2001:1:1::b
+	util/mn-cmd h2 ping -c 1 2001:1:1::b
+	util/mn-cmd h2 ping -c 1 2001:1:1::a
+	util/mn-cmd h2 ping -c 1 2001:1:1::c
+	-util/mn-cmd h3 ping -c 1 2001:1:2::1
+	util/mn-cmd h3 ping -c 1 2001:1:2::1
+	util/mn-cmd h3 ping -c 1 2001:1:1::a
+	util/mn-cmd h3 ping -c 1 2001:1:1::b
+	util/mn-cmd h3 ping -c 1 2001:1:1::c
+	-util/mn-cmd h4 ping -c 1 2001:1:2::1
+	util/mn-cmd h4 ping -c 1 2001:1:2::1
+	util/mn-cmd h4 ping -c 1 2001:1:1::a
+	util/mn-cmd h4 ping -c 1 2001:1:1::b
+	util/mn-cmd h4 ping -c 1 2001:1:1::c
+	make stop
 	make solution-revert
