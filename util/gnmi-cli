@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run --rm -it --network host docker.pkg.github.com/opennetworkinglab/ngsdn-tutorial/gnmi-cli:latest $@
+docker run --rm -it --network host bocon/gnmi-cli:latest $@
