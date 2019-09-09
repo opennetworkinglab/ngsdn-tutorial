@@ -11,7 +11,8 @@ building blocks of the NG-SDN architecture, such as:
 * ONOS
 
 The tutorial is organized around a sequence of hands-on exercises that show how
-to build an IPv6-based leaf-spine data center fabric.
+to build an IPv6-based leaf-spine data center fabric using P4, Stratum, and
+ONOS.
 
 ## Slides
 
@@ -21,7 +22,7 @@ on the exercises.
 
 ## System requirements
 
-To facilitate access to the tools required to complete the exercises, we provide
+To facilitate access to the tools required to complete this tutorial, we provide
 two options for you to choose from:
 
 1. Download a pre-packaged VM with all included; **OR**
@@ -40,16 +41,14 @@ following links:
 * <https://www.virtualbox.org/wiki/Downloads>
 * <https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html>
 
-**Recommended system requirements:**
-
+**Recommended VM configuration:**
 The current configuration of the VM is 4 GB of RAM and 4 core CPU. These are the
 recommended minimum system requirements to complete the exercises. When
 imported, the VM takes approx. 8 GB of HDD space. For a smooth experience, we
 recommend running the VM on a host system that has at least the double of
 resources.
 
-**VM user credentials**
-
+**VM user credentials:**
 Use credentials `sdn`/`rocks` to log in the Ubuntu system.
 
 ### Option 2 - Manually install Docker and other dependencies
@@ -88,13 +87,13 @@ following command:
     make pull-deps
 
 This command will download all necessary Docker images (~1.5 GB) allowing you to
-work off-line on the exercises. For this reason, we recommend running this step
-ahead of the tutorial with a reliable Internet connection.
+work off-line. For this reason, we recommend running this step ahead of the
+tutorial, with a reliable Internet connection.
 
 ## Using an IDE to work on the exercises
 
 During the exercises you will need to write code in multiple languages such as
-P4, Python and Java. While the exercises do not prescribe the use of any
+P4, Java, and Python. While the exercises do not prescribe the use of any
 specific IDE or code editor, the tutorial VM comes with Java IDE [IntelliJ IDEA
 Community Edition](https://www.jetbrains.com/idea/), already pre-loaded with
 plugins for P4 syntax highlighting and Python development. We suggest using
@@ -103,15 +102,15 @@ completion for all ONOS APIs.
 
 ## Repo structure
 
-FIXME
-
 This repo is structured as follows:
 
  * `p4src/` P4 implementation
- * `app/` ONOS app Java implementation
+ * `yang/` Yang model used in exercise 2
+ * `app/` custom ONOS app Java implementation
  * `mininet/` Mininet script to emulate a 2x2 leaf-spine fabric topology of
    `stratum_bmv2` devices
- * `util/` Utilities (such as p4runtime-sh)
+ * `util/` Utility scripts
+ * `ptf/` P4 data plane unit tests based on Packet Test Framework (PTF)
 
 ## Tutorial commands
 
@@ -123,17 +122,17 @@ the exercises, here's a quick reference:
 |---------------------|------------------------------------------------------- |
 | `make pull-deps`    | Pull all required dependencies                         |
 | `make p4-build`     | Build P4 program                                       |
-| `make p4-test`      | Run the PTF tests                                      |
+| `make p4-test`      | Run PTF tests                                          |
 | `make start`        | Start Mininet and ONOS containers                      |
 | `make stop`         | Stop all containers                                    |
+| `make reset`        | Stop containers and remove any state associated        |
 | `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl+D to exit)|
 | `make onos-log`     | Show the ONOS log                                      |
-| `make mn-cli`       | Access the Mininet CLI (ctrl+C to exit)                |
+| `make mn-cli`       | Access the Mininet CLI (Ctrl+C to exit)                |
 | `make mn-log`       | Show the Mininet log (i.e., the CLI output)            |
 | `make app-build`    | Build custom ONOS app                                  |
 | `make app-reload`   | Install and activate the ONOS app                      |
 | `make netcfg`       | Push netcfg.json file (network config) to ONOS         |
-| `make reset`        | Stop containers and remove any state associated        |
 
 ## Exercises
 
@@ -142,7 +141,7 @@ Click on the exercise name to see the instructions:
  1. [P4 and P4Runtime basics](./EXERCISE-1.md)
  2. [Yang, OpenConfig, and gNMI basics](./EXERCISE-2.md)
  3. [Using ONOS as the control plane](./EXERCISE-3.md)
- 4. [Modify ONOS app](./EXERCISE-4.md)
+ 4. [IPv6 routing with in-switch NDP generation](./EXERCISE-4.md)
 
 ## Solutions
 
