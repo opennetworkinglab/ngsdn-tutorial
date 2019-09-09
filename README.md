@@ -126,9 +126,9 @@ the exercises, here's a quick reference:
 | `make start`        | Start Mininet and ONOS containers                      |
 | `make stop`         | Stop all containers                                    |
 | `make reset`        | Stop containers and remove any state associated        |
-| `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl+D to exit)|
+| `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl-D to exit)|
 | `make onos-log`     | Show the ONOS log                                      |
-| `make mn-cli`       | Access the Mininet CLI (Ctrl+D to exit)                |
+| `make mn-cli`       | Access the Mininet CLI (Ctrl-D to exit)                |
 | `make mn-log`       | Show the Mininet log (i.e., the CLI output)            |
 | `make app-build`    | Build custom ONOS app                                  |
 | `make app-reload`   | Install and activate the ONOS app                      |

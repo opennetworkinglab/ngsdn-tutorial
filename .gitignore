@@ -9,4 +9,5 @@ ptf/ptf.log
 ptf/ptf.pcap
 **/*.iml
 **/*.pyc
+**/*.bak
 util/.pipe_cfg

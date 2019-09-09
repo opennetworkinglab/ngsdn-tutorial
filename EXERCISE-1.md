@@ -140,7 +140,7 @@ You can ignore the ONOS one for now, we will use that in exercise 3 and 4.
 
 To make sure the container is started without errors, you can use the `make
 mn-log` command to show the Mininet log. Verify that you see the following
-output (press Ctrl+C to exit):
+output (press Ctrl-C to exit):
  
 ```
 $ make mn-log 
@@ -279,7 +279,7 @@ You should see the following output:
 
 ```
 *** Attaching to Mininet CLI...
-*** To detach press ctrl+D (Mininet will keep running)
+*** To detach press Ctrl-D (Mininet will keep running)
 mininet> 
 ```
 

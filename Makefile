@@ -61,7 +61,7 @@ restart: reset start
 
 onos-cli:
 	$(info *** Connecting to the ONOS CLI... password: rocks)
-	$(info *** Top exit press ctrl+D)
+	$(info *** Top exit press Ctrl-D)
 	@ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o LogLevel=ERROR -p 8101 onos@localhost
 
 onos-log:
@@ -72,7 +72,7 @@ onos-ui:
 
 mn-cli:
 	$(info *** Attaching to Mininet CLI...)
-	$(info *** To detach press ctrl+D (Mininet will keep running))
+	$(info *** To detach press Ctrl-D (Mininet will keep running))
 	-@docker attach --detach-keys "ctrl-d" $(shell docker-compose ps -q mininet) || echo "*** Detached from Mininet CLI"
 
 mn-log:

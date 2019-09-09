@@ -389,7 +389,7 @@ In another window, open the Mininet CLI and start a ping:
 ```
 $ make mn-cli
 *** Attaching to Mininet CLI...
-*** To detach press ctrl+D (Mininet will keep running)
+*** To detach press Ctrl-D (Mininet will keep running)
 mininet> h1a ping h1b
 ```
 
