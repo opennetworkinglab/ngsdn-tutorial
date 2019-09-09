@@ -72,8 +72,8 @@ onos-ui:
 
 mn-cli:
 	$(info *** Attaching to Mininet CLI...)
-	$(info *** To detach press ctrl+C (Mininet will keep running))
-	-@docker attach --detach-keys "ctrl-c" $(shell docker-compose ps -q mininet) || echo "*** Detached from Mininet CLI"
+	$(info *** To detach press ctrl+D (Mininet will keep running))
+	-@docker attach --detach-keys "ctrl-d" $(shell docker-compose ps -q mininet) || echo "*** Detached from Mininet CLI"
 
 mn-log:
 	docker-compose logs -f mininet

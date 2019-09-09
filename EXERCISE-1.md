@@ -279,7 +279,7 @@ You should see the following output:
 
 ```
 *** Attaching to Mininet CLI...
-*** To detach press ctrl+C (Mininet will keep running)
+*** To detach press ctrl+D (Mininet will keep running)
 mininet> 
 ```
 
