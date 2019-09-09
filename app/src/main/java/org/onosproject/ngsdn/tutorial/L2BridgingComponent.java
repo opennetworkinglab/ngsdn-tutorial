@@ -62,8 +62,6 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
  */
 @Component(
         immediate = true,
-        // TODO EXERCISE 2
-        // Enable component (enabled = true)
         enabled = true
 )
 public class L2BridgingComponent {
@@ -136,12 +134,6 @@ public class L2BridgingComponent {
         log.info("Stopped");
     }
 
-    //--------------------------------------------------------------------------
-    // METHODS TO COMPLETE.
-    //
-    // Complete the implementation wherever you see TODO.
-    //--------------------------------------------------------------------------
-
     /**
      * Sets up everything necessary to support L2 bridging on the given device.
      *
@@ -203,10 +195,6 @@ public class L2BridgingComponent {
 
         log.info("Adding L2 multicast rules on {}...", deviceId);
 
-        // TODO EXERCISE 2
-        // Modify P4Runtime entity names to match content of P4Info file (look
-        // for the fully qualified name of tables, match fields, and actions.
-        // ---- START SOLUTION ----
         // Match ARP request - Match exactly FF:FF:FF:FF:FF
         final PiCriterion macBroadcastCriterion = PiCriterion.builder()
                 .matchTernary(
@@ -241,7 +229,6 @@ public class L2BridgingComponent {
         final FlowRule rule2 = Utils.buildFlowRule(
                 deviceId, appId, tableId,
                 ipv6MulticastCriterion, setMcastGroupAction);
-        // ---- END SOLUTION ----
 
         // Insert rules.
         flowRuleService.applyFlowRules(rule1, rule2);
@@ -264,10 +251,6 @@ public class L2BridgingComponent {
         log.info("Adding L2 unicast rule on {} for host {} (port {})...",
                  deviceId, host.id(), port);
 
-        // TODO EXERCISE 2
-        // Modify P4Runtime entity names to match content of P4Info file (look
-        // for the fully qualified name of tables, match fields, and actions.
-        // ---- START SOLUTION ----
         final String tableId = "IngressPipeImpl.l2_exact_table";
         // Match exactly on the host MAC address.
         final MacAddress hostMac = host.mac();
@@ -287,7 +270,6 @@ public class L2BridgingComponent {
         // Forge flow rule.
         final FlowRule rule = Utils.buildFlowRule(
                 deviceId, appId, tableId, hostMacCriterion, l2UnicastAction);
-        // ---- END SOLUTION ----
 
         // Insert.
         flowRuleService.applyFlowRules(rule);

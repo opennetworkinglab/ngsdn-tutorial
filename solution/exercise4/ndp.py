@@ -63,7 +63,7 @@ class NdpReplyGenTest(P4RuntimeTest):
         # table.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="<PUT HERE NAME OF NDP REPLY TABLE FROM P4INFO>",
+            table_name="IngressPipeImpl.ndp_reply_table",
             match_fields={
                 # Exact match.
                 "hdr.ndp.target_ipv6_addr": switch_ip

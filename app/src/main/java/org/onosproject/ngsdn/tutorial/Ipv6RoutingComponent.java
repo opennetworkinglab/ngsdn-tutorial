@@ -162,8 +162,6 @@ public class Ipv6RoutingComponent {
 
     //--------------------------------------------------------------------------
     // METHODS TO COMPLETE.
-    //
-    // Complete the implementation wherever you see TODO.
     //--------------------------------------------------------------------------
 
     /**
@@ -182,14 +180,11 @@ public class Ipv6RoutingComponent {
 
         final MacAddress myStationMac = getMyStationMac(deviceId);
 
-        // HINT: in our solution, the My Station table matches on the *ethernet
-        // destination* and there is only one action called *NoAction*, which is
-        // used as an indication of "table hit" in the control block.
+        // HINT: in the p4 program, the My Station table matches on the
+        // *ethernet destination* and there is only one action called
+        // *NoAction*, which is used as an indication of "table hit" in the
+        // control block.
 
-        // TODO EXERCISE 3
-        // Modify P4Runtime entity names to match content of P4Info file (look
-        // for the fully qualified name of tables, match fields, and actions.
-        // ---- START SOLUTION ----
         final String tableId = "IngressPipeImpl.my_station_table";
 
         final PiCriterion match = PiCriterion.builder()
@@ -202,7 +197,6 @@ public class Ipv6RoutingComponent {
         final PiTableAction action = PiAction.builder()
                 .withId(PiActionId.of("NoAction"))
                 .build();
-        // ---- END SOLUTION ----
 
         final FlowRule myStationRule = Utils.buildFlowRule(
                 deviceId, appId, tableId, match, action);
@@ -231,10 +225,6 @@ public class Ipv6RoutingComponent {
         final List<PiAction> actions = Lists.newArrayList();
 
         // Build one "set next hop" action for each next hop
-        // TODO EXERCISE 3
-        // Modify P4Runtime entity names to match content of P4Info file (look
-        // for the fully qualified name of tables, match fields, and actions.
-        // ---- START SOLUTION ----
         final String tableId = "IngressPipeImpl.routing_v6_table";
         for (MacAddress nextHopMac : nextHopMacs) {
             final PiAction action = PiAction.builder()
@@ -248,7 +238,6 @@ public class Ipv6RoutingComponent {
 
             actions.add(action);
         }
-        // ---- END SOLUTION ----
 
         return Utils.buildSelectGroup(
                 deviceId, tableId, actionProfileId, groupId, actions, appId);
@@ -266,10 +255,6 @@ public class Ipv6RoutingComponent {
     private FlowRule createRoutingRule(DeviceId deviceId, Ip6Prefix ip6Prefix,
                                        int groupId) {
 
-        // TODO EXERCISE 3
-        // Modify P4Runtime entity names to match content of P4Info file (look
-        // for the fully qualified name of tables, match fields, and actions.
-        // ---- START SOLUTION ----
         final String tableId = "IngressPipeImpl.routing_v6_table";
         final PiCriterion match = PiCriterion.builder()
                 .matchLpm(
@@ -279,7 +264,6 @@ public class Ipv6RoutingComponent {
                 .build();
 
         final PiTableAction action = PiActionProfileGroupId.of(groupId);
-        // ---- END SOLUTION ----
 
         return Utils.buildFlowRule(
                 deviceId, appId, tableId, match, action);
@@ -300,10 +284,6 @@ public class Ipv6RoutingComponent {
     private FlowRule createL2NextHopRule(DeviceId deviceId, MacAddress nexthopMac,
                                          PortNumber outPort) {
 
-        // TODO EXERCISE 3
-        // Modify P4Runtime entity names to match content of P4Info file (look
-        // for the fully qualified name of tables, match fields, and actions.
-        // ---- START SOLUTION ----
         final String tableId = "IngressPipeImpl.l2_exact_table";
         final PiCriterion match = PiCriterion.builder()
                 .matchExact(PiMatchFieldId.of("hdr.ethernet.dst_addr"),
@@ -317,7 +297,6 @@ public class Ipv6RoutingComponent {
                         PiActionParamId.of("port_num"),
                         outPort.toLong()))
                 .build();
-        // ---- END SOLUTION ----
 
         return Utils.buildFlowRule(
                 deviceId, appId, tableId, match, action);

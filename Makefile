@@ -146,3 +146,23 @@ mn-single:
 
 yang-tools:
 	docker run --rm -it -v ${curr_dir}/yang/demo-port.yang:/models/demo-port.yang ${YANG_IMG}
+
+solution-apply:
+	cp -f app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java.bak
+	cp -f solution/exercise3/InterpreterImpl.java app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java
+	cp -f p4src/main.p4 p4src/main.p4.bak
+	cp -f solution/exercise4/main.p4 p4src/main.p4
+	cp -f ptf/tests/ndp.py ptf/tests/ndp.py.bak
+	cp -f solution/exercise4/ndp.py ptf/tests/ndp.py
+	cp -f app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java.bak
+	cp -f solution/exercise4/NdpReplyComponent.java app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
+
+solution-revert:
+	-rm -f app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java
+	-mv app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java.bak app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java
+	-rm -f p4src/main.p4
+	-mv p4src/main.p4.bak p4src/main.p4
+	-rm -f ptf/tests/ndp.py
+	-mv ptf/tests/ndp.py.bak ptf/tests/ndp.py
+	-rm -f app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java
+	-mv app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java.bak app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java

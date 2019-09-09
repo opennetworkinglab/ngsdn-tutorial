@@ -206,11 +206,11 @@ public class NdpReplyComponent {
         final PiActionParam targetMacParam = new PiActionParam(
                 PiActionParamId.of("target_mac"), targetMac.toBytes());
         final PiAction action = PiAction.builder()
-                .withId(PiActionId.of("<PUT HERE NAME OF NDP REPLY ACTION>"))
+                .withId(PiActionId.of("IngressPipeImpl.ndp_ns_to_na"))
                 .withParameter(targetMacParam)
                 .build();
         // Table ID.
-        final String tableId = "<PUT HERE NAME OF NDP REPLY TABLE>";
+        final String tableId = "IngressPipeImpl.ndp_reply_table";
         // ---- END SOLUTION ----
 
         // Build flow rule.
@@ -284,7 +284,7 @@ public class NdpReplyComponent {
     }
 
     /**
-     * Install the given flow rules in batch using the flow rule service.
+     * INstall the given flow rules in batch using the flow rule service.
      *
      * @param flowRules flow rules to install
      */
