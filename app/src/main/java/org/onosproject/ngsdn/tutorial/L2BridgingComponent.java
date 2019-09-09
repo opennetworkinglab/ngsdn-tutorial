@@ -278,7 +278,7 @@ public class L2BridgingComponent {
 
         // Action: set output port
         final PiAction l2UnicastAction = PiAction.builder()
-                .withId(PiActionId.of("IngressPipeImpl.set_output_port"))
+                .withId(PiActionId.of("IngressPipeImpl.set_egress_port"))
                 .withParameter(new PiActionParam(
                         PiActionParamId.of("port_num"),
                         port.toLong()))

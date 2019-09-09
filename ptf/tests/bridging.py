@@ -201,7 +201,7 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
                 # Exact match.
                 "hdr.ethernet.dst_addr": pkt[Ether].dst
             },
-            action_name="IngressPipeImpl.set_output_port",
+            action_name="IngressPipeImpl.set_egress_port",
             action_params={
                 "port_num": self.port2
             }
@@ -278,7 +278,7 @@ class BridgingTest(P4RuntimeTest):
                 # Exact match.
                 "hdr.ethernet.dst_addr": pkt[Ether].dst
             },
-            action_name="IngressPipeImpl.set_output_port",
+            action_name="IngressPipeImpl.set_egress_port",
             action_params={
                 "port_num": self.port2
             }
@@ -299,7 +299,7 @@ class BridgingTest(P4RuntimeTest):
                 # Exact match.
                 "hdr.ethernet.dst_addr": pkt2[Ether].dst
             },
-            action_name="IngressPipeImpl.set_output_port",
+            action_name="IngressPipeImpl.set_egress_port",
             action_params={
                 "port_num": self.port1
             }

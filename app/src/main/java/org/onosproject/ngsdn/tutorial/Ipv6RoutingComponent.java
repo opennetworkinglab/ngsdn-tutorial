@@ -312,7 +312,7 @@ public class Ipv6RoutingComponent {
 
 
         final PiAction action = PiAction.builder()
-                .withId(PiActionId.of("IngressPipeImpl.set_output_port"))
+                .withId(PiActionId.of("IngressPipeImpl.set_egress_port"))
                 .withParameter(new PiActionParam(
                         PiActionParamId.of("port_num"),
                         outPort.toLong()))

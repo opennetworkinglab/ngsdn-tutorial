@@ -114,7 +114,7 @@ class IPv6RoutingTest(P4RuntimeTest):
                 # Exact match
                 "hdr.ethernet.dst_addr": next_hop_mac
             },
-            action_name="IngressPipeImpl.set_output_port",
+            action_name="IngressPipeImpl.set_egress_port",
             action_params={
                 "port_num": self.port2
             }

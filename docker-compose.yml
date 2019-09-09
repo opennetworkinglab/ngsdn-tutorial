@@ -4,6 +4,7 @@ services:
   mininet:
     image: opennetworking/mn-stratum
     hostname: mininet
+    container_name: mininet
     privileged: true
     tty: true
     stdin_open: true
@@ -19,6 +20,7 @@ services:
   onos:
     image: onosproject/onos:2.2.0
     hostname: onos
+    container_name: onos
     ports:
       - "8181:8181" # HTTP
       - "8101:8101" # SSH (CLI)

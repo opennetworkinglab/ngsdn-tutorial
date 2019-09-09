@@ -366,7 +366,7 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
 
     // --- l2_exact_table (for unicast entries) --------------------------------
 
-    action set_output_port(port_num_t port_num) {
+    action set_egress_port(port_num_t port_num) {
         standard_metadata.egress_spec = port_num;
     }
 
@@ -375,7 +375,7 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
             hdr.ethernet.dst_addr: exact;
         }
         actions = {
-            set_output_port;
+            set_egress_port;
             @defaultonly drop;
         }
         const default_action = drop;
@@ -672,6 +672,8 @@ control EgressPipeImpl (inout parsed_headers_t hdr,
             // switch ingress port where the packet was received.
             hdr.packet_in.setValid();
             hdr.packet_in.ingress_port = standard_metadata.ingress_port;
+            // Exit the pipeline here.
+            exit;
         }
 
         // If this is a multicast packet (flag set by l2_ternary_table), make
