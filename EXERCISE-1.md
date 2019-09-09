@@ -287,13 +287,13 @@ Add and NDP entry to `h1a`, mapping `h1b`'s IPv6 address (`2001:1:1::b`) to its
 MAC addres (`00:00:00:00:00:1B`):
 
 ```
-h1a ip -6 neigh add 2001:1:1::B lladdr 00:00:00:00:00:1B dev h1a-eth0
+mininet> h1a ip -6 neigh add 2001:1:1::B lladdr 00:00:00:00:00:1B dev h1a-eth0
 ```
 
 And vice versa, add and NDP entry to `h1b` to resolve `h1a`'s address:
 
 ```
-h1b ip -6 neigh add 2001:1:1::A lladdr 00:00:00:00:00:1A dev h1b-eth0
+mininet> h1b ip -6 neigh add 2001:1:1::A lladdr 00:00:00:00:00:1A dev h1b-eth0
 ```
 
 ### Start ping
