@@ -141,7 +141,7 @@ Click on the exercise name to see the instructions:
  1. [P4 and P4Runtime basics](./EXERCISE-1.md)
  2. [Yang, OpenConfig, and gNMI basics](./EXERCISE-2.md)
  3. [Using ONOS as the control plane](./EXERCISE-3.md)
- 4. [IPv6 routing with in-switch NDP generation](./EXERCISE-4.md)
+ 4. [Modify code to enable IPv6 routing](./EXERCISE-4.md)
 
 ## Solutions
 
