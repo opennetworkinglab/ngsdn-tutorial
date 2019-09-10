@@ -20,10 +20,10 @@ subnets:
 
 <img alt="Topology diagram" src="img/topo.png" width="100%">
 
-The same IPv6 prefixes are defined in the [netcfg.json](netcfg.json) file and
-are used to provide an IPv6 address to the switch interfaces, i.e. the gateway
-address from the host perspective. The goal of our ONOS app is to program the
-switch such that it behaves as a traditional IPv6 router.
+The same IPv6 prefixes are defined in the [netcfg.json](mininet/netcfg.json)
+file and are used to provide an IPv6 address to the switch interfaces, i.e. the
+gateway address from the host perspective. The goal of our ONOS app is to
+program the switch such that it behaves as a traditional IPv6 router.
 
 Unfortunately, the starter code we have provided to you has a broken
 implementation of IPv6 routing. Your task is to fix it.
