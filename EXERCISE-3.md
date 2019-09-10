@@ -132,6 +132,14 @@ when prompted:
 $ make onos-cli
 ```
 
+If you see the following error, then ONOS is still starting; wait a minute and try again.
+```
+ssh_exchange_identification: Connection closed by remote host
+make: *** [onos-cli] Error 255
+```
+
+When you see the Password prompt, type the default password: `rocks`
+
 Type the following command in the ONOS CLI to show the list of running apps:
 
 ```

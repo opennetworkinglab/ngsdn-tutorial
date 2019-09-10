@@ -1,6 +1,6 @@
 # Exercise 2 - Yang, OpenConfig, and gNMI basics
 
-This set of exercises is designed to give you more exposure to Yang, OpenConfig,
+This set of exercises is designed to give you more exposure to YANG, OpenConfig,
 and gNMI.
 
 ## Part 1: Understanding the YANG language
@@ -305,7 +305,7 @@ notification {
 
 The schema-less representation provides and `update` for each leaf containing the path to leaf and the value of the leaf. You can confirm that the interface is enabled (set to `true`).
 
-Next, we will use can subscript to the ingress unicast packet counters for on `leaf1` coming from `h1a`:
+Next, we will use can subscribe to the ingress unicast packet counters for on `leaf1` coming from `h1a`:
 
 ```
 $ util/gnmi-cli --grpc-addr localhost:50001 \
@@ -340,7 +340,7 @@ subscribe {
       }
     }
     mode: SAMPLE
-    sample_interval: 5000
+    sample_interval: 1000
   }
   updates_only: true
 }
@@ -440,10 +440,10 @@ update {
 }
 ```
 
-In the shell running the Mininet CLI, let's take down the link:
+In the shell running the Mininet CLI, let's take down the interface on `leaf1` connected to `h1a`:
 
 ```
-mininet> link leaf1 h1a down
+mininet> sh ifconfig leaf1-eth3 down
 ```
 
 You should see a response in your gNMI CLI window showing that the interface on `leaf1` connected to `h1a` is `DOWN`:
@@ -477,9 +477,9 @@ update {
 }
 ```
 
-We can bring back the link using the following Mininet command:
+We can bring back the interface using the following Mininet command:
 ```
-mininet> link leaf1 h1a up
+mininet> sh ifconfig leaf1-eth3 up
 ```
 
 You should see another response in your gNMI CLI window that indicates the interface is `UP`.
