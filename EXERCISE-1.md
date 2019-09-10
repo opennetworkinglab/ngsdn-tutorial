@@ -47,7 +47,7 @@ referring to the P4 program to understand the different parts in more details.
 
 * What is the main difference between the ingress and egress pipeline?
 * For a given packet that goes through the ingress pipeline, when will the
-  egress pipeline will see more than one packet?
+  egress pipeline see more than one packet?
 * For multicast packets, can they be replicated to the ingress port?
 
 **Deparser**

@@ -1,6 +1,2 @@
 #!/bin/bash
-docker run --rm --network host \
-  bocon/gnmi-cli:latest $@ |
-  docker run --rm -i \
-  bocon/yang-tools:latest oc-pb-decoder |
-  less
+docker run --rm -i bocon/yang-tools:latest oc-pb-decoder
