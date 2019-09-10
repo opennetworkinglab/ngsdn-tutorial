@@ -419,5 +419,5 @@ forwarded to both spines as in the screenshot below:
 
 ### Congratulations!
 
-You have completed Exercise 3! Now your fabric is capable of forwarding IPv6
-traffic between any host.
+You have completed the last exercise! Now your fabric is capable of forwarding
+IPv6 traffic between any host.
