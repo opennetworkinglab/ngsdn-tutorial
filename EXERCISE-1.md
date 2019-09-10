@@ -1,7 +1,7 @@
 # Exercise 1 - P4 and P4Runtime basics
 
 This exercise provides a hands-on introduction to the P4 language and
-the P4Runtime API. Yu will be asked to:
+the P4Runtime API. You will be asked to:
 
 1. Read and understand the implementation of a simple P4 program
 2. Compile it for the BMv2 software switch and understand the output (the P4Info 
@@ -10,45 +10,45 @@ the P4Runtime API. Yu will be asked to:
 4. Use the P4Runtime Shell to manually insert table entries in one of the
    switches to provide connectivity between hosts
 
-## 1. Look at P4 program
+## 1. Look at the P4 program
 
-To start, let's have a look a the P4 program in [p4src/main.p4](p4src/main.p4).
+To start, let's have a look a the P4 program: [p4src/main.p4](p4src/main.p4)
 
 This program implements a simplified IPv6 router. Even if this is the first time
-you see P4 code, the program has been commented to provide an understanding of
+you have ever seen P4 code, the program has been commented to provide an understanding of
 the pipeline behavior to anyone with basic programming and networking
 background.
 
-We suggest you start be giving a quick look to the whole program to understand
-its structure. When you're done, try answering the following questions, getting
-back at the P4 program to understand the different parts in more details.
+We suggest you start by taking a quick look at the whole program to understand
+its structure. When you're done, try answering the following questions, while
+referring to the P4 program to understand the different parts in more details.
 
 **Parser**
 
 * List all the protocol headers that can be extracted from a packet.
 * Which header is expected to be the first one when parsing a new packet?
-* In which case is the NDP header extracted?
+* Under what circumstances is the NDP header extracted?
 
 **Ingress pipeline**
 
 * How many match+action tables are defined in this pipeline?
 * For the L2 bridging case, which table is used to replicated NDP requests to
-  all host-facing ports? Which type of match is used in that table?
+  all host-facing ports? What type of match is used in that table?
 * In the ACL table, what's the difference between `send_to_cpu` and
   `clone_to_cpu` actions?
 * In the apply block, what is the first table applied to a packet? Are P4Runtime
   packet-out treated differently?
 * Look at the `routing_v6_table` and its only action. When a packet is matched
-  by this table, where is the egress port set? Hint: look at the apply block,
+  by this table, where is the egress port set? Hint: look at the apply block;
   which table comes after the routing one?
 * In which P4 action is the IPv6 Hop Limit/Time To Live (TTL) decremented? 
 
 **Egress pipeline**
 
 * What is the main difference between the ingress and egress pipeline?
-* For a given packet that goes through the ingress pipeline, in which case the
+* For a given packet that goes through the ingress pipeline, when will the
   egress pipeline will see more than one packet?
-* For multicast packets, can they be replicated on the ingres port?
+* For multicast packets, can they be replicated to the ingress port?
 
 **Deparser**
 
@@ -203,12 +203,12 @@ Python CLI that can be used to connect to a P4Runtime server and can run
 P4Runtime commands. For example, it can be used to create, read, update, and
 delete flow table entries.
 
-The shell can be started in two modes, with our without a P4 pipeline config. In
+The shell can be started in two modes, with or without a P4 pipeline config. In
 the first case, the shell will take care of pushing the given pipeline config to
 the switch using the P4Runtime `SetPipelineConfig` RPC. In the second case, the
 shell will try to retrieve the P4Info that is currently configured in the switch.
 
-In both cases, the shell make use of the P4Info file to provide to:
+In both cases, the shell make use of the P4Info file to:
 * allow specifying runtime entities such as table entries using P4Info names
   rather then numeric IDs (much easier to remember and read);
 * provide autocompletion;
@@ -230,7 +230,7 @@ Docker container with the given arguments. For a list of arguments you can type
 `util/p4rt-sh --help`.
 
 **Note:** we use `--grpc-addr localhost:50001` as the Mininet container is
-executes locally, and`50001` is the TCP port associated to the gRPC server
+executes locally, and `50001` is the TCP port associated to the gRPC server
 exposed by `leaf1`.
 
 If the shell started successfully, you should see the following output:
