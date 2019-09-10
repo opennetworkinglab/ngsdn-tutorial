@@ -1,12 +1,12 @@
 # Next-Gen SDN Tutorial
 
-Welcome to Next-Gen SDN tutorial!
+Welcome to the Next-Gen SDN tutorial!
 
-This tutorial is targeted to developers who want to learn about the
-building blocks of the NG-SDN architecture, such as:
+This tutorial is targeted at developers who want to learn about the building
+blocks of the NG-SDN architecture, such as:
 
 * Data plane programming and control via P4 and P4Runtime
-* Configuration via OpenConfig and gNMI
+* Configuration via YANG, OpenConfig, and gNMI
 * Stratum
 * ONOS
 
@@ -16,9 +16,11 @@ ONOS.
 
 ## Slides
 
-Tutorial slides are available [online](ADD SLIDES URL). These slides provide an
-introduction to each exercise. We suggest you look at it before starting to work
-on the exercises.
+Tutorial slides are available online:
+<http://bit.ly/ngsdn-tutorial-slides>
+
+These slides provide an introduction to each exercise. We suggest you look at it
+before starting to work on the exercises.
 
 ## System requirements
 
