@@ -558,11 +558,14 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
     //   * provide action "ndp_ns_to_na" defined before
     //   * default_action should be "NoAction"
     //
+    // You can name your table whatever you like, and you will need to fill
+    // the name in elsewhere in this exercise.
+    //
     // This table should have structure similar to l2_exact_table defined
     // before. Feel free to copy paste that table definition here as a starter.
     // ---- START SOLUTION ----
 
-    /* Provide your table impolementation here */
+    /* Provide your table implementation here */
 
     // ---- END SOLUTION ----
 

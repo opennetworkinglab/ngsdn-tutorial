@@ -340,7 +340,7 @@ reloading the app:
 If you left the ping between `h2` and `h1a` running, check that terminal window,
 it should work now!
 
-To verify tha ping works also for hosts attached to different leaves, let's
+To verify that ping works also for hosts attached to different leaves, let's
 start a new ping between `h2` and `h3` with the following commands, in order:
 
 ```
