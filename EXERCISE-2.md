@@ -7,7 +7,7 @@ This exercise is divided in three parts:
 
 1. Understanding the YANG language
 2. Understand YANG encoding
-3. Understanding YANG-enabled transport protocols
+3. Understanding YANG-enabled transport protocols (using gNMI)
 
 ## Part 1: Understanding the YANG language
 
