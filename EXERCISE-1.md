@@ -390,20 +390,7 @@ PING 2001:1:1::b(2001:1:1::b) 56 data bytes
 
 ## Congratulations!
 
-You have completed the first exercise! If there is still time before the end of
-this session, you can check the bonus steps below.
-
-## Bonus TODO
-
-Read table counters
-
-```
-P4Runtime sh >>> for te in table_entry["IngressPipeImpl.l2_exact_table"].read(): 
-            ...:     print(te)
-```
-
-Handle NDPs via multicast groups (start ping from h1c that has no NDP entry)
-
+You have completed the first exercise!
 
 [p4c]: https://github.com/p4lang/p4c
 [p4runtime-sh]: https://github.com/p4lang/p4runtime-shell
