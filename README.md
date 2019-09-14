@@ -43,6 +43,9 @@ following links:
 * <https://www.virtualbox.org/wiki/Downloads>
 * <https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html>
 
+Alternatively, you can use the scripts in [util/vm](util/vm) to build a VM on
+your machine using Vagrant.
+
 **Recommended VM configuration:**
 The current configuration of the VM is 4 GB of RAM and 4 core CPU. These are the
 recommended minimum system requirements to complete the exercises. When
