@@ -2,13 +2,11 @@
 
 set -xe
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
 function wait_vm_shutdown {
     set +x
     while vboxmanage showvminfo $1 | grep -c "running (since"; do
-    echo "Waiting for VM to shutdown..."
-    sleep 1
+      echo "Waiting for VM to shutdown..."
+      sleep 1
     done
     sleep 2
     set -x
@@ -18,7 +16,7 @@ function wait_vm_shutdown {
 vagrant up
 
 VB_UUID=$(cat .vagrant/machines/default/virtualbox/id)
-VBoxManage snapshot ${VB_UUID} take "pre-cleanup"
+VBoxManage snapshot "${VB_UUID}" take "pre-cleanup"
 
 # Cleanup
 vagrant ssh -c 'bash /vagrant/cleanup.sh'
