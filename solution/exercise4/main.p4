@@ -565,7 +565,16 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
     // before. Feel free to copy paste that table definition here as a starter.
     // ---- START SOLUTION ----
 
-    /* Provide your table implementation here */
+    table ndp_reply_table {
+        key = {
+            hdr.ndp.target_ipv6_addr: exact;
+        }
+        actions = {
+            ndp_ns_to_na;
+        }
+        @name("ndp_reply_table_counter")
+        counters = direct_counter(CounterType.packets_and_bytes);
+    }
 
     // ---- END SOLUTION ----
 
@@ -601,14 +610,11 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
         // flag to skip the L3 and L2 tables, as the "ndp_ns_to_na" action
         // already set an egress port.
 
-        // Uncomment this block when done.
-        /*
         if (hdr.icmpv6.isValid() && hdr.icmpv6.type == ICMP6_TYPE_NS) {
-            if (<NAME OF NDP REPLY TABLE>.apply().hit) {
+            if (ndp_reply_table.apply().hit) {
                 do_l3_l2 = false;
             }
         }
-        */
 
         // ---- END SOLUTION ----
 

@@ -1,91 +1,101 @@
 # Next-Gen SDN Tutorial
 
-Welcome to Next-Gen SDN tutorial!
+Welcome to the Next-Gen SDN tutorial!
 
-This tutorial is targeted to developers who want to learn the basics of the
-building blocks of the NG-SDN architecture, such as:
+This tutorial is targeted at developers who want to learn about the building
+blocks of the NG-SDN architecture, such as:
 
 * Data plane programming and control via P4 and P4Runtime
-* Configuration via OpenConfig and gNMI
+* Configuration via YANG, OpenConfig, and gNMI
 * Stratum
 * ONOS
 
 The tutorial is organized around a sequence of hands-on exercises that show how
-to build an IPv6-based leaf-spine data center fabric.
+to build an IPv6-based leaf-spine data center fabric using P4, Stratum, and
+ONOS.
 
 ## Slides
 
-TODO
+Tutorial slides are available online:
+<http://bit.ly/ngsdn-tutorial-slides>
 
-Tutorial slides are available [online](ADD SLIDES URL). These slides provide an
-introduction to each exercise. We suggest you look at it before starting to work
-on the exercises.
+These slides provide an introduction to each exercise. We suggest you look at it
+before starting to work on the exercises.
 
-## Tutorial VM
+## System requirements
 
-TODO
+To facilitate access to the tools required to complete this tutorial, we provide
+two options for you to choose from:
 
-To complete the exercises, you will need to download and run this tutorial VM
-(XX GB):
- * ADD LINK TO VM
+1. Download a pre-packaged VM with all included; **OR**
+2. Manually install Docker and other dependencies.
 
-To run the VM you can use any modern x86 virtualization system. The VM has been
-tested with VirtualBox v6.0.6. To download VirtualBox and import the VM use the
+### Option 1 - Download tutorial VM
+
+Use the following link to download the VM (4 GB):
+* <http://bit.ly/ngsdn-tutorial-ova>
+
+The VM is in .ova format and has been created using VirtualBox v5.2.32. To run
+the VM you can use any modern virtualization system, although we recommend using
+VirtualBox. For instructions on how to get VirtualBox and import the VM, use the
 following links:
 
- * https://www.virtualbox.org/wiki/Downloads
- * https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html
+* <https://www.virtualbox.org/wiki/Downloads>
+* <https://docs.oracle.com/cd/E26217_01/E26796/html/qs-import-vm.html>
 
-### Recommended system requirements
+**Recommended VM configuration:**
+The current configuration of the VM is 4 GB of RAM and 4 core CPU. These are the
+recommended minimum system requirements to complete the exercises. When
+imported, the VM takes approx. 8 GB of HDD space. For a smooth experience, we
+recommend running the VM on a host system that has at least the double of
+resources.
 
-The VM is configured with 4 GB of RAM and 4 CPU cores, while the disk has size
-of approx. 8 GB. These are the recommended minimum requirements to be able to
-run Ubuntu along with a Mininet network of 1-10 BMv2 devices controlled by 1
-ONOS instance. For a flawless experience, we recommend running the VM on a host
-system that has at least the double of resources.
+**VM user credentials:**
+Use credentials `sdn`/`rocks` to log in the Ubuntu system.
 
-### Use Docker instead of VM
+### Option 2 - Manually install Docker and other dependencies
 
-TODO Add instructions to skip downloading the VM but use Docker instead.
+All exercises can be executed by installing the following dependencies:
 
-### VM user credentials
+* Docker v1.13.0+ (with docker-compose)
+* make
+* Python 3
+* Bash-like Unix shell
 
-Use the following credentials to log in the Ubuntu system:
+**Note for Windows users**: all scripts have been tested on macOS and Ubuntu.
+Although we think they should work on Windows, we have not tested it. For this
+reason, we advise Windows users to prefer Option 1.
 
- * **Username:** `sdn`
- * **Password:** `rocks`
+## Get this repo or pull latest changes
 
-### Get this tutorial repo
-
-To work on the exercises you will need to clone this repo inside the VM:
+To work on the exercises you will need to clone this repo:
 
     cd ~
     git clone https://github.com/opennetworkinglab/ngsdn-tutorial
 
-If the `tutorial` directory is already present, make sure to update its
+If the `ngsdn-tutorial` directory is already present, make sure to update its
 content:
 
     cd ~/ngsdn-tutorial
     git pull origin master
 
-### Download / upgrade dependencies
+## Download / upgrade dependencies
 
 The VM may have shipped with an older version of the dependencies than we would
-like to use for the exercises. You can upgrade to the latest version used for
-the tutorial using the following command:
+like to use for the exercises. You can upgrade to the latest version using the
+following command:
 
     cd ~/ngsdn-tutorial
     make pull-deps
 
-This command will download all necessary dependencies from the Internet,
-allowing you to work off-line on the exercises. For this reason, we recommend
-running this step ahead of the tutorial with a reliable Internet connection.
-
+This command will download all necessary Docker images (~1.5 GB) allowing you to
+work off-line. For this reason, we recommend running this step ahead of the
+tutorial, with a reliable Internet connection.
 
 ## Using an IDE to work on the exercises
 
 During the exercises you will need to write code in multiple languages such as
-P4, Python and Java. While the exercises do not prescribe the use of any
+P4, Java, and Python. While the exercises do not prescribe the use of any
 specific IDE or code editor, the tutorial VM comes with Java IDE [IntelliJ IDEA
 Community Edition](https://www.jetbrains.com/idea/), already pre-loaded with
 plugins for P4 syntax highlighting and Python development. We suggest using
@@ -94,15 +104,15 @@ completion for all ONOS APIs.
 
 ## Repo structure
 
-FIXME
-
 This repo is structured as follows:
 
  * `p4src/` P4 implementation
- * `app/` ONOS app Java implementation
+ * `yang/` Yang model used in exercise 2
+ * `app/` custom ONOS app Java implementation
  * `mininet/` Mininet script to emulate a 2x2 leaf-spine fabric topology of
    `stratum_bmv2` devices
- * `util/` Utilities (such as p4runtime-sh)
+ * `util/` Utility scripts
+ * `ptf/` P4 data plane unit tests based on Packet Test Framework (PTF)
 
 ## Tutorial commands
 
@@ -114,43 +124,30 @@ the exercises, here's a quick reference:
 |---------------------|------------------------------------------------------- |
 | `make pull-deps`    | Pull all required dependencies                         |
 | `make p4-build`     | Build P4 program                                       |
-| `make p4-test`      | Run the PTF tests                                      |
-| `make app-build`    | Build ONOS app                                         |
-| `make start`        | Start containers (`mininet` and `onos`)                |
-| `make stop`         | Stop and remove all containers                         |
-| `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl+D to exit)|
-| `make onos-ui`      | Open the ONOS Web UI (user `onos` password `rocks`)    |
-| `make mn-cli`       | Access the Mininet CLI (Ctrl+P Ctrl+Q to exit)         |
+| `make p4-test`      | Run PTF tests                                          |
+| `make start`        | Start Mininet and ONOS containers                      |
+| `make stop`         | Stop all containers                                    |
+| `make reset`        | Stop containers and remove any state associated        |
+| `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl-D to exit)|
 | `make onos-log`     | Show the ONOS log                                      |
+| `make mn-cli`       | Access the Mininet CLI (Ctrl-D to exit)                |
 | `make mn-log`       | Show the Mininet log (i.e., the CLI output)            |
-| `make netcfg`       | Push netcfg.json file (network config) to ONOS         |
+| `make app-build`    | Build custom ONOS app                                  |
 | `make app-reload`   | Install and activate the ONOS app                      |
-| `make reset`        | Reset the tutorial environment (to start from scratch) |
-
-### P4Runtime shell
-
-TODO add description
-
-Usage:
-
-```bash
-./util/p4rt-sh --grpc-addr localhost:50001 --config p4src/build/p4info.txt,p4src/build/bmv2.json
-```
+| `make netcfg`       | Push netcfg.json file (network config) to ONOS         |
 
 ## Exercises
 
 Click on the exercise name to see the instructions:
 
  1. [P4 and P4Runtime basics](./EXERCISE-1.md)
- 2. [OpenConfig and gNMI Basic](./EXERCISE-2.md)
- 3. [Running ONOS](./EXERCISE-3.md)
- 4. [Modify ONOS app](./EXERCISE-4.md)
+ 2. [Yang, OpenConfig, and gNMI basics](./EXERCISE-2.md)
+ 3. [Using ONOS as the control plane](./EXERCISE-3.md)
+ 4. [Modify code to enable IPv6 routing](./EXERCISE-4.md)
 
 ## Solutions
 
-TODO do we really need this?
-
 You can find solutions for each exercise in the [solution](solution) directory.
-Feel free to compare your implementation to the reference one whenever you feel
-stuck. To use the solution code that is provided, simply use the same **make**
-commands in the solution directory.
+Feel free to compare your solution to the reference one whenever you feel stuck.
+
+[![Build Status](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial.svg?branch=master)](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial)

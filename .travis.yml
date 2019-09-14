@@ -1,0 +1,15 @@
+dist: xenial
+
+language: python
+
+services:
+  - docker
+
+python:
+  - "3.5"
+
+install:
+  - make pull-deps
+
+script:
+  - make check-solution

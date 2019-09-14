@@ -1,0 +1,75 @@
+// A module is a self-contained tree of nodes
+module demo-port {
+
+    // YANG Boilerplate 
+    yang-version "1";
+    namespace "https://opennetworking.org/yang/demo";
+    prefix "demo-port";
+    description "Demo model for managing ports";
+    revision "2019-09-10" {
+      description "Initial version";
+      reference "1.0.0";
+    }
+
+    // Identities and Typedefs
+    identity SPEED {
+      description "base type for port speeds";
+    }
+
+    identity SPEED_10GB {
+      base SPEED;
+      description "10 Gbps port speed";
+    }
+
+    typedef port-number {
+      type uint16 {
+        range 1..32;
+      }
+      description "New type for port number that ensure the number is between 1 and 32, inclusive";
+    }
+
+
+    // Reusable groupings for port config and state 
+    grouping port-config {
+        description "Set of configurable attributes / leaves";
+        leaf speed {
+            type identityref {
+                base demo-port:SPEED;
+            }
+            description "Configurable speed of a switch port";
+        }
+    }
+
+    grouping port-state {
+        description "Set of read-only state";
+        leaf status {
+            type boolean;
+            description "Number";
+        }
+    }
+
+    // Top-level model definition
+    container ports {
+      description "The root container for port configuration and state";
+        list port {
+            key "port-number";
+            description "List of ports on a switch";
+
+            leaf port-number {
+                type port-number;
+                description "Port number (maps to the front panel port of a switch); also the key for the port list";
+            }
+
+            // each individual will have the elements defined in the grouping
+            container config {
+                description "Configuration data for a port";
+                uses port-config; // reference to grouping above
+            }
+            container state {
+                config false; // makes child nodes read-only
+                description "Read-only state for a port";
+                uses port-state; // reference to grouping above
+            }
+        }
+    }
+}
