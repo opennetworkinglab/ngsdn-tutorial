@@ -25,3 +25,9 @@ This script will:
 3. generate a file named `ngsdn-tutorial.ova`.
 
 Use credentials `sdn`/`rocks` to log in the Ubuntu system.
+
+**Note on IntelliJ IDEA plugins:** plugins need to be installed manually. We
+recommend installing the following ones:
+
+* https://plugins.jetbrains.com/plugin/10620-p4-plugin
+* https://plugins.jetbrains.com/plugin/7322-python-community-edition

@@ -15,16 +15,14 @@ function wait_vm_shutdown {
 # Provision
 vagrant up
 
-VB_UUID=$(cat .vagrant/machines/default/virtualbox/id)
-VBoxManage snapshot "${VB_UUID}" take "pre-cleanup"
-
 # Cleanup
+VB_UUID=$(cat .vagrant/machines/default/virtualbox/id)
 vagrant ssh -c 'bash /vagrant/cleanup.sh'
 sleep 5
 vboxmanage controlvm "${VB_UUID}" acpipowerbutton
 wait_vm_shutdown "${VB_UUID}"
 # Remove vagrant shared folder
-vboxmanage sharedfolder remove ${VB_UUID} -name "vagrant"
+vboxmanage sharedfolder remove "${VB_UUID}" -name "vagrant"
 
 # Export
 rm -f ngsdn-tutorial.ova
