@@ -182,7 +182,7 @@ bash-4.4# proto_generator \
 
 You will find `openconfig.proto` and `enums.proto` in the `/proto/openconfig` directory.
 
-*Extra Credit:* Try to find the Protobuf message fiels used to enable a port or
+*Extra Credit:* Try to find the Protobuf message fields used to enable a port or
 get the ingress packets counter in the protobuf messages.
 
 *Hint:* Searching by schemapath might help.
@@ -300,10 +300,11 @@ configuration port between `leaf1` and `h1a`:
 
 ```
 $ util/gnmi-cli --grpc-addr localhost:50001 get \
-    /interfaces/interface[name=leaf1-eth3]/config/enabled
+    /interfaces/interface[name=leaf1-eth3]/config
 ```
 
-You should see this response:
+You should see this response containing 2 leafs under config - **enabled** and
+**health-indicator**:
 
 ```
 RESPONSE

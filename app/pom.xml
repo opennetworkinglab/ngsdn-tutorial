@@ -41,8 +41,7 @@
         <onos.app.requires>
             org.onosproject.drivers.bmv2,
             org.onosproject.lldpprovider,
-            org.onosproject.hostprovider,
-            org.onosproject.gui
+            org.onosproject.hostprovider
         </onos.app.requires>
     </properties>
 
