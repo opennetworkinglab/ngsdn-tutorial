@@ -133,7 +133,7 @@ P4 program as well as the ONOS app to make it work.
 ### Implementing NDP handling for the switch interface IPv6 addresses
 
 We already provide ways to handle NDP NS and NA exchanged by hosts connected to
-the same subnet (see `l2_ternary_table`). However, for hosts the Linux
+the same subnet (see `l2_ternary_table`). However, for hosts, the Linux
 networking stack takes care of generating a NDP NA reply. For the switches in
 our fabric, there's no Linux networking stack associated to it.
 
@@ -147,13 +147,13 @@ There are multiple solutions to this problem:
   write P4 code that takes care of replying to NDP requests without any
   intervention from the control plane.
 
-We choose to implement the last option to show and interesting use case of P4.
+We choose to implement the last option to show an interesting use case of P4.
 
 The idea is simple, NDP NA packets have the same header structure as NDP NS
 ones. They are both ICMPv6 packets with different header field values, such as
 different ICMPv6 type, different Ethernet addresses etc. A switch that knows the
 MAC address of a given IPv6 target address found in an NDP NS request, can
-transform the same packet to and NDP NA reply by modifying some of its fields.
+transform the same packet to an NDP NA reply by modifying some of its fields.
 
 ## Exercise steps
 
