@@ -208,7 +208,7 @@ the first case, the shell will take care of pushing the given pipeline config to
 the switch using the P4Runtime `SetPipelineConfig` RPC. In the second case, the
 shell will try to retrieve the P4Info that is currently configured in the switch.
 
-In both cases, the shell make use of the P4Info file to:
+In both cases, the shell makes use of the P4Info file to:
 * allow specifying runtime entities such as table entries using P4Info names
   rather then numeric IDs (much easier to remember and read);
 * provide autocompletion;
