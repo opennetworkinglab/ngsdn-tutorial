@@ -182,7 +182,7 @@ two hosts of this subnet.
 
 ### stratum_bmv2 temporary files
 
-When starting the Mininet contsainer, a set of files related to the execution of
+When starting the Mininet container, a set of files related to the execution of
 each `stratum_bmv2` instance are generated in the `tmp` directory located inside
 this tutorial repo (i.e., `ngsdn-tutorial/tmp`). Example of these files are:
 
