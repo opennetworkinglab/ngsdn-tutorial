@@ -326,8 +326,8 @@ running for now.
 ### Insert P4Runtime table entries
 
 To be able to forward ping packets, we need to add two table entries on
-`l2_exact_table` in `leaf1` -- one that matches on destination MAC address the
-one of `h1b` and forwards traffic to port 4 (where `h1b` is attached), and
+`l2_exact_table` in `leaf1` -- one that matches on destination MAC address
+of `h1b` and forwards traffic to port 4 (where `h1b` is attached), and
 viceversa (`h1a` is attached to port 3).
 
 Let's use the P4Runtime shell to create and insert such entries. Let's start by
