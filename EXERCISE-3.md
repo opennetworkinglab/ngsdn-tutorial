@@ -69,7 +69,7 @@ In the following, you will be asked to apply a few simple changes to the
 `PipelineInterpreter` implementation:
 
 1. Open file:
-   `app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java`
+   `app/src/main/java/org.onosproject.ngsdn.tutorial.pipeconf/InterpreterImpl.java`
 
 2. Modify wherever requested (look for `TODO EXERCISE 3`), specifically:
 
