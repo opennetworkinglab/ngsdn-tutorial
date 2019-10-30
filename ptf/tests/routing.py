@@ -17,13 +17,13 @@
 # IPV6 ROUTING TESTS
 #
 # To run all tests:
-#     make routing
+#     make p4-test TEST=routing
 #
 # To run a specific test case:
-#     make routing.<TEST CLASS NAME>
+#     make p4-test TEST=routing.<TEST CLASS NAME>
 #
 # For example:
-#     make routing.IPv6RoutingTest
+#     make p4-test TEST=routing.IPv6RoutingTest
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------

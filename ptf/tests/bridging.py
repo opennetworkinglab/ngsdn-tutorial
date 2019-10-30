@@ -18,14 +18,13 @@
 # BRIDGING TESTS
 #
 # To run all tests in this file:
-#     cd ptf
-#     make bridging
+#     make p4-test TEST=bridging
 #
 # To run a specific test case:
-#     make bridging.<TEST CLASS NAME>
+#     make p4-test TEST=bridging.<TEST CLASS NAME>
 #
 # For example:
-#     make bridging.BridgingTest
+#     make p4-test TEST=bridging.BridgingTest
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------

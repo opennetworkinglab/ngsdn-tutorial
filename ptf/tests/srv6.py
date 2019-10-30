@@ -17,13 +17,13 @@
 # SRV6 TESTS
 #
 # To run all tests:
-#     make srv6
+#     make p4-test TEST=srv6
 #
 # To run a specific test case:
-#     make srv6.<TEST CLASS NAME>
+#     make p4-test TEST=srv6.<TEST CLASS NAME>
 #
 # For example:
-#     make srv6.Srv6InsertTest
+#     make p4-test TEST=srv6.Srv6InsertTest
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------

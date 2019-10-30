@@ -17,14 +17,13 @@
 # CONTROLLER PACKET-IN/OUT TESTS
 #
 # To run all tests in this file:
-#     cd ptf
-#     make packetio
+#     make p4-test TEST=packetio
 #
 # To run a specific test case:
-#     make packetio.<TEST CLASS NAME>
+#     make p4-test TEST=packetio.<TEST CLASS NAME>
 #
 # For example:
-#     make packetio.PacketOutTest
+#     make p4-test TEST=packetio.PacketOutTest
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
