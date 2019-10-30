@@ -53,7 +53,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class PipelinerImpl extends AbstractHandlerBehaviour implements Pipeliner {
 
     // From the P4Info file
-    private static final String ACL_TABLE = "IngressPipeImpl.acl_table";
+    private static final String ACL_TABLE = "IngressPipeImpl.acl";
     private static final String CLONE_TO_CPU = "IngressPipeImpl.clone_to_cpu";
 
     private final Logger log = getLogger(getClass());

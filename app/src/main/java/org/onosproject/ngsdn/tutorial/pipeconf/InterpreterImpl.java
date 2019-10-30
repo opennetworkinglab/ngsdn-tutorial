@@ -75,8 +75,9 @@ public class InterpreterImpl extends AbstractHandlerBehaviour
                     .put(Criterion.Type.ETH_SRC, "hdr.ethernet.src_addr")
                     .put(Criterion.Type.ETH_TYPE, "hdr.ethernet.ether_type")
                     .put(Criterion.Type.IPV6_DST, "hdr.ipv6.dst_addr")
-                    .put(Criterion.Type.IP_PROTO, "hdr.ipv6.next_hdr")
-                    .put(Criterion.Type.ICMPV6_TYPE, "hdr.icmpv6.type")
+                    .put(Criterion.Type.IP_PROTO, "local_metadata.ip_proto")
+                    .put(Criterion.Type.ICMPV4_TYPE, "local_metadata.icmp_type")
+                    .put(Criterion.Type.ICMPV6_TYPE, "local_metadata.icmp_type")
                     .build();
 
     /**
@@ -151,9 +152,9 @@ public class InterpreterImpl extends AbstractHandlerBehaviour
         }
 
         // Create metadata instance for egress port.
-        // *** TODO EXERCISE 3: modify metadata names to match P4 program
+        // *** TODO EXERCISE 4: modify metadata names to match P4 program
         // ---- START SOLUTION ----
-        final String outPortMetadataName = "<ADD HERE METADATA NAME FOR THE EGRESS PORT>";
+        final String outPortMetadataName = "ADD HERE METADATA NAME FOR THE EGRESS PORT";
         // ---- END SOLUTION ----
         final PiPacketMetadata outPortMetadata = PiPacketMetadata.builder()
                 .withId(PiPacketMetadataId.of(outPortMetadataName))
@@ -183,9 +184,9 @@ public class InterpreterImpl extends AbstractHandlerBehaviour
             throws PiInterpreterException {
 
         // Find the ingress_port metadata.
-        // *** TODO EXERCISE 3: modify metadata names to match P4Info
+        // *** TODO EXERCISE 4: modify metadata names to match P4Info
         // ---- START SOLUTION ----
-        final String inportMetadataName = "<ADD HERE METADATA NAME FOR THE INGRESS PORT>";
+        final String inportMetadataName = "ADD HERE METADATA NAME FOR THE INGRESS PORT";
         // ---- END SOLUTION ----
         Optional<PiPacketMetadata> inportMetadata = packetIn.metadatas()
                 .stream()

@@ -32,7 +32,7 @@
         <onos.version>2.2.0</onos.version>
         <onos.app.name>org.onosproject.ngsdn-tutorial</onos.app.name>
         <onos.app.title>NG-SDN Tutorial App</onos.app.title>
-        <onos.app.origin>p4.org</onos.app.origin>
+        <onos.app.origin>http://www.onosproject.org</onos.app.origin>
         <onos.app.category>Traffic Steering</onos.app.category>
         <onos.app.url>http://www.onosproject.org</onos.app.url>
         <onos.app.readme>

@@ -22,18 +22,20 @@ import org.onosproject.net.DeviceId;
 import org.onosproject.net.config.Config;
 
 /**
- * Device configuration object for the fabric tutorial application.
+ * Device configuration object for the IPv6 fabric tutorial application.
  */
 public class FabricDeviceConfig extends Config<DeviceId> {
 
     public static final String CONFIG_KEY = "fabricDeviceConfig";
     private static final String MY_STATION_MAC = "myStationMac";
+    private static final String MY_SID = "mySid";
     private static final String IS_SPINE = "isSpine";
 
     @Override
     public boolean isValid() {
-        return hasOnlyFields(MY_STATION_MAC, IS_SPINE) &&
-                myStationMac() != null;
+        return hasOnlyFields(MY_STATION_MAC, MY_SID, IS_SPINE) &&
+                myStationMac() != null &&
+                mySid() != null;
     }
 
     /**
@@ -44,6 +46,16 @@ public class FabricDeviceConfig extends Config<DeviceId> {
     public MacAddress myStationMac() {
         String mac = get(MY_STATION_MAC, null);
         return mac != null ? MacAddress.valueOf(mac) : null;
+    }
+
+    /**
+     * Gets the SRv6 segment ID (SID) of the switch.
+     *
+     * @return IP address of the router. Or null if not configured.
+     */
+    public Ip6Address mySid() {
+        String ip = get(MY_SID, null);
+        return ip != null ? Ip6Address.valueOf(ip) : null;
     }
 
     /**

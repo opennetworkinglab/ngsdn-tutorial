@@ -60,7 +60,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
  */
 @Component(
         immediate = true,
-        // *** TODO EXERCISE 4
+        // *** TODO EXERCISE 6
         // Enable component (enabled = true)
         enabled = false
 )
@@ -151,7 +151,7 @@ public class NdpReplyComponent {
                 deviceId, FabricDeviceConfig.class);
         if (config == null) {
             // Config not available yet
-            throw new ItemNotFoundException("Missing FabricDeviceConfig for " + deviceId);
+            throw new ItemNotFoundException("Missing fabricDeviceConfig for " + deviceId);
         }
 
         // Get this device myStation mac.
@@ -165,13 +165,13 @@ public class NdpReplyComponent {
 
         if (interfaces.isEmpty()) {
             log.info("{} does not have any IPv6 interface configured",
-                    deviceId);
+                     deviceId);
             return;
         }
 
         // Generate and install flow rules.
         log.info("Adding rules to {} to generate NDP NA for {} IPv6 interfaces...",
-                deviceId, interfaces.size());
+                 deviceId, interfaces.size());
         final Collection<FlowRule> flowRules = interfaces.stream()
                 .map(this::getIp6Addresses)
                 .flatMap(Collection::stream)
@@ -194,7 +194,7 @@ public class NdpReplyComponent {
                                            Ip6Address targetIpv6Address,
                                            MacAddress targetMac) {
 
-        // ** TODO EXERCISE 4
+        // *** TODO EXERCISE 6
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
