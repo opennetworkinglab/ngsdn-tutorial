@@ -1,9 +1,9 @@
-# Exercise 1 - P4 and P4Runtime basics
+# Exercise 1 - P4Runtime basics
 
-This exercise provides a hands-on introduction to the P4 language and
-the P4Runtime API. You will be asked to:
+This exercise provides a hands-on introduction to the P4Runtime API. You will be
+asked to:
 
-1. Read and understand the implementation of a simple P4 program
+1. Take a look at the starter P4 code
 2. Compile it for the BMv2 software switch and understand the output (the P4Info 
    and BMv2 JSON files)
 3. Start Mininet with a 2x2 topology of `stratum_bmv2` switches
@@ -12,15 +12,20 @@ the P4Runtime API. You will be asked to:
 
 ## 1. Look at the P4 program
 
-To start, let's have a look a the P4 program: [p4src/main.p4](p4src/main.p4)
+To get start, let's have a look a the P4 program: [p4src/main.p4](p4src/main.p4)
 
-This program implements a simplified IPv6 router. Even if this is the first time
-you have ever seen P4 code, the program has been commented to provide an understanding of
-the pipeline behavior to anyone with basic programming and networking
-background.
+In the rest of the exercises, you will be asked to build a leaf-spine data
+center fabric based on IPv6. To make things easier, we provide a starter P4
+program which contains:
 
-We suggest you start by taking a quick look at the whole program to understand
-its structure. When you're done, try answering the following questions, while
+* Header definitions
+* Parser implementation
+* Ingress and egress pipeline implementation (incomplete)
+* Checksum verification/update
+
+The implementation provides already logic for L2 bridging and ACL behaviors. We
+suggest you start by taking a quick look at the whole program to understand its
+structure. When you're done, try answering the following questions, while
 referring to the P4 program to understand the different parts in more details.
 
 **Parser**
@@ -31,23 +36,15 @@ referring to the P4 program to understand the different parts in more details.
 
 **Ingress pipeline**
 
-* How many match+action tables are defined in this pipeline?
 * For the L2 bridging case, which table is used to replicated NDP requests to
   all host-facing ports? What type of match is used in that table?
 * In the ACL table, what's the difference between `send_to_cpu` and
   `clone_to_cpu` actions?
 * In the apply block, what is the first table applied to a packet? Are P4Runtime
   packet-out treated differently?
-* Look at the `routing_v6_table` and its only action. When a packet is matched
-  by this table, where is the egress port set? Hint: look at the apply block;
-  which table comes after the routing one?
-* In which P4 action is the IPv6 Hop Limit/Time To Live (TTL) decremented? 
 
 **Egress pipeline**
 
-* What is the main difference between the ingress and egress pipeline?
-* For a given packet that goes through the ingress pipeline, when will the
-  egress pipeline see more than one packet?
 * For multicast packets, can they be replicated to the ingress port?
 
 **Deparser**
@@ -57,8 +54,8 @@ referring to the P4 program to understand the different parts in more details.
 ## 2. Compile P4 program
 
 The next step is to compile the P4 program for the BMv2 `simple_switch` target.
-For this, we will use the open source P4_16 compiler ([p4c][p4c]) which includes a
-backend for this specific target, named `p4c-bm2-ss`.
+For this, we will use the open source P4_16 compiler ([p4c][p4c]) which includes
+a backend for this specific target, named `p4c-bm2-ss`.
 
 To compile the program, open a terminal window on the tutorial repo and type the
 following command:
@@ -119,9 +116,9 @@ Take a look at this file and try to answer the following questions:
    `port_num`?
 4. At the end of the file, look for the definition of the
    `controller_packet_metadata` message with name `packet_out` at the end of the
-   file. Now look at the definition of `header packet_out_t` in the P4 program.
-   Do you see any relationship between the two? What is the numeric ID of the
-   metadata associated to the `egress_port` field?
+   file. Now look at the definition of `header cpu_out_header_t` in the P4
+   program. Do you see any relationship between the two? What is the numeric ID
+   of the metadata associated to the `egress_port` field?
 
 ## 3. Start Mininet topology
 
@@ -169,15 +166,17 @@ mininet    | *** Starting CLI:
 
 You can ignore the "*** Error setting resource limits...".
 
-The parameters to start the mininet container are specified in [docker-compose.yml](docker-compose.yml). The container is configured to execute the
-topology script defined in [mininet/topo.py](mininet/topo.py).
+The parameters to start the mininet container are specified in
+[docker-compose.yml](docker-compose.yml). The container is configured to execute
+the topology script defined in [mininet/topo.py](mininet/topo.py).
 
 The topology includes 4 switches, arranged in a 2x2 fabric topology, as well as
 6 hosts attached to leaf switches. 3 hosts `h1a`, `h1b`, and `h1c`, are
 configured to be part of the same IPv6 subnet. In the next step you will be
-asked to use P4Runtime to insert L2 bridging entries to be able to ping between
+asked to use P4Runtime to insert table entries to be able to ping between
 two hosts of this subnet.
 
+TODO: update topo picture
 <img alt="Topology diagram" src="img/topo.png" width="100%">
 
 ### stratum_bmv2 temporary files
@@ -328,25 +327,38 @@ running for now.
 To be able to forward ping packets, we need to add two table entries on
 `l2_exact_table` in `leaf1` -- one that matches on destination MAC address
 of `h1b` and forwards traffic to port 4 (where `h1b` is attached), and
-viceversa (`h1a` is attached to port 3).
+vice versa (`h1a` is attached to port 3).
 
-Let's use the P4Runtime shell to create and insert such entries. Let's start by
-creating a `te` object that will hold our table entry data.
+Let's use the P4Runtime shell to create and insert such entries. Looking at the
+P4Info file, use the commands below to insert the following two entries in the
+`l2_exact_table`:
 
-```
-P4Runtime sh >>> te = table_entry["IngressPipeImpl.l2_exact_table"](action = "IngressPipeImpl.set_egress_port")
-```
+| Match (Ethernet dest) | Egress port number  |
+|-----------------------|-------------------- |
+| `00:00:00:00:00:1B`   | 4                   |
+| `00:00:00:00:00:1A`   | 3                   |
 
-For this entry, we will match on `hdr.ethernet.dst_addr` with value `00:00:00:00:00:1B`:
-
-```
-P4Runtime sh >>> te.match["hdr.ethernet.dst_addr"] = ("00:00:00:00:00:1B")
-```
-
-Next, we will set the `port_num` parameter of the `set_egress_port` action to `4`:
+To create a table entry object:
 
 ```
-P4Runtime sh >>> te.action['port_num'] = ("4")
+P4Runtime sh >>> te = table_entry["P4INFO-TABLE-NAME"](action = "<P4INFO-ACTION-NAME>")
+```
+
+To specify a match field:
+
+```
+P4Runtime sh >>> te.match["P4INFO-MATCH-FIELD-NAME"] = ("VALUE")
+```
+
+`VALUE` can be a MAC address expressed in Colon-Hexadecimal notation
+(e.g., `00:11:22:AA:BB:CC`), or IP address in dot notation, or an arbitrary
+string. Based on the information contained in the P4Info, P4Runtime shell will
+internally convert that value to a Protobuf byte string.
+
+The specify the values for the table entry action parameters:
+
+```
+P4Runtime sh >>> te.action["P4INFO-ACTION-PARAM-NAME"] = ("VALUE")
 ```
 
 You can show the table entry object in Protobuf Text format, using the `print`
@@ -359,25 +371,15 @@ P4Runtime sh >>> print(te)
 The shell internally takes care of populating the fields of the corresponding
 Protobuf message by using the content of the P4Info file.
 
-Finally, we can insert the entry:
+To insert the entry (this will issue a P4Runtime Write RPC to the switch):
 
 ```
 P4Runtime sh >>> te.insert()
 ```
 
-At this point, traffic will be forwarded from `h1a` to `h1b`, but no traffic
-will flow in the reverse direction. Next, we will install the flow table entry
-from `h1b` to `h1a`:
-
-```
-P4Runtime sh >>> te = table_entry["IngressPipeImpl.l2_exact_table"](action = "IngressPipeImpl.set_egress_port")
-P4Runtime sh >>> te.match["hdr.ethernet.dst_addr"] = ("00:00:00:00:00:1A")
-P4Runtime sh >>> te.action['port_num'] = ("3")
-P4Runtime sh >>> te.insert()
-```
-
-At this point, ping should work. Go pack to the Mininet CLI terminal with the
-ping command running and verify that you see an output similar to this:
+After inserting the two entries, ping should work. Go pack to the Mininet CLI
+terminal with the ping command running and verify that you see an output similar
+to this:
 
 ```
 mininet> h1a ping h1b
