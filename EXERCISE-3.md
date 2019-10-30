@@ -114,12 +114,12 @@ restart` to restart both Mininet and ONOS.
 Inside the [app/](./app) directory you will find a starter implementation of an
 ONOS app that includes a pipeconf. The pipeconf-related files are the following:
 
-* [PipeconfLoader.java](./app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/PipeconfLoader.java):
-  A component that registers the pipeconf at app activation;
-* [InterpreterImpl.java](./app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java):
-  An implementation of the `PipelineInterpreter` driver behavior;
-* [PipelinerImpl.java](./app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/PipelinerImpl.java):
-  An implementation of the `Pipeliner` driver behavior;
+* [PipeconfLoader.java][PipeconfLoader.java]: A component that registers the
+  pipeconf at app activation;
+* [InterpreterImpl.java][InterpreterImpl.java]: An implementation of the
+  `PipelineInterpreter` driver behavior;
+* [PipelinerImpl.java][PipelinerImpl.java]: An implementation of the `Pipeliner`
+  driver behavior;
 
 To build the ONOS app (including the pipeconf), In the second terminal window,
 use the command:

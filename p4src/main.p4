@@ -497,13 +497,12 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
     apply {
 
         if (hdr.cpu_out.isValid()) {
-            // This is a packet-out from the controller. Set the egress port to
-            // that found in the cpu_out header.
-            standard_metadata.egress_spec = hdr.cpu_out.egress_port;
-            // Remove the cpu_out header.
-            hdr.cpu_out.setInvalid();
-            // Exit the pipeline here, no need to go through other tables.
-            exit;
+            // *** TODO EXERCISE 4
+            // Implement logic such that if this is a packet-out from the
+            // controller:
+            // 1. Set the packet egress port to that found in the cpu_out header
+            // 2. Remove (set invalid) the cpu_out header
+            // 3. Exit the pipeline here (no need to go through other tables)
         }
 
         bool do_l3_l2 = true;
@@ -530,12 +529,10 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
             // somewhere between checking the switch's my station table and
             // applying the routing table.
 
-            // L2 bridging logic.
-            // Apply the exact table first (for unicast entries)...
+            // L2 bridging logic. Apply the exact table first...
             if (!l2_exact_table.apply().hit) {
                 // ...if an entry is NOT found, apply the ternary one in case
-                // this is a multicast/broadcast NDP NS packet for another host
-                // attached to this switch.
+                // this is a multicast/broadcast NDP NS packet.
                 l2_ternary_table.apply();
             }
         }
