@@ -192,7 +192,7 @@ public class Ipv6RoutingComponent {
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
-        final String tableId = "IngressPipeImpl.my_station";
+        final String tableId = "IngressPipeImpl.my_station_table";
 
         final PiCriterion match = PiCriterion.builder()
                 .matchExact(
