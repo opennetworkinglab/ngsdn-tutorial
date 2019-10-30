@@ -344,6 +344,9 @@ To create a table entry object:
 P4Runtime sh >>> te = table_entry["P4INFO-TABLE-NAME"](action = "<P4INFO-ACTION-NAME>")
 ```
 
+Make sure to use the fully qualified name for each entity, e.g.
+`IngressPipeImpl.l2_exact_table`, `IngressPipeImpl.set_egress_port`, etc.
+
 To specify a match field:
 
 ```
@@ -375,6 +378,14 @@ To insert the entry (this will issue a P4Runtime Write RPC to the switch):
 
 ```
 P4Runtime sh >>> te.insert()
+```
+
+To read table entries from the switch (this will issue a P4Runtime Read RPC):
+
+```
+P4Runtime sh >>> for te in table_entry["P4INFO-TABLE-NAME"].read():
+            ...:     print(te)
+            ...:
 ```
 
 After inserting the two entries, ping should work. Go pack to the Mininet CLI
