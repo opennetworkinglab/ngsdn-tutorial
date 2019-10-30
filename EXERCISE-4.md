@@ -1,4 +1,4 @@
-# Exercise4: Enabling link discovery via P4Runtime packet I/O
+# Exercise 4: Enabling link discovery via P4Runtime packet I/O
 
 In this exercise, you will be asked to integrate the ONOS built-in link discovery
 service with your P4 program. ONOS performs link discovery by using controller

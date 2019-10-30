@@ -176,7 +176,6 @@ configured to be part of the same IPv6 subnet. In the next step you will be
 asked to use P4Runtime to insert table entries to be able to ping between
 two hosts of this subnet.
 
-TODO: update topo picture
 <img alt="Topology diagram" src="img/topo.png" width="100%">
 
 ### stratum_bmv2 temporary files
