@@ -89,7 +89,7 @@ like to use for the exercises. You can upgrade to the latest version using the
 following command:
 
     cd ~/ngsdn-tutorial
-    make pull-deps
+    make deps
 
 This command will download all necessary Docker images (~1.5 GB) allowing you to
 work off-line. For this reason, we recommend running this step ahead of the
@@ -125,7 +125,7 @@ the exercises, here's a quick reference:
 
 | Make command        | Description                                            |
 |---------------------|------------------------------------------------------- |
-| `make pull-deps`    | Pull all required dependencies                         |
+| `make deps`         | Pull and build all required dependencies               |
 | `make p4-build`     | Build P4 program                                       |
 | `make p4-test`      | Run PTF tests                                          |
 | `make start`        | Start Mininet and ONOS containers                      |

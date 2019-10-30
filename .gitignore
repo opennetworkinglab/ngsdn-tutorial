@@ -4,7 +4,8 @@ p4src/build
 app/target
 app/src/main/resources/p4info.txt
 app/src/main/resources/bmv2.json
-ptf/bmv2.log
+ptf/stratum_bmv2.log
+ptf/p4rt_write.log
 ptf/ptf.log
 ptf/ptf.pcap
 **/*.iml

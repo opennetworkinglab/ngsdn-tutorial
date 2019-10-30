@@ -9,7 +9,7 @@ python:
   - "3.5"
 
 install:
-  - make pull-deps
+  - make deps
 
 script:
   - make check-solution

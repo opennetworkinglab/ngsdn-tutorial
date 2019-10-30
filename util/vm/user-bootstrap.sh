@@ -13,4 +13,4 @@ sudo chown -hR sdn:sdn ~/.cache
 
 git clone https://github.com/opennetworkinglab/ngsdn-tutorial.git
 cd ngsdn-tutorial
-make pull-deps
+make deps

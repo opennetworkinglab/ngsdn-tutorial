@@ -2,6 +2,8 @@
 
 set -xe
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 CPU_PORT=255
 GRPC_PORT=28000
 
@@ -35,22 +37,14 @@ for idx in 0 1 2 3 4 5 6 7; do
     fi
 done
 
-# Interface argumnents for stratum_bmv2
-INTFS=
-for idx in 0 1 2 3 4 5 6 7; do
-    p4Port=$(( ${idx} ))
-    vethIdx=$(( 2*${idx} + 1 ))
-    INTFS="${INTFS} -i${p4Port}@veth${vethIdx}"
-done
-
 # shellcheck disable=SC2086
-simple_switch_grpc \
-    --device-id 1 \
-    ${INTFS} \
-    --log-console \
-    -Ltrace \
-    --no-p4 \
-    -- \
-    --cpu-port ${CPU_PORT} \
-    --grpc-server-addr 0.0.0.0:${GRPC_PORT} \
-    > bmv2.log 2>&1
+stratum_bmv2 \
+    --external_stratum_urls=0.0.0.0:${GRPC_PORT} \
+    --persistent_config_dir=/tmp \
+    --forwarding_pipeline_configs_file=/dev/null \
+    --chassis_config_file="${DIR}"/chassis_config.pb.txt \
+    --write_req_log_file=p4rt_write.log \
+    --initial_pipeline=/root/dummy.json \
+    --bmv2_log_level=trace \
+    --cpu_port 255 \
+    > stratum_bmv2.log 2>&1

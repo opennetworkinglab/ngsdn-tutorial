@@ -28,6 +28,17 @@
 #     make bridging.BridgingTest
 # ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Modify everywhere you see TODO
+#
+# When providing your solution, make sure to use the same names for P4Runtime
+# entities as specified in your P4Info file.
+#
+# Test cases are based on the P4 program design suggested in the exercises
+# README. Make sure to modify the test cases accordingly if you decide to
+# implement the pipeline differently.
+# ------------------------------------------------------------------------------
+
 from ptf.testutils import group
 
 from base_test import *
@@ -39,7 +50,8 @@ CPU_CLONE_SESSION_ID = 99
 @group("bridging")
 class ArpNdpRequestWithCloneTest(P4RuntimeTest):
     """Tests ability to broadcast ARP requests and NDP Neighbor Solicitation
-    (NS) messages as well as cloning to CPU (controller) for host discovery.
+    (NS) messages as well as cloning to CPU (controller) for host
+     discovery.
     """
 
     def runTest(self):
@@ -64,6 +76,10 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
             ports=mcast_ports)
 
         # Match eth dst: FF:FF:FF:FF:FF:FF (MAC broadcast for ARP requests)
+        # ** TODO EXERCISE 5
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.l2_ternary_table",
             match_fields={
@@ -78,8 +94,13 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
             },
             priority=DEFAULT_PRIORITY
         ))
+        # ---- END SOLUTION ----
 
         # Match eth dst: 33:33:**:**:**:** (IPv6 multicast for NDP requests)
+        # ** TODO EXERCISE 5
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.l2_ternary_table",
             match_fields={
@@ -94,6 +115,7 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
             },
             priority=DEFAULT_PRIORITY
         ))
+        # ---- END SOLUTION ----
 
         # Insert CPU clone session.
         self.insert_pre_clone_session(
@@ -117,8 +139,8 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
             match_fields={
                 # Ternary match.
                 "hdr.ethernet.ether_type": (IPV6_ETH_TYPE, 0xffff),
-                "hdr.ipv6.next_hdr": (ICMPV6_IP_PROTO, 0xff),
-                "hdr.icmpv6.type": (NS_ICMPV6_TYPE, 0xff)
+                "local_metadata.ip_proto": (ICMPV6_IP_PROTO, 0xff),
+                "local_metadata.icmp_type": (NS_ICMPV6_TYPE, 0xff)
             },
             action_name="IngressPipeImpl.clone_to_cpu",
             priority=DEFAULT_PRIORITY
@@ -170,6 +192,10 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
     def testPacket(self, pkt):
 
         # L2 unicast entry, match on pkt's eth dst address.
+        # ** TODO EXERCISE 5
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.l2_exact_table",
             match_fields={
@@ -181,6 +207,7 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
                 "port_num": self.port2
             }
         ))
+        # ---- END SOLUTION ----
 
         # CPU clone session.
         self.insert_pre_clone_session(
@@ -204,8 +231,8 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
             match_fields={
                 # Ternary match.
                 "hdr.ethernet.ether_type": (IPV6_ETH_TYPE, 0xffff),
-                "hdr.ipv6.next_hdr": (ICMPV6_IP_PROTO, 0xff),
-                "hdr.icmpv6.type": (NA_ICMPV6_TYPE, 0xff)
+                "local_metadata.ip_proto": (ICMPV6_IP_PROTO, 0xff),
+                "local_metadata.icmp_type": (NA_ICMPV6_TYPE, 0xff)
             },
             action_name="IngressPipeImpl.clone_to_cpu",
             priority=DEFAULT_PRIORITY
@@ -242,6 +269,10 @@ class BridgingTest(P4RuntimeTest):
     def testPacket(self, pkt):
 
         # Insert L2 unicast entry, match on pkt's eth dst address.
+        # ** TODO EXERCISE 5
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.l2_exact_table",
             match_fields={
@@ -253,11 +284,16 @@ class BridgingTest(P4RuntimeTest):
                 "port_num": self.port2
             }
         ))
+        # ---- END SOLUTION ----
 
         # Test bidirectional forwarding by swapping MAC addresses on the pkt
         pkt2 = pkt_mac_swap(pkt.copy())
 
         # Insert L2 unicast entry for pkt2.
+        # ** TODO EXERCISE 5
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.l2_exact_table",
             match_fields={
@@ -269,6 +305,7 @@ class BridgingTest(P4RuntimeTest):
                 "port_num": self.port1
             }
         ))
+        # ---- END SOLUTION ----
 
         # Send and verify.
         testutils.send_packet(self, self.port1, str(pkt))

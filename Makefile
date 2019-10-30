@@ -3,7 +3,7 @@ P4RT_SH_IMG := p4lang/p4runtime-sh:latest
 P4C_IMG := opennetworking/p4c:stable
 MN_STRATUM_IMG := opennetworking/mn-stratum:latest
 MAVEN_IMG := maven:3.6.1-jdk-11-slim
-PTF_IMG := onosproject/fabric-p4test
+PTF_IMG := ngsdn-tutorial-ptf
 GNMI_CLI_IMG := bocon/gnmi-cli:latest
 YANG_IMG := bocon/yang-tools:latest
 
@@ -12,7 +12,6 @@ P4RT_SH_SHA := sha256:6ae50afb5bde620acb9473ce6cd7b990ff6cc63fe4113cf5584c8e38fe
 P4C_SHA := sha256:8f9d27a6edf446c3801db621359fec5de993ebdebc6844d8b1292e369be5dfea
 MN_STRATUM_SHA := sha256:ae7c59885509ece8062e196e6a8fb6aa06386ba25df646ed27c765d92d131692
 MAVEN_SHA := sha256:ca67b12d638fe1b8492fa4633200b83b118f2db915c1f75baf3b0d2ef32d7263
-PTF_SHA := sha256:227207ff9d15f5e45c44c7904e815efdb3cea0b4e5644ac0878d41dd54aca78d
 GNMI_CLI_SHA := sha256:6f1590c35e71c07406539d0e1e288e87e1e520ef58de25293441c3b9c81dffc0
 YANG_SHA := sha256:feb2dc322af113fc52f17b5735454abfbe017972c867e522ba53ea44e8386fd2
 
@@ -39,16 +38,17 @@ _docker_pull_all:
 	docker tag ${MN_STRATUM_IMG}@${MN_STRATUM_SHA} ${MN_STRATUM_IMG}
 	docker pull ${MAVEN_IMG}@${MAVEN_SHA}
 	docker tag ${MAVEN_IMG}@${MAVEN_SHA} ${MAVEN_IMG}
-	docker pull ${PTF_IMG}@${PTF_SHA}
-	docker tag ${PTF_IMG}@${PTF_SHA} ${PTF_IMG}
 	docker pull ${GNMI_CLI_IMG}@${GNMI_CLI_SHA}
 	docker tag ${GNMI_CLI_IMG}@${GNMI_CLI_SHA} ${GNMI_CLI_IMG}
 	docker pull ${YANG_IMG}@${YANG_SHA}
 	docker tag ${YANG_IMG}@${YANG_SHA} ${YANG_IMG}
 
-# Pull all Docker images and build app to seed mvn repo inside container, i.e.
+_docker_build:
+	cd util/docker/ptf && docker build -t ${PTF_IMG} .
+
+# Pull/build Docker images and build app to seed mvn repo inside container, i.e.
 # download deps
-pull-deps: _docker_pull_all _create_mvn_container _mvn_package
+deps: _docker_pull_all _docker_build _create_mvn_container _mvn_package
 
 start:
 	@mkdir -p tmp/onos

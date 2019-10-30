@@ -222,7 +222,7 @@ If all tests succeed, congratulations! You can move to the next step. Otherwise.
 When running PTF tests, multiple files are produced that you can use to spot
 bugs:
 
-* `ptf/bmv2.log`: BMv2 log with trace level (showing tables matched and other
+* `ptf/stratum_bmv2.log`: BMv2 log with trace level (showing tables matched and other
   info for each packet)
 * `ptf/ptf.pcap`: PCAP file with all packets sent and received during tests
   (you might need to install Wireshark for easier visualization)

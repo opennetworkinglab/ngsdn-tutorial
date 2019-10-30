@@ -26,6 +26,17 @@
 #     make routing.IPv6RoutingTest
 # ------------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# Modify everywhere you see TODO
+#
+# When providing your solution, make sure to use the same names for P4Runtime
+# entities as specified in your P4Info file.
+#
+# Test cases are based on the P4 program design suggested in the exercises
+# README. Make sure to modify the test cases accordingly if you decide to
+# implement the pipeline differently.
+# ------------------------------------------------------------------------------
+
 from ptf.testutils import group
 
 from base_test import *
@@ -48,6 +59,10 @@ class IPv6RoutingTest(P4RuntimeTest):
 
         # Add entry to "My Station" table. Consider the given pkt's eth dst addr
         # as myStationMac address.
+        # *** TODO EXERCISE 6
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.my_station_table",
             match_fields={
@@ -56,8 +71,13 @@ class IPv6RoutingTest(P4RuntimeTest):
             },
             action_name="NoAction"
         ))
+        # ---- END SOLUTION ----
 
         # Insert ECMP group with only one member (next_hop_mac)
+        # *** TODO EXERCISE 6
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_act_prof_group(
             act_prof_name="IngressPipeImpl.ecmp_selector",
             group_id=1,
@@ -66,8 +86,13 @@ class IPv6RoutingTest(P4RuntimeTest):
                 ("IngressPipeImpl.set_next_hop", {"dmac": next_hop_mac}),
             ]
         ))
+        # ---- END SOLUTION ----
 
         # Insert L3 entry to app pkt's IPv6 dst addr to group
+        # *** TODO EXERCISE 6
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.routing_v6_table",
             match_fields={
@@ -76,8 +101,13 @@ class IPv6RoutingTest(P4RuntimeTest):
             },
             group_id=1
         ))
+        # ---- END SOLUTION ----
 
         # Insert L3 entry to map next_hop_mac to output port 2.
+        # *** TODO EXERCISE 6
+        # Modify names to match content of P4Info file (look for the fully
+        # qualified name of tables, match fields, and actions.
+        # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
             table_name="IngressPipeImpl.l2_exact_table",
             match_fields={
@@ -89,6 +119,7 @@ class IPv6RoutingTest(P4RuntimeTest):
                 "port_num": self.port2
             }
         ))
+        # ---- END SOLUTION ----
 
         # Expected pkt should have routed MAC addresses and decremented hop
         # limit (TTL).
@@ -98,3 +129,43 @@ class IPv6RoutingTest(P4RuntimeTest):
 
         testutils.send_packet(self, self.port1, str(pkt))
         testutils.verify_packet(self, exp_pkt, self.port2)
+
+
+@group("routing")
+class NdpReplyGenTest(P4RuntimeTest):
+    """Tests automatic generation of NDP Neighbor Advertisement for IPV6
+    addresses associated to the switch interface.
+    """
+
+    @autocleanup
+    def runTest(self):
+        switch_ip = SWITCH1_IPV6
+        target_mac = SWITCH1_MAC
+
+        # Insert entry to transform NDP NA packets for the given target address
+        # (match), to NDP NA packets with the given target MAC address (action)
+        self.insert(self.helper.build_table_entry(
+            table_name="IngressPipeImpl.ndp_reply_table",
+            match_fields={
+                # Exact match.
+                "hdr.ndp.target_ipv6_addr": switch_ip
+            },
+            action_name="IngressPipeImpl.ndp_ns_to_na",
+            action_params={
+                "target_mac": target_mac
+            }
+        ))
+
+        # NDP Neighbor Solicitation packet
+        pkt = genNdpNsPkt(target_ip=switch_ip)
+
+        # NDP Neighbor Advertisement packet
+        exp_pkt = genNdpNaPkt(target_ip=switch_ip,
+                              target_mac=target_mac,
+                              src_mac=target_mac,
+                              src_ip=switch_ip,
+                              dst_ip=pkt[IPv6].src)
+
+        # Send NDP NS, expect NDP NA from the same port.
+        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.verify_packet(self, exp_pkt, self.port1)

@@ -303,9 +303,9 @@ class P4RuntimeTest(BaseTest):
         for device, port, ifname in config["interfaces"]:
             self._swports.append(port)
 
-        self.port1 = self.swports(1)
-        self.port2 = self.swports(2)
-        self.port3 = self.swports(3)
+        self.port1 = self.swports(0)
+        self.port2 = self.swports(1)
+        self.port3 = self.swports(2)
 
         grpc_addr = testutils.test_param_get("grpcaddr")
         if grpc_addr is None:
