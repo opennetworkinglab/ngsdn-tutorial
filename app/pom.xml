@@ -38,11 +38,6 @@
         <onos.app.readme>
             Provides IPv6 routing capabilities to a leaf-spine network of P4 switches
         </onos.app.readme>
-        <onos.app.requires>
-            org.onosproject.drivers.bmv2,
-            org.onosproject.lldpprovider,
-            org.onosproject.hostprovider
-        </onos.app.requires>
     </properties>
 
     <dependencies>

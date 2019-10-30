@@ -8,96 +8,15 @@ to:
 2. Load a custom ONOS app and pipeconf
 3. Push a configuration file to ONOS to discover and control the
    `stratum_bmv2` switches using P4Runtime and gNMI
-4. Verify that ONOS is able to automatically discover all links by using
-   P4Runtime packet-in/out
-
-To accomplish this you will be asked to apply a simple change to the the
-pipeconf Java implementation to enable ONOS's built-in apps perform topology
-discovery via packet-in/out.
-
-## Controller packet I/O with P4Runtime
-
-The P4 program under [p4src/main.p4](p4src/main.p4) provides support for
-carrying arbitrary metadata in P4Runtime `PacketIn` and `PacketOut` messages.
-Two special headers are defined and annotated with the standard P4 annotation
-`@controller_header`:
-
-```
-@controller_header("packet_in")
-header packet_in_header_t {
-    port_num_t ingress_port;
-    bit<7> _pad;
-}
-
-@controller_header("packet_out")
-header packet_out_header_t {
-    port_num_t egress_port;
-    bit<7> _pad;
-}
-```
-
-These headers are used to carry the original switch ingress port of a packet-in,
-and specify the intended output port for a packet-out.
-
-When the P4Runtime agent in Stratum receives a packet from the switch CPU port,
-it expects to find the `packet_in_header_t` header as the first one in the
-frame. Indeed, it looks at the `controller_packet_metadata` part of the P4Info
-file to determine the number of bits to strip at the beginning of the frame and
-to populate the corresponding metdata field of the `PacketIn` message, including
-the ingress port as in this case.
-
-Similarly, when Stratum receives a P4Runtime `PacketOut` message, it uses the
-values found in the `PacketOut`'s metadata fields to serialize and prepend a
-`packet_out_header_t` to the frame before feeding it to the pipeline parser.
-
-## Exercise steps
-
-### 1. Modify ONOS pipeline interpreter
-
-The P4 starter code already provides support for packet-in/out, including an ACL
-table actions to clone packets to the CPU port (used to generate packet-ins).
-
-The `PipelineInterpreter` is the ONOS driver behavior used, among other things,
-to map the ONOS representation of packet-in/out to one that is consistent with
-a given P4 program.
-
-Specifically, to use services like LLDP-based link discovery, ONOS built-in
-apps need to be able to set the output port of a packet-out and access the
-original ingress port of a packet-in.
-
-In the following, you will be asked to apply a few simple changes to the
-`PipelineInterpreter` implementation:
-
-1. Open file:
-   `app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java`
-
-2. Modify wherever requested (look for `TODO EXERCISE 3`), specifically:
-
-    * Look for a method named `buildPacketOut`, modify the implementation to use
-      the same name of the **egress port** metadata field for the `packet_out`
-      header as specified in the P4Info file.
-    * Look for method `mapInboundPacket`, modify the implementation to use the
-      same name of the **ingress port** metadata field for the `packet_in`
-      header as specified in the P4Info file.
-
-3. Build ONOS app (including the pipeconf) with the command:
-
-    ```
-    make app-build
-    ```
-
-The last command will trigger a build of the P4 program if necessary. The P4
-compiler outputs (`bmv2.json` and `p4info.txt`) are copied in the app
-resource folder (`app/src/main/resources`) and will be included in the ONOS app
-binary. The copy that gets included in the ONOS app will be the one that gets
-deployed by ONOS to the switches after the P4Runtime connection is initiated.
+4. Access the ONOS CLI and UI to verify that all `stratum_bmv2` switches have
+   been discovered and configured correctly.
 
 ### 2. Start ONOS
 
 In a terminal window, type:
 
 ```
-$ make reset start
+$ make restart
 ```
 
 This command will restart the ONOS and Mininet containers, in case those were
@@ -118,8 +37,8 @@ Requesting ONOS to pre-load the following built-in apps:
 
 * `gui`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
 * `drivers.bmv2`: BMv2/Stratum drivers based on P4Runtime, gNMI, and gNOI
-* `lldpprovider`: LLDP-based link discovery application
-* `hostprovider`: Host discovery application
+* `lldpprovider`: LLDP-based link discovery application (used in Exercise 4)
+* `hostprovider`: Host discovery application (used in Exercise 5)
 
 
 Once ONOS has started, you can check its log using the `make onos-log` command.
@@ -171,24 +90,52 @@ This is definitely more apps than what defined in `$ONOS_APPS`. That's
 because each app in ONOS can define other apps as dependencies. When loading an
 app, ONOS automatically resolve dependencies and loads all other required apps.
 
+**Disable link discovery service**
+
+Link discovery will be the focus of the next exercise. For now, this service
+lacks support in the P4 program. We suggest you deactivate it for the rest of
+this exercise, to avoid running into issues. To deactivate the link discovery
+service, using the following ONOS CLI command:
+
+```
+onos> app deactivate lldpprovider
+```
+
 To quit out of the ONOS CLI, use `Ctrl-D`. This will just end the CLI process
 and will not stop the ONOS process.
 
 **Restart ONOS in case of errors**
 
 If anything goes wrong and you need to kill ONOS, you can use command `make
-reset start` to restart both Mininet and ONOS.
+restart` to restart both Mininet and ONOS.
 
-### 3. Load app and register pipeconf
+### 3. Build app and register pipeconf
 
-In the second terminal window, type:
+Inside the [app/](./app) directory you will find a starter implementation of an
+ONOS app that includes a pipeconf. The pipeconf-related files are the following:
+
+* [PipeconfLoader.java](./app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/PipeconfLoader.java):
+  A component that registers the pipeconf at app activation;
+* [InterpreterImpl.java](./app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java):
+  An implementation of the `PipelineInterpreter` driver behavior;
+* [PipelinerImpl.java](./app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/PipelinerImpl.java):
+  An implementation of the `Pipeliner` driver behavior;
+
+To build the ONOS app (including the pipeconf), In the second terminal window,
+use the command:
+
+```
+$ make app-build
+```
+
+This will produce a binary file `app/target/ngsdn-tutorial-1.0-SNAPSHOT.oar`
+that we will use to install the application in the running ONOS instance.
+
+Use the following command to upload to ONOS and activate the app binary:
 
 ```
 $ make app-reload
 ```
-
-This command will upload to ONOS and activate the app binary previously built
-(located at `app/target/ngsdn-tutorial-1.0-SNAPSHOT.oar`).
 
 After the app has been activated, you should see the following messages in the
 ONOS log (`make onos-log`) signaling that the pipeconf has been registered and
@@ -222,9 +169,9 @@ information such as:
 
 This file contains also information related to the IPv6 configuration associated
 to each switch interface. We will discuss this information in more details in
-the next exercise.
+the next exercises.
 
-On terminal window, type:
+On a terminal window, type:
 
 ```
 $ make netcfg
@@ -232,6 +179,8 @@ $ make netcfg
 
 This command will push the `netcfg.json` to ONOS, triggering discovery and
 configuration of the 4 switches.
+
+FIXME: do log later, or deactivate lldp app for now to avoid clogging with error messages
 
 Check the ONOS log (`make onos-log`), you should see messages like:
 
@@ -303,6 +252,8 @@ deviceId=device:spine1
 #### Links
 
 Verify that all links have been discovered. You should see 8 links in total:
+
+FIXME
 
 ```
 onos> links
