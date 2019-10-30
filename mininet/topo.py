@@ -101,7 +101,13 @@ def main():
     net.start()
     CLI(net)
     net.stop()
-
+    print '#' * 80
+    print 'ATTENTION: Mininet was stopped! Perhaps accidentally?'
+    print 'No worries, it will restart automatically in a few seconds...'
+    print 'To access again the Mininet CLI, use `make mn-cli`'
+    print 'To detach from the CLI (without stopping), press Ctrl-D'
+    print 'To permanently quit Mininet, use `make stop`'
+    print '#' * 80
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

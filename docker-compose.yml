@@ -8,6 +8,7 @@ services:
     privileged: true
     tty: true
     stdin_open: true
+    restart: always
     volumes:
       - ./tmp:/tmp
       - ./mininet:/mininet
