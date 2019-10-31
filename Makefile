@@ -24,6 +24,8 @@ onos_url := http://localhost:8181/onos
 onos_curl := curl --fail -sSL --user onos:rocks --noproxy localhost
 app_name := org.onosproject.ngsdn-tutorial
 
+NGSDN_TUTORIAL_SUDO ?=
+
 default:
 	$(error Please specify a make target (see README.md))
 
@@ -85,13 +87,13 @@ netcfg:
 	@echo
 
 reset: stop
-	-rm -rf ./tmp
+	-$(NGSDN_TUTORIAL_SUDO) rm -rf ./tmp
 
 clean:
-	-rm -rf p4src/build
-	-rm -rf app/target
-	-rm -rf app/src/main/resources/bmv2.json
-	-rm -rf app/src/main/resources/p4info.txt
+	-$(NGSDN_TUTORIAL_SUDO) rm -rf p4src/build
+	-$(NGSDN_TUTORIAL_SUDO) rm -rf app/target
+	-$(NGSDN_TUTORIAL_SUDO) rm -rf app/src/main/resources/bmv2.json
+	-$(NGSDN_TUTORIAL_SUDO) rm -rf app/src/main/resources/p4info.txt
 
 deep-clean: clean
 	-docker container rm ${app_build_container_name}
@@ -157,11 +159,11 @@ solution-apply:
 	rsync -r solution/ ./
 
 solution-revert:
-	rm -rf ./app
-	rm -rf ./p4src
-	rm -rf ./ptf
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./app
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./p4src
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./ptf
 	cp -r working_copy/* ./
-	rm -rf working_copy/
+	$(NGSDN_TUTORIAL_SUDO) rm -rf working_copy/
 
 check:
 	make reset
