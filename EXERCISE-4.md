@@ -136,7 +136,7 @@ resource folder (`app/src/main/resources`) and will be included in the ONOS app
 binary. The copy that gets included in the ONOS app will be the one that gets
 deployed by ONOS to the device after the connection is initiated.
 
-### 4. Restart ONOS and load updated pipeconf
+### 4. Restart ONOS
 
 **Note:** ONOS should be already running, and in theory, there should be no need
 to restart it. However, while ONOS supports reloading the pipeconf with a
@@ -158,7 +158,7 @@ executions, including ONOS.
 Wait approx. 20 seconds for ONOS to completing booting, or check the ONOS log
 (`make onos-log`) until no more messages are shown.
 
-### 5. Load app and register pipeconf
+### 5. Load updated app and register pipeconf
 
 On a terminal window, type:
 
