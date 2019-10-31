@@ -90,7 +90,7 @@ The first step will be to add new tables to `main.p4`.
 We already provide ways to handle NDP NS and NA exchanged by hosts connected to
 the same subnet (see `l2_ternary_table`). However, for hosts, the Linux
 networking stack takes care of generating a NDP NA reply. For the switches in
-our fabric, there's no Linux networking stack associated to it.
+our fabric, there's no traditional networking stack associated to it.
 
 There are multiple solutions to this problem:
 
@@ -106,7 +106,7 @@ There are multiple solutions to this problem:
 option. You can decide to go with a different one, but you should keep in mind
 that there will be less starter code for you to re-use.
 
-The idea is simple, NDP NA packets have the same header structure as NDP NS
+The idea is simple: NDP NA packets have the same header structure as NDP NS
 ones. They are both ICMPv6 packets with different header field values, such as
 different ICMPv6 type, different Ethernet addresses etc. A switch that knows the
 MAC address of a given IPv6 target address found in an NDP NS request, can
@@ -117,13 +117,13 @@ To implement P4-based generation of NDP NA messages, look in
 `ndp_ns_to_na` to transform an NDP NS packet into an NDP NA one. Your task is to
 implement a table that uses such action.
 
-This table should define a mapping between the interface IPv6 addresses
-provided in [netcfg.json](mininet/netcfg.json) and the `myStationMac` associated
-to each switch (also defined in netcfg.json). When an NDP
-NS packet is received, asking to resolve one of such IPv6 addresses, the
-`ndp_ns_to_na` action should be invoked with the given `myStationMac` as
-parameter. The ONOS app will be responsible of inserting entries in this table
-according to the content of netcfg.json.
+This table should define a mapping between the interface IPv6 addresses provided
+in [netcfg.json](mininet/netcfg.json) and the `myStationMac` associated to each
+switch (also defined in netcfg.json). When an NDP NS packet is received, asking
+to resolve one of such IPv6 addresses, the `ndp_ns_to_na` action should be
+invoked with the given `myStationMac` as parameter. The ONOS app will be
+responsible of inserting entries in this table according to the content of
+netcfg.json.
 
 The ONOS app already provides a component
 [NdpReplyComponent.java](app/src/main/java/org/p4/p4d2/tutorial/NdpReplyComponent.java)

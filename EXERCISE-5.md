@@ -27,7 +27,7 @@ are used to provide interface configuration to ONOS.
 ### Our P4 implementation of L2 bridging
 
 The starter P4 code already defines tables to forward packets based on the
-Ethernet address, precisely, two distinct tables to handle two different types
+Ethernet address, precisely, two distinct tables, to handle two different types
 of L2 entries:
 
 1. Unicast entries: which will be filled in by the control plane when the
@@ -36,13 +36,12 @@ of L2 entries:
    (NS) messages to all host-facing ports;
 
 For (2), unlike ARP messages in IPv4, which are broadcasted to Ethernet
-destination address FF:FF:FF:FF:FF:FF, NDP messages are sent to special
-Ethernet addresses specified by RFC2464. These addresses are prefixed
-with 33:33 and the last four octets are the last four octets of the IPv6
-destination multicast address. The most straightforward way of matching
-on such IPv6 broadcast/multicast packets, without digging in the details
-of RFC2464, is to use a ternary match on `33:33:**:**:**:**`, where `*` means
-"don't care".
+destination address FF:FF:FF:FF:FF:FF, NDP messages are sent to special Ethernet
+addresses specified by RFC2464. These addresses are prefixed with 33:33 and the
+last four octets are the last four octets of the IPv6 destination multicast
+address. The most straightforward way of matching on such IPv6
+broadcast/multicast packets, without digging in the details of RFC2464, is to
+use a ternary match on `33:33:**:**:**:**`, where `*` means "don't care".
 
 For this reason, our solution defines two tables. One that matches in an exact
 fashion `l2_exact_table` (easier to scale on switch ASIC memory) and one that
@@ -50,7 +49,7 @@ uses ternary matching `l2_ternary_table` (which requires more expensive TCAM
 memories, usually much smaller).
 
 These tables are applied to packets in an order defined in the `apply` block
-area of the ingress pipeline (`IngressPipeImpl`):
+of the ingress pipeline (`IngressPipeImpl`):
 
 ```
 if (!l2_exact_table.apply().hit) {
@@ -58,8 +57,8 @@ if (!l2_exact_table.apply().hit) {
 }
 ```
 
-The ternary table has lower priority and is applied only if a matching entry is
-not found in the exact one.
+The ternary table has lower priority and it's applied only if a matching entry
+is not found in the exact one.
 
 **Note**: To keep things simple, we won't be using VLANs to segment our L2
 domains. As such, when matching packets in the `l2_ternary_table`, these will be

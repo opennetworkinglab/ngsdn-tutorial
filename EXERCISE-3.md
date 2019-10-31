@@ -121,7 +121,7 @@ ONOS app that includes a pipeconf. The pipeconf-related files are the following:
 * [PipelinerImpl.java][PipelinerImpl.java]: An implementation of the `Pipeliner`
   driver behavior;
 
-To build the ONOS app (including the pipeconf), In the second terminal window,
+To build the ONOS app (including the pipeconf), in the second terminal window,
 use the command:
 
 ```
@@ -164,8 +164,7 @@ information such as:
 * The ONOS driver to use for each device, `stratum-bmv2` in this case;
 * The pipeconf to use for each device, `org.onosproject.ngsdn-tutorial` in this
   case, as defined in [PipeconfLoader.java][PipeconfLoader.java];
-* Configuration specific to our custom app, such as the `myStationMac` or a flag
-  to signal if a switch has to be considered a spine or not.
+* Configuration specific to our custom app (`fabricDeviceConfig`)
 
 This file contains also information related to the IPv6 configuration associated
 to each switch interface. We will discuss this information in more details in
@@ -179,8 +178,6 @@ $ make netcfg
 
 This command will push the `netcfg.json` to ONOS, triggering discovery and
 configuration of the 4 switches.
-
-FIXME: do log later, or deactivate lldp app for now to avoid clogging with error messages
 
 Check the ONOS log (`make onos-log`), you should see messages like:
 
@@ -222,8 +219,8 @@ id=device:spine1, available=true, role=MASTER, type=SWITCH, driver=stratum-bmv2:
 id=device:spine2, available=true, role=MASTER, type=SWITCH, driver=stratum-bmv2:org.onosproject.ngsdn-tutorial
 ```
 
-Make sure you see `available=true` for all devices. That means ONOS is connected
-to the device and the pipeline configuration has been pushed.
+Make sure you see `available=true` for all devices. That means ONOS has a gRPC
+channel open to the device and the pipeline configuration has been pushed.
 
 
 #### Ports
@@ -292,10 +289,10 @@ deviceId=device:leaf1, groupCount=1
 "Group" is an ONOS northbound abstraction that is mapped internally to different
 types of P4Runtime entities. In this case you should see 1 group of type `CLONE`.
 
-`CLONE` groups are mapped to a P4Runtime `CloneSessionEntry`, here used to clone
-packets to the controller via packet-in. Note that the `id=0x63` is the same as
-`#define CPU_CLONE_SESSION_ID 99` in the P4 program. This ID is hardcoded in the
-pipeconf code, as the group is created by
+`CLONE` groups are mapped to P4Runtime `CloneSessionEntry` entities, here used
+to clone packets to the controller via packet-in. Note that the `id=0x63` is the
+same as `#define CPU_CLONE_SESSION_ID 99` in the P4 program. This ID is
+hardcoded in the pipeconf code. The group is created by
 [PipelinerImpl.java][PipelinerImpl.java] in response to flow objectives mapped
 to the ACL table and requesting to clone packets such as NDP and ARP.
 

@@ -180,7 +180,7 @@ public class L2BridgingComponent {
         }
 
         log.info("Adding L2 multicast group with {} ports on {}...",
-                 ports.size(), deviceId);
+                ports.size(), deviceId);
 
         // Forge group object.
         final GroupDescription multicastGroup = Utils.buildMulticastGroup(
@@ -191,7 +191,7 @@ public class L2BridgingComponent {
     }
 
     /**
-     * Insert flow rules matching matching ethernet destination
+     * Insert flow rules matching ethernet destination
      * broadcast/multicast addresses (e.g. ARP requests, NDP Neighbor
      * Solicitation, etc.). Such packets should be processed by the multicast
      * group created before.
@@ -313,7 +313,7 @@ public class L2BridgingComponent {
     private void learnHost(Host host, DeviceId deviceId, PortNumber port) {
 
         log.info("Adding L2 unicast rule on {} for host {} (port {})...",
-                 deviceId, host.id(), port);
+                deviceId, host.id(), port);
 
         // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
@@ -324,7 +324,7 @@ public class L2BridgingComponent {
         final MacAddress hostMac = host.mac();
         final PiCriterion hostMacCriterion = PiCriterion.builder()
                 .matchExact(PiMatchFieldId.of("MODIFY ME"),
-                            hostMac.toBytes())
+                        hostMac.toBytes())
                 .build();
 
         // Action: set output port
@@ -425,7 +425,7 @@ public class L2BridgingComponent {
 
             mainComponent.getExecutorService().execute(() -> {
                 log.info("{} event! host={}, deviceId={}, port={}",
-                         event.type(), host.id(), deviceId, port);
+                        event.type(), host.id(), deviceId, port);
 
                 learnHost(host, deviceId, port);
             });
@@ -500,7 +500,7 @@ public class L2BridgingComponent {
                 // For all hosts connected to this device...
                 hostService.getConnectedHosts(device.id()).forEach(
                         host -> learnHost(host, host.location().deviceId(),
-                                          host.location().port()));
+                                host.location().port()));
             }
         });
     }

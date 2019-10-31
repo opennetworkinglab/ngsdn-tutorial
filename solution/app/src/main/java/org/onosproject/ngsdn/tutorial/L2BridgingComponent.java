@@ -191,7 +191,7 @@ public class L2BridgingComponent {
     }
 
     /**
-     * Insert flow rules matching matching ethernet destination
+     * Insert flow rules matching ethernet destination
      * broadcast/multicast addresses (e.g. ARP requests, NDP Neighbor
      * Solicitation, etc.). Such packets should be processed by the multicast
      * group created before.
@@ -273,10 +273,10 @@ public class L2BridgingComponent {
         // Match unmatched traffic - Match ternary **:**:**:**:**:**
         final PiCriterion unmatchedTrafficCriterion = PiCriterion.builder()
                 .matchTernary(
-                    PiMatchFieldId.of("hdr.ethernet.dst_addr"),
-                    MacAddress.valueOf("00:00:00:00:00:00").toBytes(),
-                    MacAddress.valueOf("00:00:00:00:00:00").toBytes())
-            .build();
+                        PiMatchFieldId.of("hdr.ethernet.dst_addr"),
+                        MacAddress.valueOf("00:00:00:00:00:00").toBytes(),
+                        MacAddress.valueOf("00:00:00:00:00:00").toBytes())
+                .build();
 
         // Action: set multicast group id
         final PiAction setMcastGroupAction = PiAction.builder()
