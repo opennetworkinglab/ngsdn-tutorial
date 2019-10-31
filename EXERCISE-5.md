@@ -1,4 +1,4 @@
-# Exercise 5: Bridging
+# Exercise 5: Implementing L2 Bridging
 
 In this exercise, you will be modifying the ONOS app to provide support for
 Ethernet (L2) bridging. The P4 program already provides logic to forward packets

@@ -1,28 +1,43 @@
-# Next-Gen SDN Tutorial
+# Next-Gen SDN Tutorial (Advanced)
 
 Welcome to the Next-Gen SDN tutorial!
 
-This tutorial is targeted at developers who want to learn about the building
-blocks of the NG-SDN architecture, such as:
+This tutorial is targeted at students and practitioners who want to learn about
+the building blocks of the next-generation SDN (NG-SDN) architecture, such as:
 
 * Data plane programming and control via P4 and P4Runtime
 * Configuration via YANG, OpenConfig, and gNMI
-* Stratum
-* ONOS
+* Stratum switch OS
+* ONOS SDN controller 
 
-The tutorial is organized around a sequence of hands-on exercises that show how
-to build an IPv6-based leaf-spine data center fabric using P4, Stratum, and
-ONOS.
+Tutorial sessions are organized around a sequence of hands-on exercises that
+show how to build a leaf-spine data center fabric based on IPv6, using P4,
+Stratum, and ONOS. Exercises assume an intermediate knowledge of the P4
+language, and a basic knowledge of Java and Python. Participants will be
+provided with a starter P4 program and ONOS app implementation. Exercises will
+focus on concepts such as:
+
+* Using Stratum APIs (P4Runtime, gNMI, OpenConfig, gNOI)
+* Using ONOS with devices programmed with arbitrary P4 programs
+* Writing ONOS applications to provide the control plane logic
+  (bridging, routing, ECMP, etc.)
+* Testing using bmv2 in Mininet
+* PTF-based P4 unit tests
 
 ## Slides
 
 Tutorial slides are available online:
-<http://bit.ly/ngsdn-tutorial-slides>
+<http://bit.ly/ngsdn-tutorial-advanced>
 
-These slides provide an introduction to each exercise. We suggest you look at it
-before starting to work on the exercises.
+These slides provide an introduction to the topics covered in the tutorial. We
+suggest you look at it before starting to work on the exercises.
 
 ## System requirements
+
+If you are taking this tutorial at an event organized by ONF, you should have
+received credentials to access the **ONF Cloud Tutorial Platform**, in which
+case you can skip this section. Keep reading if you are interested in working on
+the exercises on your laptop.
 
 To facilitate access to the tools required to complete this tutorial, we provide
 two options for you to choose from:
@@ -99,7 +114,10 @@ tutorial, with a reliable Internet connection.
 
 During the exercises you will need to write code in multiple languages such as
 P4, Java, and Python. While the exercises do not prescribe the use of any
-specific IDE or code editor, the tutorial VM comes with Java IDE [IntelliJ IDEA
+specific IDE or code editor, the **ONF Cloud Tutorial Platform** provides access
+to a web-based version of Visual Studio Code (VS Code).
+
+If you are using the tutorial VM, you will find the Java IDE [IntelliJ IDEA
 Community Edition](https://www.jetbrains.com/idea/), already pre-loaded with
 plugins for P4 syntax highlighting and Python development. We suggest using
 IntelliJ IDEA especially when working on the ONOS app, as it provides code
@@ -130,7 +148,7 @@ the exercises, here's a quick reference:
 | `make p4-test`      | Run PTF tests                                          |
 | `make start`        | Start Mininet and ONOS containers                      |
 | `make stop`         | Stop all containers                                    |
-| `make reset`        | Stop containers and remove any state associated        |
+| `make restart`      | Restart containers clearing any previous state         |
 | `make onos-cli`     | Access the ONOS CLI (password: `rocks`, Ctrl-D to exit)|
 | `make onos-log`     | Show the ONOS log                                      |
 | `make mn-cli`       | Access the Mininet CLI (Ctrl-D to exit)                |
@@ -143,10 +161,13 @@ the exercises, here's a quick reference:
 
 Click on the exercise name to see the instructions:
 
- 1. [P4 and P4Runtime basics](./EXERCISE-1.md)
+ 1. [P4Runtime basics](./EXERCISE-1.md)
  2. [Yang, OpenConfig, and gNMI basics](./EXERCISE-2.md)
  3. [Using ONOS as the control plane](./EXERCISE-3.md)
- 4. [Modify code to enable IPv6 routing](./EXERCISE-4.md)
+ 4. [Enabling link discovery via P4Runtime packet I/O](./EXERCISE-4.md)
+ 5. [Implementing L2 Bridging](./EXERCISE-5.md)
+ 6. [Implementing IPv6 routing with ECMP](./EXERCISE-6.md)
+ 7. [Implementing SRv6](./EXERCISE-7.md)
 
 ## Solutions
 
