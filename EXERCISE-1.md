@@ -12,7 +12,8 @@ asked to:
 
 ## 1. Look at the P4 program
 
-To get start, let's have a look a the P4 program: [p4src/main.p4](p4src/main.p4)
+To get started, let's have a look a the P4 program:
+[p4src/main.p4](p4src/main.p4)
 
 In the rest of the exercises, you will be asked to build a leaf-spine data
 center fabric based on IPv6. To make things easier, we provide a starter P4
@@ -24,15 +25,14 @@ program which contains:
 * Checksum verification/update
 
 The implementation provides already logic for L2 bridging and ACL behaviors. We
-suggest you start by taking a quick look at the whole program to understand its
-structure. When you're done, try answering the following questions, while
+suggest you start by taking a **quick look** at the whole program to understand
+its structure. When you're done, try answering the following questions, while
 referring to the P4 program to understand the different parts in more details.
 
 **Parser**
 
 * List all the protocol headers that can be extracted from a packet.
-* Which header is expected to be the first one when parsing a new packet?
-* Under what circumstances is the NDP header extracted?
+* Which header is expected to be the first one when parsing a new packet
 
 **Ingress pipeline**
 
@@ -117,8 +117,7 @@ Take a look at this file and try to answer the following questions:
 4. At the end of the file, look for the definition of the
    `controller_packet_metadata` message with name `packet_out` at the end of the
    file. Now look at the definition of `header cpu_out_header_t` in the P4
-   program. Do you see any relationship between the two? What is the numeric ID
-   of the metadata associated to the `egress_port` field?
+   program. Do you see any relationship between the two?
 
 ## 3. Start Mininet topology
 
