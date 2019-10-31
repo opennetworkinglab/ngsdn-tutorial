@@ -318,7 +318,7 @@ information on how to use the ONOS web UI please refer to this guide:
 
 There is a way to show the pipeconf details for a given device, can you find it?
 
-### Congratulations!
+## Congratulations!
 
 You have completed the third exercise! If there is still time before the end of
 this session, you can check the bonus steps below.

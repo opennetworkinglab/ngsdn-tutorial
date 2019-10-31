@@ -400,7 +400,7 @@ below:
 
 <img src="img/routing-ecmp.png" alt="ECMP Test" width="344"/>
 
-### Congratulations!
+## Congratulations!
 
-You have completed Exercise 6! Now your fabric is capable of forwarding IPv6
-traffic between any host.
+You have completed the sixth exercise! Now your fabric is capable of forwarding
+IPv6 traffic between any host.
