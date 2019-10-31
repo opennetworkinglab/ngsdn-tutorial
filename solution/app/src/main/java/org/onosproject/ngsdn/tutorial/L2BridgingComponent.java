@@ -154,6 +154,9 @@ public class L2BridgingComponent {
         }
         insertMulticastGroup(deviceId);
         insertMulticastFlowRules(deviceId);
+        // *** TODO EXERCISE 5 EXTRA CREDIT
+        // Uncomment the following line after you have implemented the method:
+        insertUnmatchedBridgingFlowRule(deviceId);
     }
 
     /**
@@ -245,6 +248,54 @@ public class L2BridgingComponent {
 
         // Insert rules.
         flowRuleService.applyFlowRules(rule1, rule2);
+    }
+
+    /**
+     * Insert flow rule that matches all unmatched ethernet traffic. This
+     * will implement the traditional briding behavior that floods all
+     * unmatched traffic.
+     * <p>
+     * This method will be called at component activation for each device
+     * (switch) known by ONOS, and every time a new device-added event is
+     * captured by the InternalDeviceListener defined below.
+     *
+     * @param deviceId device ID where to install the rules
+     */
+    private void insertUnmatchedBridgingFlowRule(DeviceId deviceId) {
+
+        log.info("Adding L2 multicast rules on {}...", deviceId);
+
+        // *** TODO EXERCISE 5 EXTRA CREDIT
+        // Modify P4Runtime entity names to match content of P4Info file (look
+        // for the fully qualified name of tables, match fields, and actions.
+        // ---- START SOLUTION ----
+
+        // Match unmatched traffic - Match ternary **:**:**:**:**:**
+        final PiCriterion unmatchedTrafficCriterion = PiCriterion.builder()
+                .matchTernary(
+                    PiMatchFieldId.of("hdr.ethernet.dst_addr"),
+                    MacAddress.valueOf("00:00:00:00:00:00").toBytes(),
+                    MacAddress.valueOf("00:00:00:00:00:00").toBytes())
+            .build();
+
+        // Action: set multicast group id
+        final PiAction setMcastGroupAction = PiAction.builder()
+                .withId(PiActionId.of("IngressPipeImpl.set_multicast_group"))
+                .withParameter(new PiActionParam(
+                        PiActionParamId.of("gid"),
+                        DEFAULT_BROADCAST_GROUP_ID))
+                .build();
+
+        //  Build flow rule.
+        final String tableId = "IngressPipeImpl.l2_ternary_table";
+        // ---- END SOLUTION ----
+
+        final FlowRule rule = Utils.buildFlowRule(
+                deviceId, appId, tableId,
+                unmatchedTrafficCriterion, setMcastGroupAction);
+
+        // Insert rules.
+        flowRuleService.applyFlowRules(rule);
     }
 
     /**

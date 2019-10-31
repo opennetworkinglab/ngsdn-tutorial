@@ -345,6 +345,18 @@ bar. If you are using the tutorial VM, open up a browser (e.g. Firefox) to
 
 To toggle showing hosts on the topology view, press `H` on your keyboard.
 
+### Extra Credit
+
+The current solution drops unmatched traffic that is not an ARP or NDP packet.
+This is to prevent masking bugs your unicast forwarding code as you develop it.
+
+However, traditional bridging requires that unmatched traffic be flooded to all
+interfaces except the ingress one. We've provided some starter code that adds a
+rule to flood unmatched traffic. You will need to complete the implementation of `insertUnmatchedBridgingFlowRule()` and then call this method when the device is
+set up (in `setUpDevice()`).
+
+Look for `TODO EXERCISE 5 EXTRA CREDIT` to see where you will need to change code.
+
 ## Congratulations
 
 You have completed the fifth exercise! Now your fabric is capable of forwarding
