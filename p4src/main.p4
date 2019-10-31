@@ -426,22 +426,22 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
 
     // *** TODO EXERCISE 6 (IPV6 ROUTING)
     //
-    // 1. Create table to handle IPv6 routing. Create a L2 my station table (hit
+    // 1. Create a table to to handle NDP messages to resolve the MAC address of
+    //    switch. This table should:
+    //    - match on hdr.ndp.target_ipv6_addr (exact match)
+    //    - provide action "ndp_ns_to_na" (look in snippets.p4)
+    //    - default_action should be "NoAction"
+    //
+    // 2. Create table to handle IPv6 routing. Create a L2 my station table (hit
     //    when Ethernet destination address is the switch address). This table
     //    should not do anything to the packet (i.e., NoAction), but the control
     //    block below should use the result (table.hit) to decide how to process
     //    the packet.
     //
-    // 2. Create a table for IPv6 routing. An action selector should be use to
+    // 3. Create a table for IPv6 routing. An action selector should be use to
     //    pick a next hop MAC address according to a hash of packet header
     //    fields (IPv6 source/destination address and the flow label). Look in
     //    snippets.p4 for an example of an action selector and table using it.
-    //
-    // 3. Create a table to to handle NDP messages to resolve the MAC address of
-    //    switch. This table should:
-    //    - match on hdr.ndp.target_ipv6_addr (exact match)
-    //    - provide action "ndp_ns_to_na" (look in snippets.p4)
-    //    - default_action should be "NoAction"
     //
     // You can name your tables whatever you like. You will need to fill
     // the name in elsewhere in this exercise.
@@ -502,7 +502,7 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
             // controller:
             // 1. Set the packet egress port to that found in the cpu_out header
             // 2. Remove (set invalid) the cpu_out header
-            // 3. Exit the pipeline here (no need to go through other tables)
+            // 3. Exit the pipeline here (no need to go through other tables
         }
 
         bool do_l3_l2 = true;
