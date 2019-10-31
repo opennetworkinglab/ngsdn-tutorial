@@ -158,7 +158,17 @@ executions, including ONOS.
 Wait approx. 20 seconds for ONOS to completing booting, or check the ONOS log
 (`make onos-log`) until no more messages are shown.
 
-### 3. Push netcfg to ONOS to trigger device and link discovery
+### 5. Load app and register pipeconf
+
+On a terminal window, type:
+
+```
+$ make app-reload
+```
+
+This command will upload to ONOS and activate the app binary previously built (located at app/target/ngsdn-tutorial-1.0-SNAPSHOT.oar).
+
+### 6. Push netcfg to ONOS to trigger device and link discovery
 
 On a terminal window, type:
 
