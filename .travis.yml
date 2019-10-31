@@ -12,4 +12,4 @@ install:
   - make deps
 
 script:
-  - make check-solution
+  - make check

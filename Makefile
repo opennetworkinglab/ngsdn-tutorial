@@ -163,8 +163,12 @@ solution-revert:
 	cp -r working_copy/* ./
 	rm -rf working_copy/
 
-check-solution:
+check:
 	make reset
+	# P4 starter code and app should compile
+	make p4-build
+	make app-build
+	# Check solution
 	make solution-apply
 	make start
 	make p4-build
@@ -175,7 +179,7 @@ check-solution:
 	sleep 10
 	make netcfg
 	sleep 10
-	# The first ping might fail because of a known race condition in the
+	# The first ping(s) might fail because of a known race condition in the
 	# L2BridgingComponenet. Ping all hosts.
 	-util/mn-cmd h1a ping -c 1 2001:1:1::b
 	util/mn-cmd h1a ping -c 1 2001:1:1::b
