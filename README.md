@@ -67,7 +67,7 @@ All exercises can be executed by installing the following dependencies:
 
 **Note for Windows users**: all scripts have been tested on macOS and Ubuntu.
 Although we think they should work on Windows, we have not tested it. For this
-reason, we advise Windows users to prefer Option 1.
+reason, we advise Windows users to prefer Option 1 (downloading a VM).
 
 ## Get this repo or pull latest changes
 
