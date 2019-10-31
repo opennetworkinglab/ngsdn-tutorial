@@ -206,11 +206,11 @@ public class NdpReplyComponent {
         final PiActionParam targetMacParam = new PiActionParam(
                 PiActionParamId.of("target_mac"), targetMac.toBytes());
         final PiAction action = PiAction.builder()
-                .withId(PiActionId.of("<PUT HERE NAME OF NDP REPLY ACTION>"))
+                .withId(PiActionId.of("MODIFY ME"))
                 .withParameter(targetMacParam)
                 .build();
         // Table ID.
-        final String tableId = "<PUT HERE NAME OF NDP REPLY TABLE>";
+        final String tableId = "MODIFY ME";
         // ---- END SOLUTION ----
 
         // Build flow rule.

@@ -2,23 +2,6 @@
 // SNIPPETS FOR EXERCISE 6 (IPV6 ROUTING)
 //------------------------------------------------------------------------------
 
-// ECMP action selector definition:
-action_selector(HashAlgorithm.crc16, 32w1024, 32w16) ecmp_selector;
-
-// Example indirect table that uses the ecmp_selector. "Selector" match fields
-// are used as input to the action selector hash function.
-// table table_with_action_selector {
-//   key = {
-//       hdr_field_1: lpm / exact / ternary;
-//       hdr_field_2: selector;
-//       hdr_field_3: selector;
-//       ...
-//   }
-//   actions = { ... }
-//   implementation = ecmp_selector;
-//   ...
-// }
-
 // Action that transforms an NDP NS packet into an NDP NA one for the given
 // target MAC address. The action also sets the egress port to the ingress
 // one where the NDP NS packet was received.
@@ -36,6 +19,23 @@ action ndp_ns_to_na(mac_addr_t target_mac) {
     hdr.ndp.target_mac_addr = target_mac;
     standard_metadata.egress_spec = standard_metadata.ingress_port;
 }
+
+// ECMP action selector definition:
+action_selector(HashAlgorithm.crc16, 32w1024, 32w16) ecmp_selector;
+
+// Example indirect table that uses the ecmp_selector. "Selector" match fields
+// are used as input to the action selector hash function.
+// table table_with_action_selector {
+//   key = {
+//       hdr_field_1: lpm / exact / ternary;
+//       hdr_field_2: selector;
+//       hdr_field_3: selector;
+//       ...
+//   }
+//   actions = { ... }
+//   implementation = ecmp_selector;
+//   ...
+// }
 
 //------------------------------------------------------------------------------
 // SNIPPETS FOR EXERCISE 7 (SRV6)
