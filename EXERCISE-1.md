@@ -401,7 +401,8 @@ PING 2001:1:1::b(2001:1:1::b) 56 data bytes
 
 ## Congratulations!
 
-You have completed the first exercise!
+You have completed the first exercise! Leave mininet running, as we will need it
+for following exercises.
 
 [p4c]: https://github.com/p4lang/p4c
 [p4runtime-sh]: https://github.com/p4lang/p4runtime-shell

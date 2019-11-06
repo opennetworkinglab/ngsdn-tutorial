@@ -306,7 +306,8 @@ When asked, use the username `onos` and password
 `rocks`.
 
 You should wee 4 devices in the topology view, corresponding to the 4 switches
-of our 2x2 fabric. Press `L` to show device labels.
+of our 2x2 fabric. Press `L` to show device labels. Because we disabled link
+discovery, the ONOS UI will not show any links between the devices.
 
 While here, feel free to interact with and discover the ONOS UI. For more
 information on how to use the ONOS web UI please refer to this guide:
