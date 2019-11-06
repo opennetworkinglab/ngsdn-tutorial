@@ -107,7 +107,7 @@ p4-build: p4src/main.p4
 		p4src/main.p4
 	@echo "*** P4 program compiled successfully! Output files are in p4src/build"
 
-p4-test:
+p4-test: _docker_build
 	@cd ptf && ./run_tests $(TEST)
 
 # Create container once, use it many times to preserve mvn repo cache.
