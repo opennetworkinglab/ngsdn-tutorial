@@ -305,7 +305,7 @@ bar. If you are using the tutorial VM, open up a browser (e.g. Firefox) to
 When asked, use the username `onos` and password
 `rocks`.
 
-You should wee 4 devices in the topology view, corresponding to the 4 switches
+You should see 4 devices in the topology view, corresponding to the 4 switches
 of our 2x2 fabric. Press `L` to show device labels. Because we disabled link
 discovery, the ONOS UI will not show any links between the devices.
 
