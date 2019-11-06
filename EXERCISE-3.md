@@ -306,8 +306,8 @@ When asked, use the username `onos` and password
 `rocks`.
 
 You should see 4 devices in the topology view, corresponding to the 4 switches
-of our 2x2 fabric. Press `L` to show device labels. Because we disabled link
-discovery, the ONOS UI will not show any links between the devices.
+of our 2x2 fabric. Press `L` to show device labels. Because link discovery is
+not yet implemented, the ONOS UI will not show any links between the devices.
 
 While here, feel free to interact with and discover the ONOS UI. For more
 information on how to use the ONOS web UI please refer to this guide:
@@ -335,9 +335,9 @@ On the shell prompt, type the following command to dump all entries from the ACL
 table:
 
 ```
-P4Runtime sh >>> for te in table_entry["IngressPipeImpl.acl_table"].read(): 
-            ...:     print(te) 
-            ...:       
+P4Runtime sh >>> for te in table_entry["IngressPipeImpl.acl_table"].read():
+            ...:     print(te)
+            ...:
 ```
 
 You should see exactly 3 entries, each one corresponding to a flow rule
