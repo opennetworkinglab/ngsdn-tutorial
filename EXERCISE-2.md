@@ -230,6 +230,21 @@ Starting onos    ... done
 You will need to go back to Exercise 1 and install forwarding rules to
 re-establish pings between `h1a` and `h1b` for later parts of this exercise.
 
+If you could not complete Exercise 1, you can use the following P4Runtime-sh
+commands to enable connectivity:
+
+```python
+te = table_entry['IngressPipeImpl.l2_exact_table'](action='IngressPipeImpl.set_egress_port')
+te.match['hdr.ethernet.dst_addr'] = '00:00:00:00:00:1A'
+te.action['port_num'] = '3'
+te.insert()
+
+te = table_entry['IngressPipeImpl.l2_exact_table'](action='IngressPipeImpl.set_egress_port')
+te.match['hdr.ethernet.dst_addr'] = '00:00:00:00:00:1B'
+te.action['port_num'] = '4'
+te.insert()
+```
+
 Next, we will use a [gNMI client CLI](https://github.com/Yi-Tseng/Yi-s-gNMI-tool)
 to read the all of the configuration from the Stratum switche `leaf1` in our
 Mininet network:

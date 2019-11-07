@@ -210,7 +210,7 @@ public class L2BridgingComponent {
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
-        // Match ARP request - Match exactly FF:FF:FF:FF:FF
+        // Match ARP request - Match exactly FF:FF:FF:FF:FF:FF
         final PiCriterion macBroadcastCriterion = PiCriterion.builder()
                 .matchTernary(
                         PiMatchFieldId.of("MODIFY ME"),
