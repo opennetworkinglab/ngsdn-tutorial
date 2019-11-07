@@ -60,7 +60,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
  */
 @Component(
         immediate = true,
-        // *** TODO EXERCISE 6
+        // *** TODO EXERCISE 5
         // Enable component (enabled = true)
         enabled = false
 )
@@ -194,7 +194,7 @@ public class NdpReplyComponent {
                                            Ip6Address targetIpv6Address,
                                            MacAddress targetMac) {
 
-        // *** TODO EXERCISE 6
+        // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----

@@ -59,7 +59,7 @@ class IPv6RoutingTest(P4RuntimeTest):
 
         # Add entry to "My Station" table. Consider the given pkt's eth dst addr
         # as myStationMac address.
-        # *** TODO EXERCISE 6
+        # *** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -74,7 +74,7 @@ class IPv6RoutingTest(P4RuntimeTest):
         # ---- END SOLUTION ----
 
         # Insert ECMP group with only one member (next_hop_mac)
-        # *** TODO EXERCISE 6
+        # *** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -89,7 +89,7 @@ class IPv6RoutingTest(P4RuntimeTest):
         # ---- END SOLUTION ----
 
         # Insert L3 entry to app pkt's IPv6 dst addr to group
-        # *** TODO EXERCISE 6
+        # *** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -104,7 +104,7 @@ class IPv6RoutingTest(P4RuntimeTest):
         # ---- END SOLUTION ----
 
         # Insert L3 entry to map next_hop_mac to output port 2.
-        # *** TODO EXERCISE 6
+        # *** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -144,7 +144,7 @@ class NdpReplyGenTest(P4RuntimeTest):
 
         # Insert entry to transform NDP NA packets for the given target address
         # (match), to NDP NA packets with the given target MAC address (action
-        # *** TODO EXERCISE 6
+        # *** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----

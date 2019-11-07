@@ -143,7 +143,7 @@ There are four tests in `srv6.py`:
   the SRv6 header before routing the packet to it's final destination (last SID
   in the list).
 
-You should be able to find `TODO EXERCISE 7` in [srv6.py](ptf/tests/srv6.py)
+You should be able to find `TODO EXERCISE 6` in [srv6.py](ptf/tests/srv6.py)
 with some hints.
 
 To run all the tests for this exercise:

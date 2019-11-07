@@ -75,7 +75,6 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
             ports=mcast_ports)
 
         # Match eth dst: FF:FF:FF:FF:FF:FF (MAC broadcast for ARP requests)
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -96,7 +95,6 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
         # ---- END SOLUTION ----
 
         # Match eth dst: 33:33:**:**:**:** (IPv6 multicast for NDP requests)
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -191,7 +189,6 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
     def testPacket(self, pkt):
 
         # L2 unicast entry, match on pkt's eth dst address.
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -268,7 +265,6 @@ class BridgingTest(P4RuntimeTest):
     def testPacket(self, pkt):
 
         # Insert L2 unicast entry, match on pkt's eth dst address.
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -289,7 +285,6 @@ class BridgingTest(P4RuntimeTest):
         pkt2 = pkt_mac_swap(pkt.copy())
 
         # Insert L2 unicast entry for pkt2.
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----

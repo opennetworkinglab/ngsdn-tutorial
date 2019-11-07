@@ -57,7 +57,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
  */
 @Component(
         immediate = true,
-        // *** TODO EXERCISE 7
+        // *** TODO EXERCISE 6
         // set to true when ready
         enabled = true,
         service = Srv6Component.class
@@ -137,13 +137,13 @@ public class Srv6Component {
 
         log.info("Adding mySid rule on {} (sid {})...", deviceId, mySid);
 
-        // *** TODO EXERCISE 7
+        // *** TODO EXERCISE 6
         // Fill in the table ID for the SRv6 my segment identifier table
         // ---- START SOLUTION ----
         String tableId = "IngressPipeImpl.srv6_my_sid";
         // ---- END SOLUTION ----
 
-        // *** TODO EXERCISE 7
+        // *** TODO EXERCISE 6
         // Modify the field and action id to match your P4Info
         // ---- START SOLUTION ----
         PiCriterion match = PiCriterion.builder()
@@ -178,13 +178,13 @@ public class Srv6Component {
             throw new RuntimeException("List of " + segmentList.size() + " segments is not supported");
         }
 
-        // *** TODO EXERCISE 7
+        // *** TODO EXERCISE 6
         // Fill in the table ID for the SRv6 transit table.
         // ---- START SOLUTION ----
         String tableId = "IngressPipeImpl.srv6_transit";
         // ---- END SOLUTION ----
 
-        // *** TODO EXERCISE 7
+        // *** TODO EXERCISE 6
         // Modify match field, action id, and action parameters to match your P4Info.
         // ---- START SOLUTION ----
         PiCriterion match = PiCriterion.builder()
@@ -217,7 +217,7 @@ public class Srv6Component {
      * @param deviceId device ID
      */
     public void clearSrv6InsertRules(DeviceId deviceId) {
-        // *** TODO EXERCISE 7
+        // *** TODO EXERCISE 6
         // Fill in the table ID for the SRv6 transit table
         // ---- START SOLUTION ----
         String tableId = "IngressPipeImpl.srv6_transit";

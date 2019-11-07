@@ -81,7 +81,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
  */
 @Component(
         immediate = true,
-        // *** TODO EXERCISE 6
+        // *** TODO EXERCISE 5
         // set to true when ready
         enabled = false
 )
@@ -188,7 +188,7 @@ public class Ipv6RoutingComponent {
         // destination* and there is only one action called *NoAction*, which is
         // used as an indication of "table hit" in the control block.
 
-        // *** TODO EXERCISE 6
+        // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
@@ -233,7 +233,7 @@ public class Ipv6RoutingComponent {
         final List<PiAction> actions = Lists.newArrayList();
 
         // Build one "set next hop" action for each next hop
-        // *** TODO EXERCISE 6
+        // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
@@ -268,7 +268,7 @@ public class Ipv6RoutingComponent {
     private FlowRule createRoutingRule(DeviceId deviceId, Ip6Prefix ip6Prefix,
                                        int groupId) {
 
-        // *** TODO EXERCISE 6
+        // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
@@ -302,7 +302,7 @@ public class Ipv6RoutingComponent {
     private FlowRule createL2NextHopRule(DeviceId deviceId, MacAddress nexthopMac,
                                          PortNumber outPort) {
 
-        // *** TODO EXERCISE 6
+        // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----

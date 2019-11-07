@@ -205,7 +205,7 @@ At this point, our P4 pipeline should be ready for testing.
 ### 2. Run PTF tests
 
 Tests for the IPv6 routing behavior are located in `ptf/tests/routing.py`. Open
-that file up and modify wherever requested (look for `TODO EXERCISE 6`).
+that file up and modify wherever requested (look for `TODO EXERCISE 5`).
 
 To run all the tests for this exercise:
 
@@ -240,7 +240,7 @@ components of our ONOS app, located here:
 * `app/src/main/java/org/p4/p4d2/tutorial/Ipv6RoutingComponent.java`
 * `app/src/main/java/org/p4/p4d2/tutorial/NdpReplyComponent.java`
 
-Open those files and modify wherever requested (look for `TODO EXERCISE 6`).
+Open those files and modify wherever requested (look for `TODO EXERCISE 5`).
 
 #### Ipv6RoutingComponent.java
 
