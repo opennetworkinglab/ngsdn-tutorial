@@ -75,40 +75,38 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
             ports=mcast_ports)
 
         # Match eth dst: FF:FF:FF:FF:FF:FF (MAC broadcast for ARP requests)
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="MODIFY ME",
+            table_name="IngressPipeImpl.l2_ternary_table",
             match_fields={
                 # Ternary match.
-                "MODIFY ME": (
+                "hdr.ethernet.dst_addr": (
                     "FF:FF:FF:FF:FF:FF",
                     "FF:FF:FF:FF:FF:FF")
             },
-            action_name="MODIFY ME",
+            action_name="IngressPipeImpl.set_multicast_group",
             action_params={
-                "MODIFY ME": mcast_group_id
+                "gid": mcast_group_id
             },
             priority=DEFAULT_PRIORITY
         ))
         # ---- END SOLUTION ----
 
         # Match eth dst: 33:33:**:**:**:** (IPv6 multicast for NDP requests)
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="MODIFY ME",
+            table_name="IngressPipeImpl.l2_ternary_table",
             match_fields={
                 # Ternary match (value, mask)
-                "MODIFY ME": (
+                "hdr.ethernet.dst_addr": (
                     "33:33:00:00:00:00",
                     "FF:FF:00:00:00:00")
             },
-            action_name="MODIFY ME",
+            action_name="IngressPipeImpl.set_multicast_group",
             action_params={
                 "gid": mcast_group_id
             },
@@ -191,19 +189,18 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
     def testPacket(self, pkt):
 
         # L2 unicast entry, match on pkt's eth dst address.
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="MODIFY ME",
+            table_name="IngressPipeImpl.l2_exact_table",
             match_fields={
                 # Exact match.
-                "MODIFY ME": pkt[Ether].dst
+                "hdr.ethernet.dst_addr": pkt[Ether].dst
             },
-            action_name="MODIFY ME",
+            action_name="IngressPipeImpl.set_egress_port",
             action_params={
-                "MODIFY ME": self.port2
+                "port_num": self.port2
             }
         ))
         # ---- END SOLUTION ----
@@ -268,19 +265,18 @@ class BridgingTest(P4RuntimeTest):
     def testPacket(self, pkt):
 
         # Insert L2 unicast entry, match on pkt's eth dst address.
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="MODIFY ME",
+            table_name="IngressPipeImpl.l2_exact_table",
             match_fields={
                 # Exact match.
-                "MODIFY ME": pkt[Ether].dst
+                "hdr.ethernet.dst_addr": pkt[Ether].dst
             },
-            action_name="MODIFY ME",
+            action_name="IngressPipeImpl.set_egress_port",
             action_params={
-                "MODIFY ME": self.port2
+                "port_num": self.port2
             }
         ))
         # ---- END SOLUTION ----
@@ -289,19 +285,18 @@ class BridgingTest(P4RuntimeTest):
         pkt2 = pkt_mac_swap(pkt.copy())
 
         # Insert L2 unicast entry for pkt2.
-        # ** TODO EXERCISE 5
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
         self.insert(self.helper.build_table_entry(
-            table_name="MODIFY ME",
+            table_name="IngressPipeImpl.l2_exact_table",
             match_fields={
                 # Exact match.
-                "MODIFY ME": pkt2[Ether].dst
+                "hdr.ethernet.dst_addr": pkt2[Ether].dst
             },
-            action_name="MODIFY ME",
+            action_name="IngressPipeImpl.set_egress_port",
             action_params={
-                "MODIFY ME": self.port1
+                "port_num": self.port1
             }
         ))
         # ---- END SOLUTION ----

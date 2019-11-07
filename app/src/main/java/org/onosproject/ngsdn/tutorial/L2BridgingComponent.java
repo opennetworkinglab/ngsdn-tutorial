@@ -62,9 +62,8 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
  */
 @Component(
         immediate = true,
-        // *** TODO EXERCISE 5
         // Enable component (enabled = true)
-        enabled = false
+        enabled = true
 )
 public class L2BridgingComponent {
 
@@ -154,7 +153,6 @@ public class L2BridgingComponent {
         }
         insertMulticastGroup(deviceId);
         insertMulticastFlowRules(deviceId);
-        // *** TODO EXERCISE 5 EXTRA CREDIT
         // Uncomment the following line after you have implemented the method:
         // insertUnmatchedBridgingFlowRule(deviceId);
     }
@@ -206,36 +204,35 @@ public class L2BridgingComponent {
 
         log.info("Adding L2 multicast rules on {}...", deviceId);
 
-        // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
         // Match ARP request - Match exactly FF:FF:FF:FF:FF:FF
         final PiCriterion macBroadcastCriterion = PiCriterion.builder()
                 .matchTernary(
-                        PiMatchFieldId.of("MODIFY ME"),
-                        MacAddress.valueOf("MODIFY ME").toBytes(),
-                        MacAddress.valueOf("MODIFY ME").toBytes())
+                        PiMatchFieldId.of("hdr.ethernet.dst_addr"),
+                        MacAddress.valueOf("FF:FF:FF:FF:FF:FF").toBytes(),
+                        MacAddress.valueOf("FF:FF:FF:FF:FF:FF").toBytes())
                 .build();
 
         // Match NDP NS - Match ternary 33:33:**:**:**:**
         final PiCriterion ipv6MulticastCriterion = PiCriterion.builder()
                 .matchTernary(
-                        PiMatchFieldId.of("MODIFY ME"),
-                        MacAddress.valueOf("MODIFY ME").toBytes(),
-                        MacAddress.valueOf("MODIFY ME").toBytes())
+                        PiMatchFieldId.of("hdr.ethernet.dst_addr"),
+                        MacAddress.valueOf("33:33:00:00:00:00").toBytes(),
+                        MacAddress.valueOf("FF:FF:00:00:00:00").toBytes())
                 .build();
 
         // Action: set multicast group id
         final PiAction setMcastGroupAction = PiAction.builder()
-                .withId(PiActionId.of("MODIFY ME"))
+                .withId(PiActionId.of("IngressPipeImpl.set_multicast_group"))
                 .withParameter(new PiActionParam(
-                        PiActionParamId.of("MODIFY ME"),
+                        PiActionParamId.of("gid"),
                         DEFAULT_BROADCAST_GROUP_ID))
                 .build();
 
         //  Build 2 flow rules.
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.l2_ternary_table";
         // ---- END SOLUTION ----
 
         final FlowRule rule1 = Utils.buildFlowRule(
@@ -265,7 +262,6 @@ public class L2BridgingComponent {
 
         log.info("Adding L2 multicast rules on {}...", deviceId);
 
-        // *** TODO EXERCISE 5 EXTRA CREDIT
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
@@ -273,21 +269,21 @@ public class L2BridgingComponent {
         // Match unmatched traffic - Match ternary **:**:**:**:**:**
         final PiCriterion unmatchedTrafficCriterion = PiCriterion.builder()
                 .matchTernary(
-                        PiMatchFieldId.of("MODIFY ME"),
-                        MacAddress.valueOf("MODIFY ME").toBytes(),
-                        MacAddress.valueOf("MODIFY ME").toBytes())
+                        PiMatchFieldId.of("hdr.ethernet.dst_addr"),
+                        MacAddress.valueOf("00:00:00:00:00:00").toBytes(),
+                        MacAddress.valueOf("00:00:00:00:00:00").toBytes())
                 .build();
 
         // Action: set multicast group id
         final PiAction setMcastGroupAction = PiAction.builder()
-                .withId(PiActionId.of("MODIFY ME"))
+                .withId(PiActionId.of("IngressPipeImpl.set_multicast_group"))
                 .withParameter(new PiActionParam(
-                        PiActionParamId.of("MODIFY ME"),
+                        PiActionParamId.of("gid"),
                         DEFAULT_BROADCAST_GROUP_ID))
                 .build();
 
         //  Build flow rule.
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.l2_ternary_table";
         // ---- END SOLUTION ----
 
         final FlowRule rule = Utils.buildFlowRule(
@@ -315,23 +311,22 @@ public class L2BridgingComponent {
         log.info("Adding L2 unicast rule on {} for host {} (port {})...",
                 deviceId, host.id(), port);
 
-        // *** TODO EXERCISE 5
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.l2_exact_table";
         // Match exactly on the host MAC address.
         final MacAddress hostMac = host.mac();
         final PiCriterion hostMacCriterion = PiCriterion.builder()
-                .matchExact(PiMatchFieldId.of("MODIFY ME"),
+                .matchExact(PiMatchFieldId.of("hdr.ethernet.dst_addr"),
                         hostMac.toBytes())
                 .build();
 
         // Action: set output port
         final PiAction l2UnicastAction = PiAction.builder()
-                .withId(PiActionId.of("MODIFY ME"))
+                .withId(PiActionId.of("IngressPipeImpl.set_egress_port"))
                 .withParameter(new PiActionParam(
-                        PiActionParamId.of("MODIFY ME"),
+                        PiActionParamId.of("port_num"),
                         port.toLong()))
                 .build();
         // ---- END SOLUTION ----
