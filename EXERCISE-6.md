@@ -1,4 +1,4 @@
-## Exercise 6: Segment Routing v6 (SRv6)
+# Exercise 6: Segment Routing v6 (SRv6)
 
 In this exercise, you will be implementing a simplified version of segment
 routing, a source routing method that steers traffic through a specified set of

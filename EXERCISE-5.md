@@ -1,4 +1,4 @@
-## Exercise 5: IPv6 routing
+# Exercise 5: IPv6 routing
 
 In this exercise, you will be modifying the P4 program and ONOS app to add
 support for IPv6-based (L3) routing between all hosts connected to the fabric,

@@ -1,10 +1,10 @@
-# Exercise 1 - P4Runtime basics
+# Exercise 1: P4Runtime basics
 
 This exercise provides a hands-on introduction to the P4Runtime API. You will be
 asked to:
 
 1. Take a look at the starter P4 code
-2. Compile it for the BMv2 software switch and understand the output (the P4Info 
+2. Compile it for the BMv2 software switch and understand the output (the P4Info
    and BMv2 JSON files)
 3. Start Mininet with a 2x2 topology of `stratum_bmv2` switches
 4. Use the P4Runtime Shell to manually insert table entries in one of the
@@ -137,29 +137,29 @@ You can ignore the ONOS one for now, we will use that in exercise 3 and 4.
 To make sure the container is started without errors, you can use the `make
 mn-log` command to show the Mininet log. Verify that you see the following
 output (press Ctrl-C to exit):
- 
+
 ```
-$ make mn-log 
+$ make mn-log
 docker-compose logs -f mininet
 Attaching to mininet
 mininet    | *** Error setting resource limits. Mininet's performance may be affected.
 mininet    | *** Creating network
 mininet    | *** Adding hosts:
-mininet    | h1a h1b h1c h2 h3 h4 
+mininet    | h1a h1b h1c h2 h3 h4
 mininet    | *** Adding switches:
-mininet    | leaf1 leaf2 spine1 spine2 
+mininet    | leaf1 leaf2 spine1 spine2
 mininet    | *** Adding links:
-mininet    | (h1a, leaf1) (h1b, leaf1) (h1c, leaf1) (h2, leaf1) (h3, leaf2) (h4, leaf2) (spine1, leaf1) (spine1, leaf2) (spine2, leaf1) (spine2, leaf2) 
+mininet    | (h1a, leaf1) (h1b, leaf1) (h1c, leaf1) (h2, leaf1) (h3, leaf2) (h4, leaf2) (spine1, leaf1) (spine1, leaf2) (spine2, leaf1) (spine2, leaf2)
 mininet    | *** Configuring hosts
-mininet    | h1a h1b h1c h2 h3 h4 
+mininet    | h1a h1b h1c h2 h3 h4
 mininet    | *** Starting controller
-mininet    | 
+mininet    |
 mininet    | *** Starting 4 switches
 mininet    | leaf1 stratum_bmv2 @ 50001
 mininet    | leaf2 stratum_bmv2 @ 50002
 mininet    | spine1 stratum_bmv2 @ 50003
 mininet    | spine2 stratum_bmv2 @ 50004
-mininet    | 
+mininet    |
 mininet    | *** Starting CLI:
 ```
 
@@ -235,7 +235,7 @@ If the shell started successfully, you should see the following output:
 ```
 *** Connecting to P4Runtime server at host.docker.internal:50001 ...
 *** Welcome to the IPython shell for P4Runtime ***
-P4Runtime sh >>>    
+P4Runtime sh >>>
 ```
 
 #### Available commands
@@ -276,7 +276,7 @@ You should see the following output:
 ```
 *** Attaching to Mininet CLI...
 *** To detach press Ctrl-D (Mininet will keep running)
-mininet> 
+mininet>
 ```
 
 ### Insert static NDP entries

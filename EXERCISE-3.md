@@ -1,4 +1,4 @@
-# Exercise 3 - Using ONOS as the control plane
+# Exercise 3: Using ONOS as the control plane
 
 This exercise provides a hands-on introduction to ONOS where you will learn how
 to:
