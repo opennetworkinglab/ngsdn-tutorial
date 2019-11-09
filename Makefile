@@ -1,7 +1,7 @@
-include util/docker/Makefile.vars
-
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 curr_dir := $(patsubst %/,%,$(dir $(mkfile_path)))
+
+include util/docker/Makefile.vars
 
 onos_url := http://localhost:8181/onos
 onos_curl := curl --fail -sSL --user onos:rocks --noproxy localhost
