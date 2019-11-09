@@ -5,7 +5,7 @@ set -e
 PTF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 P4SRC_DIR=${PTF_DIR}/../p4src
 P4C_OUT=${P4SRC_DIR}/build
-DOCKER_IMG=ngsdn-tutorial-ptf
+PTF_DOCKER_IMG=${PTF_DOCKER_IMG:-undefined}
 
 runName=ptf-${RANDOM}
 
@@ -21,7 +21,7 @@ echo "*** Starting stratum_bmv2 in Docker (${runName})..."
 docker run --name "${runName}" -d --privileged --rm \
     -v "${PTF_DIR}":/ptf -w /ptf \
     -v "${P4C_OUT}":/p4c-out \
-    "${DOCKER_IMG}" \
+    "${PTF_DOCKER_IMG}" \
     ./lib/start_bmv2.sh > /dev/null
 
 sleep 2
