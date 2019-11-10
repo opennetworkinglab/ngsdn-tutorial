@@ -424,7 +424,7 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
     }
 
 
-    // *** TODO EXERCISE 6 (IPV6 ROUTING)
+    // *** TODO EXERCISE 5 (IPV6 ROUTING)
     //
     // 1. Create a table to to handle NDP messages to resolve the MAC address of
     //    switch. This table should:
@@ -447,7 +447,7 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
     // the name in elsewhere in this exercise.
 
 
-    // *** TODO EXERCISE 7 (SRV6)
+    // *** TODO EXERCISE 6 (SRV6)
     //
     // Implement tables to provide SRV6 logic.
 
@@ -508,7 +508,7 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
         bool do_l3_l2 = true;
 
         if (hdr.icmpv6.isValid() && hdr.icmpv6.type == ICMP6_TYPE_NS) {
-            // *** TODO EXERCISE 6
+            // *** TODO EXERCISE 5
             // Insert logic to handle NDP messages to resolve the MAC address of the
             // switch. You should apply the NDP reply table created before.
             // If this is an NDP NS packet, i.e., if a matching entry is found,
@@ -518,12 +518,12 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
 
         if (do_l3_l2) {
 
-            // *** TODO EXERCISE 6
+            // *** TODO EXERCISE 5
             // Insert logic to match the My Station table and upon hit, the
             // routing table. You should also add a conditional to drop the
             // packet if the hop_limit reaches 0.
 
-            // *** TODO EXERCISE 7
+            // *** TODO EXERCISE 6
             // Insert logic to match the SRv6 My SID and Transit tables as well
             // as logic to perform PSP behavior. HINT: This logic belongs
             // somewhere between checking the switch's my station table and

@@ -100,7 +100,7 @@ class Srv6InsertTest(P4RuntimeTest):
     @autocleanup
     def testPacket(self, pkt, sid_list, next_hop_mac):
 
-        # *** TODO EXERCISE 7
+        # *** TODO EXERCISE 6
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -219,7 +219,7 @@ class Srv6TransitTest(P4RuntimeTest):
     @autocleanup
     def testPacket(self, pkt, next_hop_mac, my_sid):
 
-        # *** TODO EXERCISE 7
+        # *** TODO EXERCISE 6
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -320,7 +320,7 @@ class Srv6EndTest(P4RuntimeTest):
     @autocleanup
     def testPacket(self, pkt, sid_list, next_hop_mac, my_sid):
 
-        # *** *** TODO EXERCISE 7
+        # *** TODO EXERCISE 6
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----
@@ -427,7 +427,7 @@ class Srv6EndPspTest(P4RuntimeTest):
     @autocleanup
     def testPacket(self, pkt, sid_list, next_hop_mac, my_sid):
 
-        # *** TODO EXERCISE 7
+        # *** TODO EXERCISE 6
         # Modify names to match content of P4Info file (look for the fully
         # qualified name of tables, match fields, and actions.
         # ---- START SOLUTION ----

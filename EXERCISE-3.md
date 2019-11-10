@@ -1,4 +1,4 @@
-# Exercise 3 - Using ONOS as the control plane
+# Exercise 3: Using ONOS as the control plane
 
 This exercise provides a hands-on introduction to ONOS where you will learn how
 to:
@@ -38,7 +38,7 @@ Requesting ONOS to pre-load the following built-in apps:
 * `gui`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
 * `drivers.bmv2`: BMv2/Stratum drivers based on P4Runtime, gNMI, and gNOI
 * `lldpprovider`: LLDP-based link discovery application (used in Exercise 4)
-* `hostprovider`: Host discovery application (used in Exercise 5)
+* `hostprovider`: Host discovery application (used in Exercise 4)
 
 
 Once ONOS has started, you can check its log using the `make onos-log` command.

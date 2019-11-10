@@ -1,4 +1,4 @@
-# Exercise 2 - Yang, OpenConfig, and gNMI basics
+# Exercise 2: Yang, OpenConfig, and gNMI basics
 
 This set of exercises is designed to give you more exposure to YANG, OpenConfig,
 and gNMI.
