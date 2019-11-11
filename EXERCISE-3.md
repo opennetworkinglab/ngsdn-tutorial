@@ -37,13 +37,8 @@ Requesting ONOS to pre-load the following built-in apps:
 
 * `gui`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
 * `drivers.bmv2`: BMv2/Stratum drivers based on P4Runtime, gNMI, and gNOI
-<<<<<<< HEAD
-* `lldpprovider`: LLDP-based link discovery application (used in Exercise 4)
-* `hostprovider`: Host discovery application (used in Exercise 4)
-=======
 * `lldpprovider`: LLDP-based link discovery application
 * `hostprovider`: Host discovery application
->>>>>>> a431c17... Updating instructions to remove advanced tutorial info
 
 
 Once ONOS has started, you can check its log using the `make onos-log` command.
