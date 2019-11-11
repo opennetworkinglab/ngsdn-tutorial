@@ -258,6 +258,7 @@ public class L2BridgingComponent {
      *
      * @param deviceId device ID where to install the rules
      */
+    @SuppressWarnings("unused")
     private void insertUnmatchedBridgingFlowRule(DeviceId deviceId) {
 
         log.info("Adding L2 multicast rules on {}...", deviceId);
