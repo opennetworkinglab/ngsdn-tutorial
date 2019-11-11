@@ -11,4 +11,8 @@ ptf/ptf.pcap
 **/*.iml
 **/*.pyc
 **/*.bak
+**/.classpath
+**/.project
+**/.settings
+**/.factorypath
 util/.pipe_cfg
