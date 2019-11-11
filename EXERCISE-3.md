@@ -37,8 +37,13 @@ Requesting ONOS to pre-load the following built-in apps:
 
 * `gui`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
 * `drivers.bmv2`: BMv2/Stratum drivers based on P4Runtime, gNMI, and gNOI
+<<<<<<< HEAD
 * `lldpprovider`: LLDP-based link discovery application (used in Exercise 4)
 * `hostprovider`: Host discovery application (used in Exercise 4)
+=======
+* `lldpprovider`: LLDP-based link discovery application
+* `hostprovider`: Host discovery application
+>>>>>>> a431c17... Updating instructions to remove advanced tutorial info
 
 
 Once ONOS has started, you can check its log using the `make onos-log` command.
@@ -89,20 +94,6 @@ Make sure you see the following list of apps displayed:
 This is definitely more apps than what defined in `$ONOS_APPS`. That's
 because each app in ONOS can define other apps as dependencies. When loading an
 app, ONOS automatically resolve dependencies and loads all other required apps.
-
-**Disable link discovery service**
-
-Link discovery will be the focus of the next exercise. For now, this service
-lacks support in the P4 program. We suggest you deactivate it for the rest of
-this exercise, to avoid running into issues. To deactivate the link discovery
-service, using the following ONOS CLI command:
-
-```
-onos> app deactivate lldpprovider
-```
-
-To quit out of the ONOS CLI, use `Ctrl-D`. This will just end the CLI process
-and will not stop the ONOS process.
 
 **Restart ONOS in case of errors**
 
@@ -306,8 +297,7 @@ When asked, use the username `onos` and password
 `rocks`.
 
 You should see 4 devices in the topology view, corresponding to the 4 switches
-of our 2x2 fabric. Press `L` to show device labels. Because link discovery is
-not yet implemented, the ONOS UI will not show any links between the devices.
+of our 2x2 fabric. Press `L` to show device labels.
 
 While here, feel free to interact with and discover the ONOS UI. For more
 information on how to use the ONOS web UI please refer to this guide:

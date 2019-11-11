@@ -1,4 +1,4 @@
-# Next-Gen SDN Tutorial (Advanced)
+# Next-Gen SDN Tutorial
 
 Welcome to the Next-Gen SDN tutorial!
 
@@ -164,14 +164,4 @@ Click on the exercise name to see the instructions:
  1. [P4Runtime basics](./EXERCISE-1.md)
  2. [Yang, OpenConfig, and gNMI basics](./EXERCISE-2.md)
  3. [Using ONOS as the control plane](./EXERCISE-3.md)
- 4. [Enabling link discovery via P4Runtime packet I/O](./EXERCISE-4.md)
- 5. [Implementing L2 Bridging](./EXERCISE-5.md)
- 6. [Implementing IPv6 routing with ECMP](./EXERCISE-6.md)
- 7. [Implementing SRv6](./EXERCISE-7.md)
 
-## Solutions
-
-You can find solutions for each exercise in the [solution](solution) directory.
-Feel free to compare your solution to the reference one whenever you feel stuck.
-
-[![Build Status](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial.svg?branch=master)](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial)
