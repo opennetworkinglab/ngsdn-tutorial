@@ -154,7 +154,7 @@ public class L2BridgingComponent {
         insertMulticastGroup(deviceId);
         insertMulticastFlowRules(deviceId);
         // Uncomment the following line after you have implemented the method:
-        // insertUnmatchedBridgingFlowRule(deviceId);
+        insertUnmatchedBridgingFlowRule(deviceId);
     }
 
     /**

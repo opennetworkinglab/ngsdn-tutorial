@@ -59,7 +59,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
         immediate = true,
         // *** TODO EXERCISE 6
         // set to true when ready
-        enabled = false,
+        enabled = true,
         service = Srv6Component.class
 )
 public class Srv6Component {
@@ -140,7 +140,7 @@ public class Srv6Component {
         // *** TODO EXERCISE 6
         // Fill in the table ID for the SRv6 my segment identifier table
         // ---- START SOLUTION ----
-        String tableId = "MODIFY ME";
+        String tableId = "IngressPipeImpl.srv6_my_sid";
         // ---- END SOLUTION ----
 
         // *** TODO EXERCISE 6
@@ -148,12 +148,12 @@ public class Srv6Component {
         // ---- START SOLUTION ----
         PiCriterion match = PiCriterion.builder()
                 .matchLpm(
-                        PiMatchFieldId.of("MODIFY ME"),
+                        PiMatchFieldId.of("hdr.ipv6.dst_addr"),
                         mySid.toOctets(), 128)
                 .build();
 
         PiTableAction action = PiAction.builder()
-                .withId(PiActionId.of("MODIFY ME"))
+                .withId(PiActionId.of("IngressPipeImpl.srv6_end"))
                 .build();
         // ---- END SOLUTION ----
 
@@ -181,14 +181,14 @@ public class Srv6Component {
         // *** TODO EXERCISE 6
         // Fill in the table ID for the SRv6 transit table.
         // ---- START SOLUTION ----
-        String tableId = "MODIFY ME";
+        String tableId = "IngressPipeImpl.srv6_transit";
         // ---- END SOLUTION ----
 
         // *** TODO EXERCISE 6
         // Modify match field, action id, and action parameters to match your P4Info.
         // ---- START SOLUTION ----
         PiCriterion match = PiCriterion.builder()
-                .matchLpm(PiMatchFieldId.of("MODIFY ME"), destIp.toOctets(), prefixLength)
+                .matchLpm(PiMatchFieldId.of("hdr.ipv6.dst_addr"), destIp.toOctets(), prefixLength)
                 .build();
 
         List<PiActionParam> actionParams = Lists.newArrayList();
@@ -220,7 +220,7 @@ public class Srv6Component {
         // *** TODO EXERCISE 6
         // Fill in the table ID for the SRv6 transit table
         // ---- START SOLUTION ----
-        String tableId = "MODIFY ME";
+        String tableId = "IngressPipeImpl.srv6_transit";
         // ---- END SOLUTION ----
 
         FlowRuleOperations.Builder ops = FlowRuleOperations.builder();

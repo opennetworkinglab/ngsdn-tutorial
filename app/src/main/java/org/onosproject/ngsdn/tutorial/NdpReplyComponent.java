@@ -62,7 +62,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
         immediate = true,
         // *** TODO EXERCISE 5
         // Enable component (enabled = true)
-        enabled = false
+        enabled = true
 )
 public class NdpReplyComponent {
 
@@ -165,13 +165,13 @@ public class NdpReplyComponent {
 
         if (interfaces.isEmpty()) {
             log.info("{} does not have any IPv6 interface configured",
-                     deviceId);
+                    deviceId);
             return;
         }
 
         // Generate and install flow rules.
         log.info("Adding rules to {} to generate NDP NA for {} IPv6 interfaces...",
-                 deviceId, interfaces.size());
+                deviceId, interfaces.size());
         final Collection<FlowRule> flowRules = interfaces.stream()
                 .map(this::getIp6Addresses)
                 .flatMap(Collection::stream)
@@ -206,11 +206,11 @@ public class NdpReplyComponent {
         final PiActionParam targetMacParam = new PiActionParam(
                 PiActionParamId.of("target_mac"), targetMac.toBytes());
         final PiAction action = PiAction.builder()
-                .withId(PiActionId.of("MODIFY ME"))
+                .withId(PiActionId.of("IngressPipeImpl.ndp_ns_to_na"))
                 .withParameter(targetMacParam)
                 .build();
         // Table ID.
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.ndp_reply_table";
         // ---- END SOLUTION ----
 
         // Build flow rule.

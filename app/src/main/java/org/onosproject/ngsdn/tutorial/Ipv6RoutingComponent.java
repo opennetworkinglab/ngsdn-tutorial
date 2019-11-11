@@ -83,7 +83,7 @@ import static org.onosproject.ngsdn.tutorial.AppConstants.INITIAL_SETUP_DELAY;
         immediate = true,
         // *** TODO EXERCISE 5
         // set to true when ready
-        enabled = false
+        enabled = true
 )
 public class Ipv6RoutingComponent {
 
@@ -192,17 +192,17 @@ public class Ipv6RoutingComponent {
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.my_station_table";
 
         final PiCriterion match = PiCriterion.builder()
                 .matchExact(
-                        PiMatchFieldId.of("MODIFY ME"),
+                        PiMatchFieldId.of("hdr.ethernet.dst_addr"),
                         myStationMac.toBytes())
                 .build();
 
         // Creates an action which do *NoAction* when hit.
         final PiTableAction action = PiAction.builder()
-                .withId(PiActionId.of("MODIFY ME"))
+                .withId(PiActionId.of("NoAction"))
                 .build();
         // ---- END SOLUTION ----
 
@@ -237,13 +237,13 @@ public class Ipv6RoutingComponent {
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.routing_v6_table";
         for (MacAddress nextHopMac : nextHopMacs) {
             final PiAction action = PiAction.builder()
-                    .withId(PiActionId.of("MODIFY ME"))
+                    .withId(PiActionId.of("IngressPipeImpl.set_next_hop"))
                     .withParameter(new PiActionParam(
                             // Action param name.
-                            PiActionParamId.of("MODIFY ME"),
+                            PiActionParamId.of("dmac"),
                             // Action param value.
                             nextHopMac.toBytes()))
                     .build();
@@ -272,10 +272,10 @@ public class Ipv6RoutingComponent {
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.routing_v6_table";
         final PiCriterion match = PiCriterion.builder()
                 .matchLpm(
-                        PiMatchFieldId.of("MODIFY ME"),
+                        PiMatchFieldId.of("hdr.ipv6.dst_addr"),
                         ip6Prefix.address().toOctets(),
                         ip6Prefix.prefixLength())
                 .build();
@@ -306,17 +306,17 @@ public class Ipv6RoutingComponent {
         // Modify P4Runtime entity names to match content of P4Info file (look
         // for the fully qualified name of tables, match fields, and actions.
         // ---- START SOLUTION ----
-        final String tableId = "MODIFY ME";
+        final String tableId = "IngressPipeImpl.l2_exact_table";
         final PiCriterion match = PiCriterion.builder()
-                .matchExact(PiMatchFieldId.of("MODIFY ME"),
+                .matchExact(PiMatchFieldId.of("hdr.ethernet.dst_addr"),
                         nexthopMac.toBytes())
                 .build();
 
 
         final PiAction action = PiAction.builder()
-                .withId(PiActionId.of("MODIFY ME"))
+                .withId(PiActionId.of("IngressPipeImpl.set_egress_port"))
                 .withParameter(new PiActionParam(
-                        PiActionParamId.of("MODIFY ME"),
+                        PiActionParamId.of("port_num"),
                         outPort.toLong()))
                 .build();
         // ---- END SOLUTION ----
