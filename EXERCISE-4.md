@@ -1,14 +1,14 @@
 # Exercise 4: Enabling ONOS built-in services
 
 In this exercise, you will have to integrate ONOS built-in services for link and
-host discovery with you P4 program. Such built-in services are based on the
+host discovery with your P4 program. Such built-in services are based on the
 ability of switches to send data plane packets to the controller (packet-in) and
 vice versa (packet-out).
 
 To make this work with your P4 program, you will need to apply simple changes to
 the starter P4 code, validate the P4 changes using PTF-based data plane unit
 tests, and finally, apply changes to the pipeconf Java implementation to enable
-ONOS's built-in apps to use the packet-in/out via P4Runtime.
+ONOS's built-in apps to use packet-in/out via P4Runtime.
 
 The exercise has two parts:
 
@@ -359,7 +359,7 @@ memories, usually much smaller).
 These tables are applied to packets in an order defined in the `apply` block
 of the ingress pipeline (`IngressPipeImpl`):
 
-```
+```p4
 if (!l2_exact_table.apply().hit) {
     l2_ternary_table.apply();
 }
@@ -405,7 +405,7 @@ section of the JSON file).
 Before starting, you need to enable the app's L2BridgingComponent, which is
 currently disabled.
 
-1. Open up file:
+1. Open file:
    `app/src/main/java/org/onosproject/ngsdn/tutorial/L2BridgingComponent.java`
 
 2. Look for the class definition at the top and enable the component by setting
@@ -442,7 +442,7 @@ INFO  [L2BridgingComponent] Adding L2 multicast rules on device:leaf2...
 ### 2. Examine flow rules and groups
 
 Check the ONOS flow rules, you should see 2 new flow rules for the
-`l2_ternary_table` installed by the L2BridgingComponent. For example, to show
+`l2_ternary_table` installed by L2BridgingComponent. For example, to show
 all flow rules installed so far on device `leaf1`:
 
 ```

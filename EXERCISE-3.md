@@ -273,7 +273,7 @@ deviceId=device:leaf1, groupCount=1
 ```
 
 "Group" is an ONOS northbound abstraction that is mapped internally to different
-types of P4Runtime entities. In this case you should see 1 group of type
+types of P4Runtime entities. In this case, you should see 1 group of type
 `CLONE`, internally mapped to a P4Runtime `CloneSessionEntry`, here used to
 clone packets to the controller via packet-in. We'll talk more about controller
 packet-in/out in the next session.
