@@ -192,7 +192,7 @@ get the ingress packets counter in the protobuf messages.
 `ygot` can also be used to generate Go structs that adhere to the YANG model
 and that are capable of validating the structure, type, and values of data.
 
-*Extra Credit:* If you have extra time or are interested in using YANG ang Go
+*Extra Credit:* If you have extra time or are interested in using YANG and Go
 together, try generating Go code for the `demo-port` module.
 
 ```
