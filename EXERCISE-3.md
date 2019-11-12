@@ -261,21 +261,7 @@ deviceId=device:leaf1, flowRuleCount=3
 ```
 
 This list include flow rules installed by the ONOS built-in services such as
-`hostprovider`.
-
-The `hostprovider` app provides host discovery capabilities by installing **flow
-objectives** to intercept ARP (`selector=[ETH_TYPE:arp]`) and NDP packets
-(`selector=[ETH_TYPE:ipv6, IP_PROTO:58, ICMPV6_TYPE:...]`), which are cloned to
-the controller (`treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]`).
-
-Flow objectives are translated to flow rules (and groups) by the pipeconf, which
-provides a `Pipeliner` behavior implementation
-([PipelinerImpl.java][PipelinerImpl.java]). Moreover, these flow rules specify a
-match key by using ONOS standard/known header fields (or "Criteria" using ONOS
-terminology), such as `ETH_TYPE`, `ICMPV6_TYPE`, etc.  These types are mapped to
-P4Info-specific match fields by the pipeline interpreter
-([InterpreterImpl.java][InterpreterImpl.java], look for method
-`mapCriterionType`)
+`hostprovider`. We'll talk more about these services in the next exercise.
 
 To show all groups installed so far, you can use the `groups` command. For
 example to show groups on `leaf1`:
@@ -287,27 +273,22 @@ deviceId=device:leaf1, groupCount=1
 ```
 
 "Group" is an ONOS northbound abstraction that is mapped internally to different
-types of P4Runtime entities. In this case you should see 1 group of type `CLONE`.
-
-`CLONE` groups are mapped to P4Runtime `CloneSessionEntry` entities, here used
-to clone packets to the controller via packet-in. Note that the `id=0x63` is the
-same as `#define CPU_CLONE_SESSION_ID 99` in the P4 program. This ID is
-hardcoded in the pipeconf code. The group is created by
-[PipelinerImpl.java][PipelinerImpl.java] in response to flow objectives mapped
-to the ACL table and requesting to clone packets such as NDP and ARP.
+types of P4Runtime entities. In this case you should see 1 group of type
+`CLONE`, internally mapped to a P4Runtime `CloneSessionEntry`, here used to
+clone packets to the controller via packet-in. We'll talk more about controller
+packet-in/out in the next session.
 
 ### 5. Visualize the topology on the ONOS web UI
 
-Using the ONF Cloud Tutorial Portal, click on the "ONOS UI" button in the top
-bar. If you are using the tutorial VM, open up a browser (e.g. Firefox) to
+Using the ONF Cloud Tutorial Portal, access the ONOS UI.
+If you are using the tutorial VM, open up a browser (e.g. Firefox) to
 <http://127.0.0.1:8181/onos/ui>.
 
-When asked, use the username `onos` and password
-`rocks`.
+When asked, use the username `onos` and password `rocks`.
 
 You should see 4 devices in the topology view, corresponding to the 4 switches
 of our 2x2 fabric. Press `L` to show device labels. Because link discovery is
-not yet implemented, the ONOS UI will not show any links between the devices.
+not enabled, the ONOS UI will not show any links between the devices.
 
 While here, feel free to interact with and discover the ONOS UI. For more
 information on how to use the ONOS web UI please refer to this guide:

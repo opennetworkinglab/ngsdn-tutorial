@@ -1,14 +1,21 @@
 # Exercise 4: Enabling ONOS built-in services
 
-In this exercise, you will use P4Runtime packet I/O to implement discovery
-of dynamic network components like links between switches or the
-presence of hosts. For this you have to integrate the ONOS built-in link
-discovery service with your P4 program. ONOS performs link discovery by using
-controller packet-in/out. To make this work, you will need to apply simple
-changes to the starter P4 code, validate the P4 changes using PTF-based data
-plane unit tests, and finally, apply changes to the pipeconf Java implementation
-to enable ONOS's built-in apps to use the packet-in/out support provided by your
-P4 implementation.
+In this exercise, you will have to integrate ONOS built-in services for link and
+host discovery with you P4 program. Such built-in services are based on the
+ability of switches to send data plane packets to the controller (packet-in) and
+vice versa (packet-out).
+
+To make this work with your P4 program, you will need to apply simple changes to
+the starter P4 code, validate the P4 changes using PTF-based data plane unit
+tests, and finally, apply changes to the pipeconf Java implementation to enable
+ONOS's built-in apps to use the packet-in/out via P4Runtime.
+
+The exercise has two parts:
+
+1. Enable packet I/O and verify link discovery
+2. Host discovery & L2 bridging
+
+But first, let's review how controller packet I/O works with P4Runtime.
 
 ## Controller packet I/O with P4Runtime
 
@@ -17,7 +24,7 @@ carrying arbitrary metadata in P4Runtime `PacketIn` and `PacketOut` messages.
 Two special headers are defined and annotated with the standard P4 annotation
 `@controller_header`:
 
-```
+```p4
 @controller_header("packet_in")
 header cpu_in_header_t {
     port_num_t ingress_port;
@@ -32,7 +39,7 @@ header cpu_out_header_t {
 ```
 
 These headers are used to carry the original switch ingress port of a packet-in,
-and specify the intended output port for a packet-out.
+and to specify the intended output port for a packet-out.
 
 When the P4Runtime agent in Stratum receives a packet from the switch CPU port,
 it expects to find the `cpu_in_header_t` header as the first one in the frame.
@@ -45,7 +52,7 @@ Similarly, when Stratum receives a P4Runtime `PacketOut` message, it uses the
 values found in the `PacketOut`'s metadata fields to serialize and prepend a
 `cpu_out_header_t` to the frame before feeding it to the pipeline parser.
 
-## Exercise steps
+## Part 1: enable packet I/O and verify link discovery
 
 ### 1. Modify P4 program
 
@@ -53,16 +60,15 @@ The P4 starter code already provides support for the following capabilities:
 
 * Parse the `cpu_out` header (if the ingress port is the CPU one)
 * Emit the `cpu_in` header as the first one in the deparser
-* Provide an ACL table with ternary match fields and an action to clone
+* Provide an ACL table with ternary match fields and an action to send or clone
   packets to the CPU port (used to generate a packet-ins)
 
 Something is missing to provide complete packet-in/out support, and you have to
 modify the P4 program to implement it:
 
 1. Open `p4src/main.p4`;
-2. Look for the implementation of the egress pipeline (`control EgressPipeImpl`);
-3. Modify the code where requested (look for `TODO EXERCISE 4`);
-4. Compile the modified P4 program using the `make p4-build` command. Make sure
+2. Modify the code where requested (look for `TODO EXERCISE 4`);
+3. Compile the modified P4 program using the `make p4-build` command. Make sure
    to address any compiler errors before continuing.
 
 At this point, our P4 pipeline should be ready for testing.
@@ -92,9 +98,16 @@ For example:
 
     make p4-test TEST=packetio.PacketOutTest
 
-If all `packetio` tests succeed, congratulations! You can move to the next step.
+#### Check for regressions
 
-**How to debug failing tests?**
+To make sures the new changes are not breaking other features, make sure to run
+tests for L2 bridging support.
+
+    make p4-test TEST=bridging
+
+If all tests succeed, congratulations! You can move to the next step.
+
+#### How to debug failing tests?
 
 When running PTF tests, multiple files are produced that you can use to spot bugs:
 
@@ -111,9 +124,9 @@ The `PipelineInterpreter` is the ONOS driver behavior used to map the ONOS
 representation of packet-in/out to one that is consistent with your P4
 pipeline (along with other similar mappings).
 
-Specifically, to use services like LLDP-based link discovery, ONOS built-in
-apps need to be able to set the output port of a packet-out and access the
-original ingress port of a packet-in.
+Specifically, to use services like link and host discovery, ONOS built-in apps
+need to be able to set the output port of a packet-out and access the original
+ingress port of a packet-in.
 
 In the following, you will be asked to apply a few simple changes to the
 `PipelineInterpreter` implementation:
@@ -209,27 +222,67 @@ error with packet-in/out handling. In case of errors, it's possible that you
 have not modified `InterpreterImpl.java` correctly. In this case, go back to
 exercise step 3.
 
-Verify flow rules, you should see 2 new flow rules for each device. For example,
+Verify flow rules, you should see 5 flow rules for each device. For example,
 to show all flow rules installed so far on device `leaf1`:
 
 ```
 onos> flows -s any device:leaf1
 deviceId=device:leaf1, flowRuleCount=5
+    ADDED, ..., table=IngressPipeImpl.acl_table, priority=40000, selector=[ETH_TYPE:lldp], treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]
+    ADDED, ..., table=IngressPipeImpl.acl_table, priority=40000, selector=[ETH_TYPE:bddp], treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]
+    ADDED, ..., table=IngressPipeImpl.acl_table, priority=40000, selector=[ETH_TYPE:arp], treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]
+    ADDED, ..., table=IngressPipeImpl.acl_table, priority=40000, selector=[ETH_TYPE:ipv6, IP_PROTO:58, ICMPV6_TYPE:136], treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]
+    ADDED, ..., table=IngressPipeImpl.acl_table, priority=40000, selector=[ETH_TYPE:ipv6, IP_PROTO:58, ICMPV6_TYPE:135], treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]
     ...
-    ADDED, ..., table=IngressPipeImpl.acl, priority=40000, selector=[ETH_TYPE:lldp], treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]
-    ADDED, ..., table=IngressPipeImpl.acl, priority=40000, selector=[ETH_TYPE:bddp], treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]
 ```
 
 These flow rules are the result of the translation of flow objectives generated
-by the `lldpprovider` app., and used to to intercept LLDP and BBDP packets
-(`selector=[ETH_TYPE:lldp]` and `selector=[ETH_TYPE:bbdp]`), periodically
-emitted on all devices' ports as P4Runtime packet-outs, allowing for automatic
-link discovery.
+by the `hostprovider` and `lldpprovider` built-in apps.
+
+Flow objectives are translated by the pipeconf, which provides a `Pipeliner`
+behavior implementation ([PipelinerImpl.java][PipelinerImpl.java]). These flow
+rules specify a match key by using ONOS standard/known header fields, such as
+`ETH_TYPE`, `ICMPV6_TYPE`, etc. These types are mapped to P4Info-specific match
+fields by the pipeline interpreter
+([InterpreterImpl.java][InterpreterImpl.java], look for method
+`mapCriterionType`)
+
+The `hostprovider` app provides host discovery capabilities by intercepting ARP
+(`selector=[ETH_TYPE:arp]`) and NDP packets (`selector=[ETH_TYPE:ipv6,
+IP_PROTO:58, ICMPV6_TYPE:...]`), which are cloned to the controller
+(`treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]`). Similarly,
+`lldpprovider` generates flow objectives to intercept LLDP and BBDP packets
+(`selector=[ETH_TYPE:lldp]` and `selector=[ETH_TYPE:bbdp]` ) periodically
+emitted on all devices' ports as P4Runtime packet-outs, allowing automatic link
+discovery.
+
+All flow rules refer to P4 action `clone_to_cpu()`, which invokes a
+v1model-specific primitive to set the clone session ID:
+
+```p4
+action clone_to_cpu() {
+    clone3(CloneType.I2E, CPU_CLONE_SESSION_ID, ...);
+}
+```
+
+To actually generate P4Runtime packet-in messages for matched packets, the
+pipeconf's pipeliner generates a `CLONE` *group*, internally translated into a
+P4Runtime`CloneSessionEntry`, that maps `CPU_CLONE_SESSION_ID` to a set of
+ports, just the CPU one in this case.
+
+To show all groups installed in ONOS, you can use the `groups` command. For
+example, to show groups on `leaf1`:
+```
+onos> groups any device:leaf1
+deviceId=device:leaf1, groupCount=1
+   id=0x63, state=ADDED, type=CLONE, ..., appId=org.onosproject.core, referenceCount=0
+       id=0x63, bucket=1, ..., weight=-1, actions=[OUTPUT:CONTROLLER]
+```
 
 ### 7. Visualize links on the ONOS UI
 
-Using the ONF Cloud Tutorial Portal, click on the "ONOS UI" button in the top
-bar. If you are using the tutorial VM, open up a browser (e.g. Firefox) to
+Using the ONF Cloud Tutorial Portal, access the ONOS UI.
+If you are using the tutorial VM, open up a browser (e.g. Firefox) to
 <http://127.0.0.1:8181/onos/ui>.
 
 On the same page where the ONOS topology view is shown:
@@ -244,21 +297,30 @@ counters.
 In this case, you should see approx 1 packet/s, as that's the rate of
 packet-outs generated by the `lldpprovider` app.
 
-## Host discovery & L2 bridging
+## Part 2: Host discovery & L2 bridging
 
-By fixing Packet I/O in the pipeline interpreter we did not only get link
-discovery, but also enabled the built-in `hostprovider` app to perform *host*
-discovery. The controller snoops incoming ARP/NDP packets on the switch and
-deduces where a host is connected to from the packets (meta) data. With the
-knowledge about the topology it can then insert L2 unicast rules to enable
-connectivity.
+By fixing packet I/O support in the pipeline interpreter we did not only get
+link discovery, but also enabled the built-in `hostprovider` app to perform
+*host* discovery. This service is required by our tutorial app to populate
+the bridging tables of our P4 pipeline, to forward packets based on the
+Ethernet destination address.
 
-### Overview
+Indeed, the `hostprovider` app works by snooping incoming ARP/NDP packets on the
+switch and deducing where a host is connected to from the packet-in message
+metadata. Other apps in ONOS, like our tutorial app, can then listen for
+host-related events and access information about their addresses (IP, MAC) and
+location.
 
-The ONOS app assumes that hosts of a given subnet are all connected to the same
-leaf, and two interfaces of two different leaves cannot be configured with the
-same IPv6 subnet. In other words, L2 bridging is allowed only for hosts
-connected to the same leaf.
+In the following, you will be asked to enable the app's `L2BridgingComponent`,
+and to verify that host discovery works by pinging hosts on Mininet. But before,
+it's useful to review how the starter code implements L2 bridging.
+
+### Overview: our implementation of L2 bridging
+
+To make things easier, the starter code assumes that hosts of a given subnet are
+all connected to the same leaf, and two interfaces of two different leaves
+cannot be configured with the same IPv6 subnet. In other words, L2 bridging is
+allowed only for hosts connected to the same leaf.
 
 The Mininet script [topo.py](mininet/topo.py) used in this tutorial defines 4
 subnets:
@@ -271,7 +333,7 @@ subnets:
 The same IPv6 prefixes are defined in the [netcfg.json](netcfg.json) file and
 are used to provide interface configuration to ONOS.
 
-### Our P4 implementation of L2 bridging
+#### Data plane
 
 The P4 code defines tables to forward packets based on the Ethernet address,
 precisely, two distinct tables, to handle two different types of L2 entries:
@@ -303,26 +365,26 @@ if (!l2_exact_table.apply().hit) {
 }
 ```
 
-The ternary table has lower priority and it's applied only if a matching entry
+The ternary table has lower priority, and it's applied only if a matching entry
 is not found in the exact one.
 
-**Note**: To keep things simple, we won't be using VLANs to segment our L2
-domains. As such, when matching packets in the `l2_ternary_table`, these will be
-broadcasted to ALL host-facing ports.
+**Note**: we won't be using VLANs to segment our L2 domains. As such, when
+matching packets in the `l2_ternary_table`, these will be broadcasted to ALL
+host-facing ports.
 
-### ONOS L2BridgingComponent
+#### Control plane (L2BridgingComponent)
 
-We already provide an ONOS app that controls the L2 bridging parts of the P4
-program. The source code of it is located here: `app/src/main/java/org/p4/p4d2/tutorial/L2BridgingComponent.java`
+We already provide an ONOS app component controlling the L2 bridging tables of
+the P4 program: [L2BridgingComponent.java][L2BridgingComponent.java]
 
-This app component defines two event listener located at the bottom of the
+This app component defines two event listeners located at the bottom of the
 `L2BridgingComponent` class, `InternalDeviceListener` for device events (e.g.
 connection of a new switch) and `InternalHostListener` for host events (e.g. new
 host discovered). These listeners in turn call methods like:
 
-* `setUpDevice()`: responsible for creating a multicast group for all host-facing
-  ports and inserting flow rules to broadcast/multicast packets such as ARP and
-  NDP messages;
+* `setUpDevice()`: responsible for creating a multicast groups for all
+  host-facing ports and inserting flow rules for the `l2_ternary_table` pointing
+  to such groups.
 
 * `learnHost()`: responsible for inserting unicast L2 entries based on the
   discovered host location.
@@ -338,47 +400,79 @@ determine whether a port is expected to be facing hosts or not, we look at the
 interface configuration in [netcfg.json](netcfg.json) file (look for the `ports`
 section of the JSON file).
 
-### Examine flow rules and groups
+### 1. Enable L2BridgingComponent and reload the app
 
-Check the ONOS flow rules, you should now see flow rules installed by our app.
-For example, to show all flow rules installed so far on device `leaf1`:
+Before starting, you need to enable the app's L2BridgingComponent, which is
+currently disabled.
+
+1. Open up file:
+   `app/src/main/java/org/onosproject/ngsdn/tutorial/L2BridgingComponent.java`
+
+2. Look for the class definition at the top and enable the component by setting
+   the `enabled` flag to `true`
+
+   ```java
+   @Component(
+           immediate = true,
+           enabled = true
+   )
+   public class L2BridgingComponent {
+   ```
+
+3. Build the ONOS app with `make app-build`
+
+4. Re-load the app to apply the changes with `make app-reload`
+
+After reloading the app, you should see the following messages in the ONOS log
+(`make onos-log`):
+
+```
+INFO  [L2BridgingComponent] Started
+...
+INFO  [L2BridgingComponent] *** L2 BRIDGING - Starting initial set up for device:leaf1...
+INFO  [L2BridgingComponent] Adding L2 multicast group with 4 ports on device:leaf1...
+INFO  [L2BridgingComponent] Adding L2 multicast rules on device:leaf1...
+...
+INFO  [L2BridgingComponent] *** L2 BRIDGING - Starting initial set up for device:leaf2...
+INFO  [L2BridgingComponent] Adding L2 multicast group with 2 ports on device:leaf2...
+INFO  [L2BridgingComponent] Adding L2 multicast rules on device:leaf2...
+...
+```
+
+### 2. Examine flow rules and groups
+
+Check the ONOS flow rules, you should see 2 new flow rules for the
+`l2_ternary_table` installed by the L2BridgingComponent. For example, to show
+all flow rules installed so far on device `leaf1`:
 
 ```
 onos> flows -s any device:leaf1
 deviceId=device:leaf1, flowRuleCount=...
-    ADDED, bytes=0, packets=0, table=IngressPipeImpl.l2_exact_table, priority=10, selector=[hdr.ethernet.dst_addr=0xbb00000001], treatment=[immediate=[IngressPipeImpl.set_egress_port(port_num=0x1)]]
     ...
-    ADDED, bytes=0, packets=0, table=IngressPipeImpl.l2_ternary_table, priority=10, selector=[hdr.ethernet.dst_addr=0x333300000000&&&0xffff00000000], treatment=[immediate=[IngressPipeImpl.set_multicast_group(gid=0xff)]]
-    ADDED, bytes=3596, packets=29, table=IngressPipeImpl.l2_ternary_table, priority=10, selector=[hdr.ethernet.dst_addr=0xffffffffffff&&&0xffffffffffff], treatment=[immediate=[IngressPipeImpl.set_multicast_group(gid=0xff)]]
+    ADDED, ..., table=IngressPipeImpl.l2_ternary_table, priority=10, selector=[hdr.ethernet.dst_addr=0x333300000000&&&0xffff00000000], treatment=[immediate=[IngressPipeImpl.set_multicast_group(gid=0xff)]]
+    ADDED, ..., table=IngressPipeImpl.l2_ternary_table, priority=10, selector=[hdr.ethernet.dst_addr=0xffffffffffff&&&0xffffffffffff], treatment=[immediate=[IngressPipeImpl.set_multicast_group(gid=0xff)]]
     ...
 ```
 
-To show also the groups installed so far, you can use the `groups` command. For
-example to show groups on `leaf1`:
+To show also the multicast groups, you can use the `groups` command. For example
+to show groups on `leaf1`:
 ```
 onos> groups any device:leaf1
 deviceId=device:leaf1, groupCount=2
-   id=0x63, state=ADDED, type=CLONE, bytes=0, packets=0, appId=org.onosproject.core, referenceCount=0
-       id=0x63, bucket=1, bytes=0, packets=0, weight=-1, actions=[OUTPUT:CONTROLLER]
-   id=0xff, state=ADDED, type=ALL, bytes=0, packets=0, appId=org.onosproject.ngsdn-tutorial, referenceCount=0
-       id=0xff, bucket=1, bytes=0, packets=0, weight=-1, actions=[OUTPUT:3]
-       id=0xff, bucket=2, bytes=0, packets=0, weight=-1, actions=[OUTPUT:4]
-       id=0xff, bucket=3, bytes=0, packets=0, weight=-1, actions=[OUTPUT:5]
-       id=0xff, bucket=4, bytes=0, packets=0, weight=-1, actions=[OUTPUT:6]
+   id=0x63, state=ADDED, type=CLONE, ..., appId=org.onosproject.core, referenceCount=0
+       id=0x63, bucket=1, ..., weight=-1, actions=[OUTPUT:CONTROLLER]
+   id=0xff, state=ADDED, type=ALL, ..., appId=org.onosproject.ngsdn-tutorial, referenceCount=0
+       id=0xff, bucket=1, ..., weight=-1, actions=[OUTPUT:3]
+       id=0xff, bucket=2, ..., weight=-1, actions=[OUTPUT:4]
+       id=0xff, bucket=3, ..., weight=-1, actions=[OUTPUT:5]
+       id=0xff, bucket=4, ..., weight=-1, actions=[OUTPUT:6]
 ```
-
-The `CLONE` group is the same introduced in Exercise 3, which maps to P4Runtime
-`CloneSessionEntry` and it's used to clone packets to the controller via
-packet-in.
 
 The `ALL` group is a new one, created by our app (`appId=org.onosproject.ngsdn-tutorial`).
 Groups of type `ALL` in ONOS map to P4Runtime `MulticastGroupEntry`, in this
-case used to broadcast NDP NS packets to all host-facing ports. This group is
-installed by `L2BridgingComponent.java`, and is used by an entry in the P4
-`l2_ternary_table` (look for flow rule with
-`treatment=[immediate=[IngressPipeImpl.set_multicast_group(gid=0xff)]`)
+case used to broadcast NDP NS packets to all host-facing ports.
 
-### Test L2 bridging on Mininet
+### 3. Test L2 bridging on Mininet
 
 To verify that L2 bridging works as intended, send a ping between hosts in the
 same subnet:
@@ -393,24 +487,32 @@ PING 2001:1:1::b(2001:1:1::b) 56 data bytes
 ```
 
 Differently from exercise 1, here we have NOT set any NDP static entry.
-Instead, NDP NS and NA packets are handled by the data plane thanks to the ALL
+Instead, NDP NS and NA packets are handled by the data plane thanks to the `ALL`
 group and `l2_ternary_table`'s flow rule described above. Moreover, given the
 ACL flow rules to clone NDP packets to the controller, hosts can be discovered
 by ONOS. Host discovery events are used by `L2BridgingComponent.java` to insert
-entries in the P4 `l2_exact_table` to enable forwarding between hosts in the
-same subnet. Check the ONOS log, you should see messages related to the
-discovery of host `h1b` who is now receiving NDP NS messages from `h1a` and
-replying with NDP NA ones to them:
+entries in the P4 `l2_exact_table`. Check the ONOS log, you should see messages
+related to the discovery of hosts `h1a` and `h1b`:
 
 ```
+INFO  [L2BridgingComponent] HOST_ADDED event! host=00:00:00:00:00:1A/None, deviceId=device:leaf1, port=3
+INFO  [L2BridgingComponent] Adding L2 unicast rule on device:leaf1 for host 00:00:00:00:00:1A/None (port 3)...
 INFO  [L2BridgingComponent] HOST_ADDED event! host=00:00:00:00:00:1B/None, deviceId=device:leaf1, port=4
-INFO  [L2BridgingComponent] Adding L2 unicast rule on device:leaf1 for host 00:00:00:00:00:1B/None (port 4)...
+INFO  [L2BridgingComponent] Adding L2 unicast rule on device:leaf1 for host 00:00:00:00:00:1B/None (port 4).
 ```
 
-### Visualize hosts on the ONOS web UI
+### 4. Visualize hosts on the ONOS CLI and web UI
 
-Using the ONF Cloud Tutorial Portal, click on the "ONOS UI" button in the top
-bar. If you are using the tutorial VM, open up a browser (e.g. Firefox) to
+You should see exactly two hosts in the ONOS CLI (`make onos-cli`):
+
+```
+onos> hosts -s
+id=00:00:00:00:00:1A/None, mac=00:00:00:00:00:1A, locations=[device:leaf1/3], vlan=None, ip(s)=[2001:1:1::a]
+id=00:00:00:00:00:1B/None, mac=00:00:00:00:00:1B, locations=[device:leaf1/4], vlan=None, ip(s)=[2001:1:1::b]
+```
+
+Using the ONF Cloud Tutorial Portal, access the ONOS UI.
+If you are using the tutorial VM, open up a browser (e.g. Firefox) to
 <http://127.0.0.1:8181/onos/ui>.
 
 To toggle showing hosts on the topology view, press `H` on your keyboard.
@@ -418,3 +520,8 @@ To toggle showing hosts on the topology view, press `H` on your keyboard.
 ## Congratulations!
 
 You have completed the fourth exercise!
+
+[PipeconfLoader.java]: app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/PipeconfLoader.java
+[InterpreterImpl.java]: app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/InterpreterImpl.java
+[PipelinerImpl.java]: app/src/main/java/org/onosproject/ngsdn/tutorial/pipeconf/PipelinerImpl.java
+[L2BridgingComponent.java]: app/src/main/java/org/onosproject/ngsdn/tutorial/L2BridgingComponent.java

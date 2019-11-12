@@ -165,13 +165,13 @@ public class NdpReplyComponent {
 
         if (interfaces.isEmpty()) {
             log.info("{} does not have any IPv6 interface configured",
-                    deviceId);
+                     deviceId);
             return;
         }
 
         // Generate and install flow rules.
         log.info("Adding rules to {} to generate NDP NA for {} IPv6 interfaces...",
-                deviceId, interfaces.size());
+                 deviceId, interfaces.size());
         final Collection<FlowRule> flowRules = interfaces.stream()
                 .map(this::getIp6Addresses)
                 .flatMap(Collection::stream)
