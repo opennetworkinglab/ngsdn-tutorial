@@ -129,7 +129,8 @@ public class PipelinerImpl extends AbstractHandlerBehaviour implements Pipeliner
                 break;
             case REMOVE:
                 flowRuleService.removeFlowRules(ruleBuilder.build());
-                groupService.removeGroup(deviceId, cloneGroup.appCookie(), obj.appId());
+                // Do not remove the clone group as other flow rules might be
+                // pointing to it.
                 break;
             default:
                 log.warn("Unknown operation {}", obj.op());
