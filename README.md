@@ -27,7 +27,7 @@ focus on concepts such as:
 ## Slides
 
 Tutorial slides are available online:
-<http://bit.ly/ngsdn-tutorial-advanced>
+<http://bit.ly/ngsdn-tutorial-princeton-19>
 
 These slides provide an introduction to the topics covered in the tutorial. We
 suggest you look at it before starting to work on the exercises.
