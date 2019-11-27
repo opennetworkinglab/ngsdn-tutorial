@@ -89,7 +89,7 @@ reason, we advise Windows users to prefer Option 1.
 To work on the exercises you will need to clone this repo:
 
     cd ~
-    git clone https://github.com/opennetworkinglab/ngsdn-tutorial
+    git clone -b stanford19 https://github.com/opennetworkinglab/ngsdn-tutorial
 
 If the `ngsdn-tutorial` directory is already present, make sure to update its
 content:
