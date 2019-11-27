@@ -95,7 +95,7 @@ If the `ngsdn-tutorial` directory is already present, make sure to update its
 content:
 
     cd ~/ngsdn-tutorial
-    git pull origin master
+    git pull origin stanford19
 
 ## Download / upgrade dependencies
 
