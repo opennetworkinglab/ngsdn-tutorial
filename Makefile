@@ -55,7 +55,7 @@ start:
 	docker-compose up -d
 
 stop:
-	docker-compose down -t0
+	docker-compose down
 
 restart: reset start
 

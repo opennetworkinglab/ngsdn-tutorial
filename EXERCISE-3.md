@@ -111,12 +111,12 @@ during startup.
 In our case this variable has value:
 
 ```
-ONOS_APPS=gui,drivers.bmv2,lldpprovider,hostprovider
+ONOS_APPS=gui2,drivers.bmv2,lldpprovider,hostprovider
 ```
 
 Requesting ONOS to pre-load the following built-in apps:
 
-* `gui`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
+* `gui2`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
 * `drivers.bmv2`: BMv2/Stratum drivers based on P4Runtime, gNMI, and gNOI
 * `lldpprovider`: LLDP-based link discovery application
 * `hostprovider`: Host discovery application
@@ -149,27 +149,27 @@ onos> apps -a -s
 Make sure you see the following list of apps displayed:
 
 ```
-*   5 org.onosproject.protocols.grpc        2.2.0    gRPC Protocol Subsystem
-*   6 org.onosproject.protocols.gnmi        2.2.0    gNMI Protocol Subsystem
-*  29 org.onosproject.drivers               2.2.0    Default Drivers
-*  34 org.onosproject.generaldeviceprovider 2.2.0    General Device Provider
-*  35 org.onosproject.protocols.p4runtime   2.2.0    P4Runtime Protocol Subsystem
-*  36 org.onosproject.p4runtime             2.2.0    P4Runtime Provider
-*  37 org.onosproject.drivers.p4runtime     2.2.0    P4Runtime Drivers
-*  42 org.onosproject.protocols.gnoi        2.2.0    gNOI Protocol Subsystem
-*  52 org.onosproject.hostprovider          2.2.0    Host Location Provider
-*  53 org.onosproject.lldpprovider          2.2.0    LLDP Link Provider
-*  66 org.onosproject.drivers.gnoi          2.2.0    gNOI Drivers
-*  70 org.onosproject.drivers.gnmi          2.2.0    gNMI Drivers
-*  71 org.onosproject.pipelines.basic       2.2.0    Basic Pipelines
-*  72 org.onosproject.drivers.stratum       2.2.0    Stratum Drivers
-* 161 org.onosproject.gui                   2.2.0    ONOS Legacy GUI
-* 181 org.onosproject.drivers.bmv2          2.2.0    BMv2 Drivers
+*   5 org.onosproject.protocols.grpc        2.2.1    gRPC Protocol Subsystem
+*   6 org.onosproject.protocols.gnmi        2.2.1    gNMI Protocol Subsystem
+*  29 org.onosproject.drivers               2.2.1    Default Drivers
+*  34 org.onosproject.generaldeviceprovider 2.2.1    General Device Provider
+*  35 org.onosproject.protocols.p4runtime   2.2.1    P4Runtime Protocol Subsystem
+*  36 org.onosproject.p4runtime             2.2.1    P4Runtime Provider
+*  37 org.onosproject.drivers.p4runtime     2.2.1    P4Runtime Drivers
+*  42 org.onosproject.protocols.gnoi        2.2.1    gNOI Protocol Subsystem
+*  52 org.onosproject.hostprovider          2.2.1    Host Location Provider
+*  53 org.onosproject.lldpprovider          2.2.1    LLDP Link Provider
+*  66 org.onosproject.drivers.gnoi          2.2.1    gNOI Drivers
+*  70 org.onosproject.drivers.gnmi          2.2.1    gNMI Drivers
+*  71 org.onosproject.pipelines.basic       2.2.1    Basic Pipelines
+*  72 org.onosproject.drivers.stratum       2.2.1    Stratum Drivers
+* 161 org.onosproject.gui2                  2.2.1    ONOS GUI2
+* 181 org.onosproject.drivers.bmv2          2.2.1    BMv2 Drivers
 ```
 
 This is definitely more apps than what defined in `$ONOS_APPS`. That's
 because each app in ONOS can define other apps as dependencies. When loading an
-app, ONOS automatically resolve dependencies and loads all other required apps.
+app, ONOS automatically resolves dependencies and loads all other required apps.
 
 To quit out of the ONOS CLI, use `Ctrl-D`. This will just end the CLI process
 and will not stop the ONOS process.
@@ -323,10 +323,10 @@ container (`make reset`) and go back to exercise step 1.
 
 **Note:** in theory, there should be no need to kill and restart ONOS. However,
 while ONOS supports reloading apps with a modified one, the version of ONOS used
-in this tutorial (2.2.0, the most recent at the time of writing) does not
-support reloading *pipeconf behavior classes*, as the old classes will still be
-used. For this reason, to reload a modified version of `InterpreterImpl.java`,
-you need to kill ONOS first.
+in this tutorial (2.2.1, the most recent Long Term Support release at the time
+of writing) does not support reloading *pipeconf behavior classes*, as the old
+classes will still be used. For this reason, to reload a modified version of
+`InterpreterImpl.java`, you need to kill ONOS first.
 
 #### Flow rules and groups
 
@@ -472,9 +472,29 @@ On the same page where the ONOS topology view is shown:
 * Press `A` multiple times until you see link stats, in either 
   packets/seconds (pps) or bits/seconds.
 
+> Only the hosts that have been pinged successfully at this point in mininet will
+>be visible.
+
 Link stats are derived by ONOS by periodically obtaining the port counters for
 each device. ONOS internally uses gNMI to read port information, including
 counters.
+
+> All of the devices, ports, portstats, links, hosts, flows and groups can be
+>displayed through the various views in the web UI.
+
+#### 7a. View Pipeconf data in the web UI
+
+In the ONOS topology view click on one of the Stratum switches (e.g `device:leaf1`)
+and the Device Details panel appears. In that panel click on the Pipeconf icon
+(the last one), to open the Pipeconf view for that device.
+
+In the top panel the general Pipeconf data for that device is given.
+In the lower panel the tables of the P4 model are listed, with the number of table
+entries and packets matched dynamically updated.
+
+![onos-gui-pipeconf-leaf1](img/onos-gui-pipeconf-leaf1.png)
+
+Clicking the table row brings up the details panel, showing bit widths etc.
 
 ### Congratulations!
 

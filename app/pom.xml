@@ -29,7 +29,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <onos.version>2.2.0</onos.version>
+        <onos.version>2.2.1</onos.version>
         <onos.app.name>org.onosproject.ngsdn-tutorial</onos.app.name>
         <onos.app.title>NG-SDN Tutorial App</onos.app.title>
         <onos.app.origin>p4.org</onos.app.origin>
