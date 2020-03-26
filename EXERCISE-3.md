@@ -149,22 +149,22 @@ onos> apps -a -s
 Make sure you see the following list of apps displayed:
 
 ```
-*   5 org.onosproject.protocols.grpc        2.2.1    gRPC Protocol Subsystem
-*   6 org.onosproject.protocols.gnmi        2.2.1    gNMI Protocol Subsystem
-*  29 org.onosproject.drivers               2.2.1    Default Drivers
-*  34 org.onosproject.generaldeviceprovider 2.2.1    General Device Provider
-*  35 org.onosproject.protocols.p4runtime   2.2.1    P4Runtime Protocol Subsystem
-*  36 org.onosproject.p4runtime             2.2.1    P4Runtime Provider
-*  37 org.onosproject.drivers.p4runtime     2.2.1    P4Runtime Drivers
-*  42 org.onosproject.protocols.gnoi        2.2.1    gNOI Protocol Subsystem
-*  52 org.onosproject.hostprovider          2.2.1    Host Location Provider
-*  53 org.onosproject.lldpprovider          2.2.1    LLDP Link Provider
-*  66 org.onosproject.drivers.gnoi          2.2.1    gNOI Drivers
-*  70 org.onosproject.drivers.gnmi          2.2.1    gNMI Drivers
-*  71 org.onosproject.pipelines.basic       2.2.1    Basic Pipelines
-*  72 org.onosproject.drivers.stratum       2.2.1    Stratum Drivers
-* 161 org.onosproject.gui2                  2.2.1    ONOS GUI2
-* 181 org.onosproject.drivers.bmv2          2.2.1    BMv2 Drivers
+*   5 org.onosproject.protocols.grpc        2.2.2    gRPC Protocol Subsystem
+*   6 org.onosproject.protocols.gnmi        2.2.2    gNMI Protocol Subsystem
+*  29 org.onosproject.drivers               2.2.2    Default Drivers
+*  34 org.onosproject.generaldeviceprovider 2.2.2    General Device Provider
+*  35 org.onosproject.protocols.p4runtime   2.2.2    P4Runtime Protocol Subsystem
+*  36 org.onosproject.p4runtime             2.2.2    P4Runtime Provider
+*  37 org.onosproject.drivers.p4runtime     2.2.2    P4Runtime Drivers
+*  42 org.onosproject.protocols.gnoi        2.2.2    gNOI Protocol Subsystem
+*  52 org.onosproject.hostprovider          2.2.2    Host Location Provider
+*  53 org.onosproject.lldpprovider          2.2.2    LLDP Link Provider
+*  66 org.onosproject.drivers.gnoi          2.2.2    gNOI Drivers
+*  70 org.onosproject.drivers.gnmi          2.2.2    gNMI Drivers
+*  71 org.onosproject.pipelines.basic       2.2.2    Basic Pipelines
+*  72 org.onosproject.drivers.stratum       2.2.2    Stratum Drivers
+* 161 org.onosproject.gui2                  2.2.2    ONOS GUI2
+* 181 org.onosproject.drivers.bmv2          2.2.2    BMv2 Drivers
 ```
 
 This is definitely more apps than what defined in `$ONOS_APPS`. That's
@@ -323,7 +323,7 @@ container (`make reset`) and go back to exercise step 1.
 
 **Note:** in theory, there should be no need to kill and restart ONOS. However,
 while ONOS supports reloading apps with a modified one, the version of ONOS used
-in this tutorial (2.2.1, the most recent Long Term Support release at the time
+in this tutorial (2.2.2, the most recent Long Term Support release at the time
 of writing) does not support reloading *pipeconf behavior classes*, as the old
 classes will still be used. For this reason, to reload a modified version of
 `InterpreterImpl.java`, you need to kill ONOS first.
@@ -358,11 +358,11 @@ custom app. To check which flow rules come from the built-in apps, you can
 
 ```
 onos> flows any device:leaf1 | grep appId=org.onosproject.core
-    id=100001e5fba59, state=ADDED, bytes=0, packets=0, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:arp], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], ...}
-    id=10000217b5edd, state=ADDED, bytes=28644, packets=231, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:lldp], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], ...}
-    id=1000039959d4d, state=ADDED, bytes=0, packets=0, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:ipv6, IP_PROTO:58, ICMPV6_TYPE:136], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], ...}
-    id=1000078c06d68, state=ADDED, bytes=0, packets=0, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:ipv6, IP_PROTO:58, ICMPV6_TYPE:135], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], ...}
-    id=10000d1887c0b, state=ADDED, bytes=28644, packets=231, duration=356, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:bddp], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], ...}
+    id=100001e5fba59, state=ADDED, bytes=0, packets=0, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:arp], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], deferred=[], transition=None, meter=[], cleared=false, StatTrigger=null, metadata=null}
+    id=10000217b5edd, state=ADDED, bytes=28644, packets=231, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:lldp], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], deferred=[], transition=None, meter=[], cleared=false, StatTrigger=null, metadata=null}
+    id=1000039959d4d, state=ADDED, bytes=0, packets=0, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:ipv6, IP_PROTO:58, ICMPV6_TYPE:136], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], deferred=[], transition=None, meter=[], cleared=false, StatTrigger=null, metadata=null}
+    id=1000078c06d68, state=ADDED, bytes=0, packets=0, duration=355, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:ipv6, IP_PROTO:58, ICMPV6_TYPE:135], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], deferred=[], transition=None, meter=[], cleared=false, StatTrigger=null, metadata=null}
+    id=10000d1887c0b, state=ADDED, bytes=0, packets=0, duration=356, liveType=UNKNOWN, priority=40000, tableId=IngressPipeImpl.acl_table, appId=org.onosproject.core, selector=[ETH_TYPE:bddp], treatment=DefaultTrafficTreatment{immediate=[IngressPipeImpl.clone_to_cpu()], deferred=[], transition=None, meter=[], cleared=false, StatTrigger=null, metadata=null}
 ```
 
 These rules are the result of the translation of flow objectives generated
@@ -473,14 +473,14 @@ On the same page where the ONOS topology view is shown:
   packets/seconds (pps) or bits/seconds.
 
 > Only the hosts that have been pinged successfully at this point in mininet will
->be visible.
+> be visible.
 
 Link stats are derived by ONOS by periodically obtaining the port counters for
 each device. ONOS internally uses gNMI to read port information, including
 counters.
 
-> All of the devices, ports, portstats, links, hosts, flows and groups can be
->displayed through the various views in the web UI.
+> All of the devices, ports (including stats), links, hosts, flows, and groups can be
+> displayed through the various views in the web UI.
 
 #### 7a. View Pipeconf data in the web UI
 
@@ -488,13 +488,16 @@ In the ONOS topology view click on one of the Stratum switches (e.g `device:leaf
 and the Device Details panel appears. In that panel click on the Pipeconf icon
 (the last one), to open the Pipeconf view for that device.
 
-In the top panel the general Pipeconf data for that device is given.
-In the lower panel the tables of the P4 model are listed, with the number of table
-entries and packets matched dynamically updated.
+![device-leaf1-details-panel](img/device-leaf1-details-panel.png)
+
+In the top panel, the general Pipeconf data for that device is given. In the
+lower panel, the same tables found in the P4 program are listed, with the number
+of table entries and packets matched periodically updated.
 
 ![onos-gui-pipeconf-leaf1](img/onos-gui-pipeconf-leaf1.png)
 
-Clicking the table row brings up the details panel, showing bit widths etc.
+Clicking the table row brings up the details panel, showing details of the match
+filed, actions, action parameter bit widths, etc.
 
 ### Congratulations!
 

@@ -415,7 +415,7 @@ password `rocks`. On the same page where the ONOS topology view is shown:
 ECMP should be working as expected, as such you should see traffic being
 forwarded to both spines as in the screenshot below:
 
-<img src="img/routing-ecmp.png" alt="ECMP Test" width="344"/>
+![ECMP Test](img/routing-ecmp.png)
 
 ### Congratulations!
 
