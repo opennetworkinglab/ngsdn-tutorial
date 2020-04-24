@@ -46,7 +46,7 @@ def main():
             raise argparse.ArgumentError(
                 "Invalid pipeline config, expected <p4info path>,<binary config path>")
 
-    parser = argparse.ArgumentParser(description='P4Runtime shell docker wrapper', add_help=False)
+    parser = argparse.ArgumentParser(description='P4Runtime shell docker wrapper', add_help=True)
     parser.add_argument('--grpc-addr',
                         help='P4Runtime gRPC server address',
                         metavar='<host>:<port>',
