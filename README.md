@@ -89,13 +89,13 @@ reason, we advise Windows users to prefer Option 1.
 To work on the exercises you will need to clone this repo:
 
     cd ~
-    git clone https://github.com/opennetworkinglab/ngsdn-tutorial
+    git clone -b princeton19 https://github.com/opennetworkinglab/ngsdn-tutorial
 
 If the `ngsdn-tutorial` directory is already present, make sure to update its
 content:
 
     cd ~/ngsdn-tutorial
-    git pull origin master
+    git pull origin princeton19
 
 ## Download / upgrade dependencies
 
