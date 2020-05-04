@@ -497,7 +497,7 @@ of table entries and packets matched periodically updated.
 ![onos-gui-pipeconf-leaf1](img/onos-gui-pipeconf-leaf1.png)
 
 Clicking the table row brings up the details panel, showing details of the match
-filed, actions, action parameter bit widths, etc.
+fields, actions, action parameter bit widths, etc.
 
 ### Congratulations!
 
