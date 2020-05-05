@@ -30,12 +30,12 @@ during startup.
 In our case this variable has value:
 
 ```
-ONOS_APPS=gui,drivers.bmv2,lldpprovider,hostprovider
+ONOS_APPS=gui2,drivers.bmv2,lldpprovider,hostprovider
 ```
 
 Requesting ONOS to pre-load the following built-in apps:
 
-* `gui`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
+* `gui2`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
 * `drivers.bmv2`: BMv2/Stratum drivers based on P4Runtime, gNMI, and gNOI
 * `lldpprovider`: LLDP-based link discovery application (used in Exercise 4)
 * `hostprovider`: Host discovery application (used in Exercise 4)
@@ -68,27 +68,27 @@ onos> apps -a -s
 Make sure you see the following list of apps displayed:
 
 ```
-*   5 org.onosproject.protocols.grpc        2.2.0    gRPC Protocol Subsystem
-*   6 org.onosproject.protocols.gnmi        2.2.0    gNMI Protocol Subsystem
-*  29 org.onosproject.drivers               2.2.0    Default Drivers
-*  34 org.onosproject.generaldeviceprovider 2.2.0    General Device Provider
-*  35 org.onosproject.protocols.p4runtime   2.2.0    P4Runtime Protocol Subsystem
-*  36 org.onosproject.p4runtime             2.2.0    P4Runtime Provider
-*  37 org.onosproject.drivers.p4runtime     2.2.0    P4Runtime Drivers
-*  42 org.onosproject.protocols.gnoi        2.2.0    gNOI Protocol Subsystem
-*  52 org.onosproject.hostprovider          2.2.0    Host Location Provider
-*  53 org.onosproject.lldpprovider          2.2.0    LLDP Link Provider
-*  66 org.onosproject.drivers.gnoi          2.2.0    gNOI Drivers
-*  70 org.onosproject.drivers.gnmi          2.2.0    gNMI Drivers
-*  71 org.onosproject.pipelines.basic       2.2.0    Basic Pipelines
-*  72 org.onosproject.drivers.stratum       2.2.0    Stratum Drivers
-* 161 org.onosproject.gui                   2.2.0    ONOS Legacy GUI
-* 181 org.onosproject.drivers.bmv2          2.2.0    BMv2 Drivers
+*   5 org.onosproject.protocols.grpc        2.2.2    gRPC Protocol Subsystem
+*   6 org.onosproject.protocols.gnmi        2.2.2    gNMI Protocol Subsystem
+*  29 org.onosproject.drivers               2.2.2    Default Drivers
+*  34 org.onosproject.generaldeviceprovider 2.2.2    General Device Provider
+*  35 org.onosproject.protocols.p4runtime   2.2.2    P4Runtime Protocol Subsystem
+*  36 org.onosproject.p4runtime             2.2.2    P4Runtime Provider
+*  37 org.onosproject.drivers.p4runtime     2.2.2    P4Runtime Drivers
+*  42 org.onosproject.protocols.gnoi        2.2.2    gNOI Protocol Subsystem
+*  52 org.onosproject.hostprovider          2.2.2    Host Location Provider
+*  53 org.onosproject.lldpprovider          2.2.2    LLDP Link Provider
+*  66 org.onosproject.drivers.gnoi          2.2.2    gNOI Drivers
+*  70 org.onosproject.drivers.gnmi          2.2.2    gNMI Drivers
+*  71 org.onosproject.pipelines.basic       2.2.2    Basic Pipelines
+*  72 org.onosproject.drivers.stratum       2.2.2    Stratum Drivers
+* 161 org.onosproject.gui2                  2.2.2    ONOS GUI2
+* 181 org.onosproject.drivers.bmv2          2.2.2    BMv2 Drivers
 ```
 
 This is definitely more apps than what defined in `$ONOS_APPS`. That's
 because each app in ONOS can define other apps as dependencies. When loading an
-app, ONOS automatically resolve dependencies and loads all other required apps.
+app, ONOS automatically resolves dependencies and loads all other required apps.
 
 **Disable link discovery service**
 
@@ -296,6 +296,23 @@ information on how to use the ONOS web UI please refer to this guide:
 <https://wiki.onosproject.org/x/OYMg>
 
 There is a way to show the pipeconf details for a given device, can you find it?
+
+#### Pipeconf UI
+
+In the ONOS topology view click on one of the switches (e.g `device:leaf1`)
+and the Device Details panel appears. In that panel click on the Pipeconf icon
+(the last one), to open the Pipeconf view for that device.
+
+![device-leaf1-details-panel](img/device-leaf1-details-panel.png)
+
+Here you will find info on the pipeconf currently used by the specific device,
+including details of the P4 tables.
+
+![onos-gui-pipeconf-leaf1](img/onos-gui-pipeconf-leaf1.png)
+
+Clicking the table row brings up the details panel, showing details of the match
+fields, actions, action parameter bit widths, etc.
+
 
 ## Congratulations!
 

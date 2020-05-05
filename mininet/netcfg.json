@@ -4,7 +4,10 @@
       "basic": {
         "managementAddress": "grpc://mininet:50001?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.onosproject.ngsdn-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial",
+        "locType": "grid",
+        "gridX": 200,
+        "gridY": 600
       },
       "fabricDeviceConfig": {
         "myStationMac": "00:aa:00:00:00:01",
@@ -16,7 +19,10 @@
       "basic": {
         "managementAddress": "grpc://mininet:50002?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.onosproject.ngsdn-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial",
+        "locType": "grid",
+        "gridX": 800,
+        "gridY": 600
       },
       "fabricDeviceConfig": {
         "myStationMac": "00:aa:00:00:00:02",
@@ -28,7 +34,10 @@
       "basic": {
         "managementAddress": "grpc://mininet:50003?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.onosproject.ngsdn-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial",
+        "locType": "grid",
+        "gridX": 400,
+        "gridY": 400
       },
       "fabricDeviceConfig": {
         "myStationMac": "00:bb:00:00:00:01",
@@ -40,7 +49,10 @@
       "basic": {
         "managementAddress": "grpc://mininet:50004?device_id=1",
         "driver": "stratum-bmv2",
-        "pipeconf": "org.onosproject.ngsdn-tutorial"
+        "pipeconf": "org.onosproject.ngsdn-tutorial",
+        "locType": "grid",
+        "gridX": 600,
+        "gridY": 400
       },
       "fabricDeviceConfig": {
         "myStationMac": "00:bb:00:00:00:02",
@@ -102,32 +114,50 @@
   "hosts": {
     "00:00:00:00:00:1A/None": {
       "basic": {
-        "name": "h1a"
+        "name": "h1a",
+        "locType": "grid",
+        "gridX": 100,
+        "gridY": 700
       }
     },
     "00:00:00:00:00:1B/None": {
       "basic": {
-        "name": "h1b"
+        "name": "h1b",
+        "locType": "grid",
+        "gridX": 100,
+        "gridY": 800
       }
     },
     "00:00:00:00:00:1C/None": {
       "basic": {
-        "name": "h1c"
+        "name": "h1c",
+        "locType": "grid",
+        "gridX": 250,
+        "gridY": 800
       }
     },
     "00:00:00:00:00:20/None": {
       "basic": {
-        "name": "h2"
+        "name": "h2",
+        "locType": "grid",
+        "gridX": 400,
+        "gridY": 700
       }
     },
     "00:00:00:00:00:30/None": {
       "basic": {
-        "name": "h3"
+        "name": "h3",
+        "locType": "grid",
+        "gridX": 750,
+        "gridY": 700
       }
     },
     "00:00:00:00:00:40/None": {
       "basic": {
-        "name": "h4"
+        "name": "h4",
+        "locType": "grid",
+        "gridX": 850,
+        "gridY": 700
       }
     }
   }

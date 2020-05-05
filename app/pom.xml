@@ -29,7 +29,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <onos.version>2.2.0</onos.version>
+        <onos.version>2.2.2</onos.version>
         <onos.app.name>org.onosproject.ngsdn-tutorial</onos.app.name>
         <onos.app.title>NG-SDN Tutorial App</onos.app.title>
         <onos.app.origin>http://www.onosproject.org</onos.app.origin>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.5</version>
+            <version>2.9.10.3</version>
             <scope>provided</scope>
         </dependency>
 
