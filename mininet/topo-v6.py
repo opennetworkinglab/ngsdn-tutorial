@@ -27,6 +27,8 @@ CPU_PORT = 255
 
 
 class IPv6Host(Host):
+    """Host that can be configured with an IPv6 gateway (default route).
+    """
 
     def config(self, ipv6, ipv6_gw=None, **params):
         super(IPv6Host, self).config(**params)
@@ -50,7 +52,7 @@ class IPv6Host(Host):
 
 
 class TutorialTopo(Topo):
-    """2x2 fabric topology"""
+    """2x2 fabric topology with IPv6 hosts"""
 
     def __init__(self, *args, **kwargs):
         Topo.__init__(self, *args, **kwargs)
@@ -108,6 +110,7 @@ def main():
     print 'To detach from the CLI (without stopping), press Ctrl-D'
     print 'To permanently quit Mininet, use `make stop`'
     print '#' * 80
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

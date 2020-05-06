@@ -42,7 +42,7 @@ device named `fabricDeviceConfig`, this block defines 3 values:
 Moreover, the [netcfg.json](netcfg.json) file also includes a list of interfaces
 with an IPv6 prefix assigned to them (look under the `ports` section of the
 file). The same IPv6 addresses are used in the Mininet topology script
-[topo.py](mininet/topo.py).
+[topo-v6.py](mininet/topo-v6.py).
 
 ### Try pinging hosts in different subnets
 
@@ -69,7 +69,7 @@ INFO  [L2BridgingComponent] Adding L2 unicast rule on device:leaf1 for host 00:0
 ```
 
 That's because `h2` sends NDP NS messages to resolve the MAC address of its
-gateway (`2001:1:2::ff` as configured in [topo.py](mininet/topo.py)).
+gateway (`2001:1:2::ff` as configured in [topo-v6.py](mininet/topo-v6.py)).
 
 We can check the IPv6 neighbor table for `h2` to see that the resolution
 has failed:
@@ -363,8 +363,8 @@ mininet> h3 ip -6 n
 ```
 
 Where `2001:2:3::ff` is the IPv6 gateway address defined in `netcfg.json` and
-`topo.py`, and `00:aa:00:00:00:02` is the `myStationMac` defined for `leaf2` in
-`netcfg.json`.
+`topo-v6.py`, and `00:aa:00:00:00:02` is the `myStationMac` defined for `leaf2`
+in `netcfg.json`.
 
 #### Visualize ECMP using the ONOS web UI
 

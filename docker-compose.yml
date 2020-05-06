@@ -17,7 +17,10 @@ services:
       - "50002:50002"
       - "50003:50003"
       - "50004:50004"
-    entrypoint: "/mininet/topo.py"
+    # NGSDN_TOPO_PY is a Python-based Mininet script defining the topology. Its
+    # value is passed to docker-compose as an environment variable, defined in
+    # the Makefile.
+    entrypoint: "/mininet/${NGSDN_TOPO_PY}"
   onos:
     image: onosproject/onos:2.2.2
     hostname: onos

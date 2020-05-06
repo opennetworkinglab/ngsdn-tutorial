@@ -32,12 +32,20 @@ _docker_pull_all:
 
 deps: _docker_pull_all
 
-start:
+_start:
+	$(info *** Starting ONOS and Mininet (${NGSDN_TOPO_PY})... )
 	@mkdir -p tmp/onos
-	docker-compose up -d
+	@NGSDN_TOPO_PY=${NGSDN_TOPO_PY} docker-compose up -d
+
+start: NGSDN_TOPO_PY := topo-v6.py
+start: _start
+
+start-sr: NGSDN_TOPO_PY := topo-v4.py
+start-sr: _start
 
 stop:
-	docker-compose down
+	$(info *** Stopping ONOS and Mininet...)
+	@NGSDN_TOPO_PY=foo docker-compose down -t0
 
 restart: reset start
 
@@ -60,11 +68,17 @@ mn-cli:
 mn-log:
 	docker logs -f mininet
 
-netcfg:
-	$(info *** Pushing netcfg.json to ONOS...)
+_netcfg:
+	$(info *** Pushing ${NGSDN_NETCFG_JSON} to ONOS...)
 	${onos_curl} -X POST -H 'Content-Type:application/json' \
-		${onos_url}/v1/network/configuration -d@./mininet/netcfg.json
+		${onos_url}/v1/network/configuration -d@./mininet/${NGSDN_NETCFG_JSON}
 	@echo
+
+netcfg: NGSDN_NETCFG_JSON := netcfg.json
+netcfg: _netcfg
+
+netcfg-sr: NGSDN_NETCFG_JSON := netcfg-sr.json
+netcfg-sr: _netcfg
 
 reset: stop
 	-$(NGSDN_TUTORIAL_SUDO) rm -rf ./tmp
@@ -174,3 +188,38 @@ check:
 	util/mn-cmd h4 ping -c 1 2001:1:1::c
 	make stop
 	make solution-revert
+
+check-sr:
+	make reset
+	make start-sr
+	sleep 45
+	util/onos-cmd app activate segmentrouting
+	util/onos-cmd app activate pipelines.fabric
+	sleep 15
+	util/onos-cmd cfg set org.onosproject.net.flow.impl.FlowRuleManager fallbackFlowPollFrequency 4
+	util/onos-cmd cfg set org.onosproject.net.group.impl.GroupManager fallbackGroupPollFrequency 3
+	make netcfg-sr
+	sleep 20
+	# Ping gateway (ONOS) to discover routing-only hosts
+	util/mn-cmd h2 ping -c 1 172.16.2.254
+	util/mn-cmd h3 ping -c 1 172.16.3.254
+	util/mn-cmd h4 ping -c 1 172.16.4.254
+	sleep 5
+	# For bridged hosts (in the same subnet) no need to ping the gateway.
+	# Make sure bridging works via broadcast.
+	util/mn-cmd h1a ping -c 1 172.16.1.2
+	util/mn-cmd h1b ping -c 1 172.16.1.3
+	sleep 5
+	# Ping all.
+	util/mn-cmd h2 ping -c 1 172.16.1.2
+	util/mn-cmd h2 ping -c 1 172.16.1.1
+	util/mn-cmd h2 ping -c 1 172.16.1.3
+	util/mn-cmd h3 ping -c 1 172.16.2.1
+	util/mn-cmd h3 ping -c 1 172.16.1.1
+	util/mn-cmd h3 ping -c 1 172.16.1.2
+	util/mn-cmd h3 ping -c 1 172.16.1.3
+	util/mn-cmd h4 ping -c 1 172.16.2.1
+	util/mn-cmd h4 ping -c 1 172.16.1.1
+	util/mn-cmd h4 ping -c 1 172.16.1.2
+	util/mn-cmd h4 ping -c 1 172.16.1.3
+	make stop

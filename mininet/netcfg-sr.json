@@ -1,0 +1,194 @@
+{
+  "devices": {
+    "device:leaf1": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50001?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.onosproject.pipelines.fabric",
+        "locType": "grid",
+        "gridX": 200,
+        "gridY": 600
+      },
+      "segmentrouting": {
+        "name": "leaf1",
+        "ipv4NodeSid": 101,
+        "ipv4Loopback": "192.168.1.1",
+        "routerMac": "00:00:00:00:01:01",
+        "isEdgeRouter": true,
+        "adjacencySids": []
+      }
+    },
+    "device:leaf2": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50002?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.onosproject.pipelines.fabric",
+        "locType": "grid",
+        "gridX": 800,
+        "gridY": 600
+      },
+      "segmentrouting": {
+        "name": "leaf2",
+        "ipv4NodeSid": 102,
+        "ipv4Loopback": "192.168.1.2",
+        "routerMac": "00:00:00:00:01:02",
+        "isEdgeRouter": true,
+        "adjacencySids": []
+      }
+    },
+    "device:spine1": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50003?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.onosproject.pipelines.fabric",
+        "locType": "grid",
+        "gridX": 400,
+        "gridY": 400
+      },
+      "segmentrouting": {
+        "name": "spine1",
+        "ipv4NodeSid": 201,
+        "ipv4Loopback": "192.168.2.1",
+        "routerMac": "00:00:00:00:02:01",
+        "isEdgeRouter": false,
+        "adjacencySids": []
+      }
+    },
+    "device:spine2": {
+      "basic": {
+        "managementAddress": "grpc://mininet:50004?device_id=1",
+        "driver": "stratum-bmv2",
+        "pipeconf": "org.onosproject.pipelines.fabric",
+        "locType": "grid",
+        "gridX": 600,
+        "gridY": 400
+      },
+      "segmentrouting": {
+        "name": "spine2",
+        "ipv4NodeSid": 202,
+        "ipv4Loopback": "192.168.2.2",
+        "routerMac": "00:00:00:00:02:02",
+        "isEdgeRouter": false,
+        "adjacencySids": []
+      }
+    }
+  },
+  "ports": {
+    "device:leaf1/3": {
+      "interfaces": [
+        {
+          "name": "leaf1-3",
+          "ips": [
+            "172.16.1.254/24"
+          ],
+          "vlan-untagged": 100
+        }
+      ]
+    },
+    "device:leaf1/4": {
+      "interfaces": [
+        {
+          "name": "leaf1-4",
+          "ips": [
+            "172.16.1.254/24"
+          ],
+          "vlan-untagged": 100
+        }
+      ]
+    },
+    "device:leaf1/5": {
+      "interfaces": [
+        {
+          "name": "leaf1-5",
+          "ips": [
+            "172.16.1.254/24"
+          ],
+          "vlan-untagged": 100
+        }
+      ]
+    },
+    "device:leaf1/6": {
+      "interfaces": [
+        {
+          "name": "leaf1-6",
+          "ips": [
+            "172.16.2.254/24"
+          ],
+          "vlan-untagged": 200
+        }
+      ]
+    },
+    "device:leaf2/3": {
+      "interfaces": [
+        {
+          "name": "leaf2-3",
+          "ips": [
+            "172.16.3.254/24"
+          ],
+          "vlan-untagged": 300
+        }
+      ]
+    },
+    "device:leaf2/4": {
+      "interfaces": [
+        {
+          "name": "leaf2-4",
+          "ips": [
+            "172.16.4.254/24"
+          ],
+          "vlan-untagged": 400
+        }
+      ]
+    }
+  },
+  "hosts": {
+    "00:00:00:00:00:1A/None": {
+      "basic": {
+        "name": "h1a",
+        "locType": "grid",
+        "gridX": 100,
+        "gridY": 700
+      }
+    },
+    "00:00:00:00:00:1B/None": {
+      "basic": {
+        "name": "h1b",
+        "locType": "grid",
+        "gridX": 100,
+        "gridY": 800
+      }
+    },
+    "00:00:00:00:00:1C/None": {
+      "basic": {
+        "name": "h1c",
+        "locType": "grid",
+        "gridX": 250,
+        "gridY": 800
+      }
+    },
+    "00:00:00:00:00:20/None": {
+      "basic": {
+        "name": "h2",
+        "locType": "grid",
+        "gridX": 400,
+        "gridY": 700
+      }
+    },
+    "00:00:00:00:00:30/None": {
+      "basic": {
+        "name": "h3",
+        "locType": "grid",
+        "gridX": 750,
+        "gridY": 700
+      }
+    },
+    "00:00:00:00:00:40/None": {
+      "basic": {
+        "name": "h4",
+        "locType": "grid",
+        "gridX": 850,
+        "gridY": 700
+      }
+    }
+  }
+}

@@ -322,8 +322,8 @@ all connected to the same leaf, and two interfaces of two different leaves
 cannot be configured with the same IPv6 subnet. In other words, L2 bridging is
 allowed only for hosts connected to the same leaf.
 
-The Mininet script [topo.py](mininet/topo.py) used in this tutorial defines 4
-subnets:
+The Mininet script [topo-v6.py](mininet/topo-v6.py) used in this tutorial
+defines 4 subnets:
 
 * `2001:1:1::/64` with 3 hosts connected to `leaf1` (`h1a`, `h1b`, and `h1c`)
 * `2001:1:2::/64` with 1 hosts connected to `leaf1` (`h2`)
