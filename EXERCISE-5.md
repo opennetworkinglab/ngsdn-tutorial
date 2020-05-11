@@ -30,8 +30,8 @@ satisfied:
 
 ### Configuration
 
-The [netcfg.json](netcfg.json) file includes a special configuration for each
-device named `fabricDeviceConfig`, this block defines 3 values:
+The [netcfg.json](mininet/netcfg.json) file includes a special configuration for
+each device named `fabricDeviceConfig`, this block defines 3 values:
 
  * `myStationMac`: MAC address associated with each device, i.e., the router MAC
    address;
@@ -39,9 +39,9 @@ device named `fabricDeviceConfig`, this block defines 3 values:
  * `isSpine`: a boolean flag, indicating whether the device should be considered
    as a spine switch.
 
-Moreover, the [netcfg.json](netcfg.json) file also includes a list of interfaces
-with an IPv6 prefix assigned to them (look under the `ports` section of the
-file). The same IPv6 addresses are used in the Mininet topology script
+Moreover, the [netcfg.json](mininet/netcfg.json) file also includes a list of
+interfaces with an IPv6 prefix assigned to them (look under the `ports` section
+of the file). The same IPv6 addresses are used in the Mininet topology script
 [topo-v6.py](mininet/topo-v6.py).
 
 ### Try pinging hosts in different subnets

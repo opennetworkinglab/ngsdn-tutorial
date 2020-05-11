@@ -330,8 +330,8 @@ defines 4 subnets:
 * `2001:2:3::/64` with 1 hosts connected to `leaf2` (`h3`)
 * `2001:2:4::/64` with 1 hosts connected to `leaf2` (`h4`)
 
-The same IPv6 prefixes are defined in the [netcfg.json](netcfg.json) file and
-are used to provide interface configuration to ONOS.
+The same IPv6 prefixes are defined in the [netcfg.json](mininet/netcfg.json)
+file and are used to provide interface configuration to ONOS.
 
 #### Data plane
 
@@ -397,8 +397,8 @@ To keep things simple, our broadcast domain will be restricted to a single
 device, i.e. we allow packet replication only for ports of the same leaf switch.
 As such, we can exclude ports going to the spines from the multicast group. To
 determine whether a port is expected to be facing hosts or not, we look at the
-interface configuration in [netcfg.json](netcfg.json) file (look for the `ports`
-section of the JSON file).
+interface configuration in [netcfg.json](mininet/netcfg.json) file (look for the
+`ports` section of the JSON file).
 
 ### 1. Enable L2BridgingComponent and reload the app
 

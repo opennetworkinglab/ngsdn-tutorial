@@ -143,12 +143,14 @@ solution-apply:
 	cp -r app working_copy/app
 	cp -r p4src working_copy/p4src
 	cp -r ptf working_copy/ptf
+	cp -r mininet working_copy/mininet
 	rsync -r solution/ ./
 
 solution-revert:
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./app
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./p4src
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./ptf
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./mininet
 	cp -r working_copy/* ./
 	$(NGSDN_TUTORIAL_SUDO) rm -rf working_copy/
 
@@ -198,8 +200,6 @@ check-sr:
 	util/onos-cmd app activate segmentrouting
 	util/onos-cmd app activate pipelines.fabric
 	sleep 15
-	util/onos-cmd cfg set org.onosproject.net.flow.impl.FlowRuleManager fallbackFlowPollFrequency 4
-	util/onos-cmd cfg set org.onosproject.net.group.impl.GroupManager fallbackGroupPollFrequency 3
 	make netcfg-sr
 	sleep 20
 	# Ping gateway (ONOS) to discover routing-only hosts
