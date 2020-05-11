@@ -10,7 +10,6 @@ python:
 
 install:
   - make deps
-  - sudo apt-get install --no-install-recommends -y sshpass
 
 script:
   - make check check-sr NGSDN_TUTORIAL_SUDO=sudo

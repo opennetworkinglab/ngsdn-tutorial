@@ -55,21 +55,17 @@ class TaggedIPv4Host(Host):
     """VLAN-tagged host that can be configured with an IPv4 gateway
     (default route).
     """
-
-    def __init__(self, gw, vlan, *args, **kwargs):
-        super(TaggedIPv4Host, self).__init__(*args, **kwargs)
-        self.gw = gw
-        self.vlan = vlan
-        self.vlanIntf = "%s.%s" % (self.defaultIntf(), self.vlan)
+    vlanIntf = None
 
     def config(self, mac=None, ip=None, defaultRoute=None, lo='up', gw=None,
-               **_params):
+               vlan=None, **_params):
         super(TaggedIPv4Host, self).config(mac, ip, defaultRoute, lo, **_params)
+        self.vlanIntf = "%s.%s" % (self.defaultIntf(), vlan)
         # Replace default interface with a tagged one
         self.cmd('ip -4 addr flush dev %s' % self.defaultIntf())
         self.cmd('ip -6 addr flush dev %s' % self.defaultIntf())
         self.cmd('ip -4 link add link %s name %s type vlan id %s' % (
-            self.defaultIntf(), self.vlanIntf, self.vlan))
+            self.defaultIntf(), self.vlanIntf, vlan))
         self.cmd('ip -4 link set up %s' % self.vlanIntf)
         self.cmd('ip -4 addr add %s dev %s' % (ip, self.vlanIntf))
         if gw:
@@ -118,25 +114,25 @@ class TutorialTopo(Topo):
         self.addLink(spine2, leaf1)
         self.addLink(spine2, leaf2)
 
-        # IPv6 hosts attached to leaf 1
+        # IPv4 hosts attached to leaf 1
         h1a = self.addHost('h1a', cls=IPv4Host, mac="00:00:00:00:00:1A",
                            ip='172.16.1.1/24', gw='172.16.1.254')
         h1b = self.addHost('h1b', cls=IPv4Host, mac="00:00:00:00:00:1B",
                            ip='172.16.1.2/24', gw='172.16.1.254')
-        h1c = self.addHost('h1c', cls=IPv4Host, mac="00:00:00:00:00:1C",
-                           ip='172.16.1.3/24', gw='172.16.1.254')
-        h2 = self.addHost('h2', cls=IPv4Host, mac="00:00:00:00:00:20",
-                          ip='172.16.2.1/24', gw='172.16.2.254')
+        h1c = self.addHost('h1c', cls=TaggedIPv4Host, mac="00:00:00:00:00:1C",
+                           ip='172.16.1.3/24', gw='172.16.1.254', vlan=100)
+        h2 = self.addHost('h2', cls=TaggedIPv4Host, mac="00:00:00:00:00:20",
+                          ip='172.16.2.1/24', gw='172.16.2.254', vlan=200)
         self.addLink(h1a, leaf1)  # port 3
         self.addLink(h1b, leaf1)  # port 4
         self.addLink(h1c, leaf1)  # port 5
         self.addLink(h2, leaf1)  # port 6
 
-        # IPv6 hosts attached to leaf 2
+        # IPv4 hosts attached to leaf 2
         h3 = self.addHost('h3', cls=IPv4Host, mac="00:00:00:00:00:30",
                           ip='172.16.3.1/24', gw='172.16.3.254')
-        h4 = self.addHost('h4', cls=IPv4Host, mac="00:00:00:00:00:40",
-                          ip='172.16.4.1/24', gw='172.16.4.254')
+        h4 = self.addHost('h4', cls=TaggedIPv4Host, mac="00:00:00:00:00:40",
+                          ip='172.16.4.1/24', gw='172.16.4.254', vlan=400)
         self.addLink(h3, leaf2)  # port 3
         self.addLink(h4, leaf2)  # port 4
 

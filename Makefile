@@ -29,6 +29,8 @@ _docker_pull_all:
 	docker tag ${GNMI_CLI_IMG}@${GNMI_CLI_SHA} ${GNMI_CLI_IMG}
 	docker pull ${YANG_IMG}@${YANG_SHA}
 	docker tag ${YANG_IMG}@${YANG_SHA} ${YANG_IMG}
+	docker pull ${SSHPASS_IMG}@${SSHPASS_SHA}
+	docker tag ${SSHPASS_IMG}@${SSHPASS_SHA} ${SSHPASS_IMG}
 
 deps: _docker_pull_all
 
@@ -40,8 +42,8 @@ _start:
 start: NGSDN_TOPO_PY := topo-v6.py
 start: _start
 
-start-sr: NGSDN_TOPO_PY := topo-v4.py
-start-sr: _start
+start-v4: NGSDN_TOPO_PY := topo-v4.py
+start-v4: _start
 
 stop:
 	$(info *** Stopping ONOS and Mininet...)
@@ -191,7 +193,7 @@ check:
 
 check-sr:
 	make reset
-	make start-sr
+	make start-v4
 	sleep 45
 	util/onos-cmd app activate segmentrouting
 	util/onos-cmd app activate pipelines.fabric
