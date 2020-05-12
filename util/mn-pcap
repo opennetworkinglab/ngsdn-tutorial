@@ -1,0 +1,22 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+if [ -z $1 ]; then
+  echo "usage: $0 host"
+  exit 1
+fi
+
+iface=$1-eth0
+file=${iface}.pcap
+
+set -e
+
+echo "*** Starting tcpdump on ${iface}... Ctrl-c to stop capture"
+echo "*** Pcap file will be written in ngsdn-tutorial/tmp/${file}"
+docker exec -it mininet /mininet/host-cmd $1 tcpdump -i $1-eth0 -w /tmp/"${file}"
+
+if [ -x "$(command -v wireshark)" ]; then
+  echo "*** Opening wireshark... Ctrl-c to quit"
+  wireshark "${DIR}/../tmp/${file}"
+fi
