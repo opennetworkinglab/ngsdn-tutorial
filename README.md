@@ -90,13 +90,13 @@ reason, we advise Windows users to prefer Option 1.
 To work on the exercises you will need to clone this repo:
 
     cd ~
-    git clone -b princeton19 https://github.com/opennetworkinglab/ngsdn-tutorial
+    git clone -b advanced https://github.com/opennetworkinglab/ngsdn-tutorial
 
 If the `ngsdn-tutorial` directory is already present, make sure to update its
 content:
 
     cd ~/ngsdn-tutorial
-    git pull origin princeton19
+    git pull origin advanced
 
 ## Download / upgrade dependencies
 
@@ -175,4 +175,4 @@ Click on the exercise name to see the instructions:
 You can find solutions for each exercise in the [solution](solution) directory.
 Feel free to compare your solution to the reference one whenever you feel stuck.
 
-[![Build Status](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial.svg?branch=princeton19)](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial)
+[![Build Status](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial.svg?branch=advanced)](https://travis-ci.org/opennetworkinglab/ngsdn-tutorial)
