@@ -202,26 +202,29 @@ check-sr:
 	sleep 15
 	make netcfg-sr
 	sleep 20
-	# Ping gateway (ONOS) to discover routing-only hosts
+	util/mn-cmd h1a ping -c 1 172.16.1.3
+	util/mn-cmd h1b ping -c 1 172.16.1.3
 	util/mn-cmd h2 ping -c 1 172.16.2.254
+	sleep 5
+	util/mn-cmd h2 ping -c 1 172.16.1.1
+	util/mn-cmd h2 ping -c 1 172.16.1.2
+	util/mn-cmd h2 ping -c 1 172.16.1.3
+	! util/mn-cmd h3 ping -c 1 172.16.3.254
+	! util/mn-cmd h4 ping -c 1 172.16.4.254
+	make solution-apply
+	make netcfg-sr
+	sleep 20
 	util/mn-cmd h3 ping -c 1 172.16.3.254
 	util/mn-cmd h4 ping -c 1 172.16.4.254
 	sleep 5
-	# For bridged hosts (in the same subnet) no need to ping the gateway.
-	# Make sure bridging works via broadcast.
-	util/mn-cmd h1a ping -c 1 172.16.1.2
-	util/mn-cmd h1b ping -c 1 172.16.1.3
-	sleep 5
-	# Ping all.
-	util/mn-cmd h2 ping -c 1 172.16.1.2
-	util/mn-cmd h2 ping -c 1 172.16.1.1
-	util/mn-cmd h2 ping -c 1 172.16.1.3
-	util/mn-cmd h3 ping -c 1 172.16.2.1
 	util/mn-cmd h3 ping -c 1 172.16.1.1
 	util/mn-cmd h3 ping -c 1 172.16.1.2
 	util/mn-cmd h3 ping -c 1 172.16.1.3
-	util/mn-cmd h4 ping -c 1 172.16.2.1
+	util/mn-cmd h3 ping -c 1 172.16.2.1
+	util/mn-cmd h3 ping -c 1 172.16.4.1
 	util/mn-cmd h4 ping -c 1 172.16.1.1
 	util/mn-cmd h4 ping -c 1 172.16.1.2
 	util/mn-cmd h4 ping -c 1 172.16.1.3
+	util/mn-cmd h4 ping -c 1 172.16.2.1
 	make stop
+	make solution-revert
