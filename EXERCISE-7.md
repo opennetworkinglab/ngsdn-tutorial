@@ -11,8 +11,9 @@ the app we have been developing in the previous exercise, but instead of using
 IPv6-based routing or SRv6, Trellis uses MPLS labels to forward packets between
 leaf switches and across the spines.
 
-Trellis apps are deployed in Tier-1 carrier networks, and for this reason deemed
-production-grade. They provide an extensive feature set such as:
+Trellis apps are deployed in Tier-1 carrier networks, and for this reason they
+are deemed production-grade. These apps provide an extensive feature set such
+as:
 
 * Carrier-oriented networking capabilities: from basic L2 and L3 forwarding, to
   multicast, QinQ, pseudo-wires, integration with external control planes such
@@ -33,21 +34,21 @@ Trellis is made of several apps running on top of ONOS, the main one is
 [onos/apps/segmentrouting] (open on GitHub)
 
 `segmentrouting` abstracts the leaf and spine switches that make the fabric as
-"one big IP router", such that operators can program them using familiar APIs
-(as they would do with a traditional router). The app listens to
-operator-provided configuration, as well as topology events, to program the
-switches with the necessary forwarding rules. Because of this "one big IP
-router" abstraction, operators can independently scale the topology to add more
-capacity or ports by adding more leaves and spines.
+"one big IP router", such that operators can program them using APIs similar to
+that of a traditional router (e.g. to configure VLANs, subnets, routes, etc.)
+The app listens to operator-provided configuration, as well as topology events,
+to program the switches with the necessary forwarding rules. Because of this
+"one big IP router" abstraction, operators can independently scale the topology
+to add more capacity or ports by adding more leaves and spines.
 
 `segmentrouting` and other Trellis apps use the ONOS FlowObjective API, which
 allow them to be pipeline-agnostic. As a matter of fact, Trellis was initially
 designed to work with fixed-function switches exposing an OpenFlow agent (such
-as Broadcom Tomahawk, Trident2, and Qumran via the OF-DPA agent). However, in
-recent years support for P4 programmable switches was enabled without changing
-the apps, but instead providing a special ONOS pipeconf that brings in a P4
-program complemented by a set of drivers that among other things are responsible
-for translating flow objectives to the P4 program-specific tables.
+as Broadcom Tomahawk, Trident2, and Qumran via the OF-DPA pipeline). However, in
+recent years, support for P4 programmable switches was enabled without changing
+the Trellis apps, but instead providing a special ONOS pipeconf that brings in a
+P4 program complemented by a set of drivers that among other things are
+responsible for translating flow objectives to the P4 program-specific tables.
 
 This P4 program is named `fabric.p4`. It's implementation along with the
 corresponding pipeconf drivers can be found in the ONOS source tree:
@@ -57,13 +58,13 @@ This pipeconf currently works on the `stratum_bmv2` software switch as well as
 on Intel Barefoot Tofino-based switches (the [fabric-tofino] project provides
 instructions and scripts to create a Tofino-enabled pipeconf).
 
-We will come back to the details of `fabric.p4` in the next lab, for now let's
+We will come back to the details of `fabric.p4` in the next lab, for now, let's
 keep in mind that instead of building our own custom pipeconf, we will use one
 provided with ONOS.
 
 The goal of the exercise is to learn the Trellis basics by writing a
-configuration in the form of a netcfg JSON file to set up basic bridging and
-routing of traffic between hosts.
+configuration in the form of a netcfg JSON file to set up bridging and
+IPv4 routing of traffic between hosts.
 
 For a gentle overview of Trellis, please check the online book
 "Software-Defined Networks: A Systems Approach":
