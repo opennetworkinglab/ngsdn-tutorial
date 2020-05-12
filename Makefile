@@ -147,10 +147,10 @@ solution-apply:
 	rsync -r solution/ ./
 
 solution-revert:
-	$(NGSDN_TUTORIAL_SUDO) rm -rf ./app
-	$(NGSDN_TUTORIAL_SUDO) rm -rf ./p4src
-	$(NGSDN_TUTORIAL_SUDO) rm -rf ./ptf
-	$(NGSDN_TUTORIAL_SUDO) rm -rf ./mininet
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./app/*
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./p4src/*
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./ptf/*
+	$(NGSDN_TUTORIAL_SUDO) rm -rf ./mininet/*
 	cp -r working_copy/* ./
 	$(NGSDN_TUTORIAL_SUDO) rm -rf working_copy/
 
@@ -209,6 +209,7 @@ check-sr:
 	util/mn-cmd h2 ping -c 1 172.16.1.1
 	util/mn-cmd h2 ping -c 1 172.16.1.2
 	util/mn-cmd h2 ping -c 1 172.16.1.3
+	# ping from h3 and h4 should not work without the solution
 	! util/mn-cmd h3 ping -c 1 172.16.3.254
 	! util/mn-cmd h4 ping -c 1 172.16.4.254
 	make solution-apply

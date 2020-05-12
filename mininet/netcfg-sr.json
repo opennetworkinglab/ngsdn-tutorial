@@ -121,12 +121,6 @@
           ]
         }
       ]
-    },
-    "device:leaf2/3": {
-      "interfaces": []
-    },
-    "device:leaf2/4": {
-      "interfaces": []
     }
   },
   "hosts": {
