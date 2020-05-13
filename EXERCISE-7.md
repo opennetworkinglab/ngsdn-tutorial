@@ -140,8 +140,8 @@ interface.
 ### Configuration via netcfg
 
 The JSON file in [mininet/netcfg-sr.json][netcfg-sr.json] includes the necessary
-configuration for the Trellis apps to provide the forwarding for the topology
-described above.
+configuration for ONOS and the Trellis apps to program switches to forward
+traffic between hosts of the topology described above.
 
 **NOTE**: this is a similar but different file then the one used in previous
 exercises. Notice the `-sr` suffix, where `sr` stands for `segmentrouting`, as
@@ -192,14 +192,14 @@ Open up the ONOS CLI (`make onos-cli`) and activate the following apps:
     onos> app activate fabric 
     onos> app activate segmentrouting
 
-NOTE: the full ID for both apps is `org.onosproject.pipelines.fabric` and
+**NOTE:** the full ID for both apps is `org.onosproject.pipelines.fabric` and
 `org.onosproject.segmentrouting`, respectively. For convenience, when activating
 built-in apps using the ONOS CLI, you can specify just the last piece of the
 full ID (after the last dot.)
 
-NOTE 2: the `fabric` app has the only purpose of registering pipeconfs in the
-system. I.e., differently from `segmentrouting`, even if we call them both apps,
-`fabric` does not interact with the network in any way.
+**NOTE 2:** the `fabric` app has the only purpose of registering pipeconfs in
+the system. I.e., differently from `segmentrouting`, even if we call them both
+apps, `fabric` does not interact with the network in any way.
 
 #### Verify apps
 
@@ -322,7 +322,7 @@ Verify that all interfaces have been configured successfully:
     leaf1-6: port=device:leaf1/6 ips=[172.16.2.254/24] mac=00:AA:00:00:00:01 vlanTagged=[200]
 
 You should see 4 interfaces in total (for all host-facing ports of `leaf1`),
-configured as in the [neetcfg-sr.json] file. You will have to add the
+configured as in the [netcfg-sr.json] file. You will have to add the
 configuration for `leaf2`'s ports later in this exercise.
 
 A similar output can be obtained by using a `segmentrouting`-specific command:
@@ -529,18 +529,18 @@ messages:
     INFO  [HostHandler] 172.16.3.1 is not included in the subnet config of device:leaf2/3. Ignored.
 
 
-`h3` is discovered because ONOS intercepted the ARP request to resolve
-`h3`'s gateway IP address (`172.16.3.254`), but the rest of the programming
-fails because we have not provided a valid Trellis configuration for the switch
-port facing `h3` (`leaf2/3`). Indeed, if you look at [netcfg-sr.json] you will
-notice that the `"ports"` section include config for all `leaf1` host-facing
+`h3` is discovered because ONOS intercepted the ARP request to resolve `h3`'s
+gateway IP address (`172.16.3.254`), but the rest of the programming fails
+because we have not provided a valid Trellis configuration for the switch port
+facing `h3` (`leaf2/3`). Indeed, if you look at [netcfg-sr.json] you will notice
+that the `"ports"` section include a config block for all `leaf1` host-facing
 ports, but it does NOT provide any for `leaf2`.
 
 As a matter of fact, if you try to start a ping from `h4` (attached to `leaf2`),
 that should NOT work as well.
 
-It is your task to modify the [netcfg-sr.json] to provide the necessary
-configuration to enable connectivity for `h3` and `h4`:
+It is your task to modify the [netcfg-sr.json] to add the necessary config
+blocks to enable connectivity for `h3` and `h4`:
 
 1. Open up [netcfg-sr.json].
 2. Look for the `"ports"` section.
