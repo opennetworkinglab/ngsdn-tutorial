@@ -33,9 +33,9 @@ Trellis is made of several apps running on top of ONOS, the main one is
 `segmentrouting`, and its implementation can be found in the ONOS source tree:
 [onos/apps/segmentrouting] (open on GitHub)
 
-`segmentrouting` abstracts the leaf and spine switches that make the fabric as
-"one big IP router", such that operators can program them using APIs similar to
-that of a traditional router (e.g. to configure VLANs, subnets, routes, etc.)
+`segmentrouting` abstracts the leaf and spine switches to make the fabric appear
+as "one big IP router", such that operators can program them using APIs similar
+to that of a traditional router (e.g. to configure VLANs, subnets, routes, etc.)
 The app listens to operator-provided configuration, as well as topology events,
 to program the switches with the necessary forwarding rules. Because of this
 "one big IP router" abstraction, operators can independently scale the topology
@@ -159,8 +159,8 @@ following questions:
 * How come all `"fabricDeviceConfig"` blocks are gone in the new file?
 * Look at the `"interfaces"` config blocks, what has changed w.r.t. the old
   file?
-* In the new file, why untagged interfaces have only one VLAN ID value, while
-  tagged ones can take many (JSON array)?
+* In the new file, why do the untagged interfaces have only one VLAN ID value,
+  while the tagged ones can take many (JSON array)?
 * Is the `interfaces` block provided for all host-facing ports? Which ports are
   missing and which hosts are attached to those ports?
 
@@ -192,12 +192,12 @@ Open up the ONOS CLI (`make onos-cli`) and activate the following apps:
     onos> app activate fabric 
     onos> app activate segmentrouting
 
-**NOTE:** the full ID for both apps is `org.onosproject.pipelines.fabric` and
+**NOTE:** The full ID for both apps is `org.onosproject.pipelines.fabric` and
 `org.onosproject.segmentrouting`, respectively. For convenience, when activating
 built-in apps using the ONOS CLI, you can specify just the last piece of the
 full ID (after the last dot.)
 
-**NOTE 2:** the `fabric` app has the only purpose of registering pipeconfs in
+**NOTE 2:** The `fabric` app has the only purpose of registering pipeconfs in
 the system. I.e., differently from `segmentrouting`, even if we call them both
 apps, `fabric` does not interact with the network in any way.
 
@@ -339,7 +339,7 @@ This command lists all device-subnet mapping known to `segmentrouting`. For a
 list of other available sr-specific commands, type `sr-` and press
 <kbd>tab</kbd> (as for command auto-completion).
 
-Another interesting command is `sr-ecmp-spg `, to list all computed ECMP
+Another interesting command is `sr-ecmp-spg`, to list all computed ECMP
 shortest-path graphs:
 
     onos> sr-ecmp-spg 
@@ -505,7 +505,7 @@ If you feel adventurous, start a ping between any two hosts, and use the tool
 [util/mn-pcap](util/mn-pcap) to dump packets to a PCAP file. After dumping
 packets, the tool tries to open the pcap file on wireshark (if installed).
 
-For example, to dump packet out of `h2` main interface:
+For example, to dump packets out of the `h2` main interface:
 
     $ util/mn-pcap h2
 
@@ -533,7 +533,7 @@ messages:
 gateway IP address (`172.16.3.254`), but the rest of the programming fails
 because we have not provided a valid Trellis configuration for the switch port
 facing `h3` (`leaf2/3`). Indeed, if you look at [netcfg-sr.json] you will notice
-that the `"ports"` section include a config block for all `leaf1` host-facing
+that the `"ports"` section includes a config block for all `leaf1` host-facing
 ports, but it does NOT provide any for `leaf2`.
 
 As a matter of fact, if you try to start a ping from `h4` (attached to `leaf2`),

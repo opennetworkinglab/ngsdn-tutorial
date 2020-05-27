@@ -8,7 +8,7 @@ the building blocks of the next-generation SDN (NG-SDN) architecture, such as:
 * Data plane programming and control via P4 and P4Runtime
 * Configuration via YANG, OpenConfig, and gNMI
 * Stratum switch OS
-* ONOS SDN controller 
+* ONOS SDN controller
 
 Tutorial sessions are organized around a sequence of hands-on exercises that
 show how to build a leaf-spine data center fabric based on IPv6, using P4,
