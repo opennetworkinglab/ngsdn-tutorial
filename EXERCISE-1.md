@@ -198,7 +198,7 @@ this tutorial repo (i.e., `ngsdn-tutorial/tmp`). Example of these files are:
 
 ## 4. Program leaf1 using P4Runtime
 
-For this part we will use the [P4Runtime Shell](util/p4rt-sh), an interactive
+For this part we will use the [P4Runtime Shell][p4runtime-sh], an interactive
 Python CLI that can be used to connect to a P4Runtime server and can run
 P4Runtime commands. For example, it can be used to create, read, update, and
 delete flow table entries.
