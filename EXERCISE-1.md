@@ -24,7 +24,7 @@ program which contains:
 * Ingress and egress pipeline implementation (incomplete)
 * Checksum verification/update
 
-The implementation provides already logic for L2 bridging and ACL behaviors. We
+The implementation already provides logic for L2 bridging and ACL behaviors. We
 suggest you start by taking a **quick look** at the whole program to understand
 its structure. When you're done, try answering the following questions, while
 referring to the P4 program to understand the different parts in more details.
@@ -36,7 +36,7 @@ referring to the P4 program to understand the different parts in more details.
 
 **Ingress pipeline**
 
-* For the L2 bridging case, which table is used to replicated NDP requests to
+* For the L2 bridging case, which table is used to replicate NDP requests to
   all host-facing ports? What type of match is used in that table?
 * In the ACL table, what's the difference between `send_to_cpu` and
   `clone_to_cpu` actions?
@@ -227,7 +227,7 @@ Docker container with the given arguments. For a list of arguments you can type
 `util/p4rt-sh --help`.
 
 **Note:** we use `--grpc-addr localhost:50001` as the Mininet container is
-executes locally, and `50001` is the TCP port associated to the gRPC server
+executed locally, and `50001` is the TCP port associated to the gRPC server
 exposed by `leaf1`.
 
 If the shell started successfully, you should see the following output:
