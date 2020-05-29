@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Docker image to run PTF-based data plane tests using stratum_bmv2
+# Docker image that extends opennetworking/mn-stratum with other dependencies
+# required by this tutorial. opennetworking/mn-stratum is the official image
+# from the Stratum project which contains stratum_bmv2 and the Mininet
+# libraries. We extend that with PTF, scapy, etc.
 
-ARG MN_STRATUM_SHA
+ARG MN_STRATUM_SHA="sha256:ae7c59885509ece8062e196e6a8fb6aa06386ba25df646ed27c765d92d131692"
 
 FROM bitnami/minideb:stretch as builder
 
@@ -34,8 +37,6 @@ ENV PIP_DEPS \
 RUN pip install --no-cache-dir --root /output $PIP_DEPS
 
 FROM opennetworking/mn-stratum:latest@$MN_STRATUM_SHA as runtime
-
-LABEL description="Docker image to run PTF-based data plane tests using stratum_bmv2"
 
 ENV RUNTIME_DEPS \
     make

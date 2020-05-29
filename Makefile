@@ -19,12 +19,10 @@ _docker_pull_all:
 	docker tag ${P4RT_SH_IMG}@${P4RT_SH_SHA} ${P4RT_SH_IMG}
 	docker pull ${P4C_IMG}@${P4C_SHA}
 	docker tag ${P4C_IMG}@${P4C_SHA} ${P4C_IMG}
-	docker pull ${MN_STRATUM_IMG}@${MN_STRATUM_SHA}
-	docker tag ${MN_STRATUM_IMG}@${MN_STRATUM_SHA} ${MN_STRATUM_IMG}
+	docker pull ${STRATUM_BMV2_IMG}@${STRATUM_BMV2_SHA}
+	docker tag ${STRATUM_BMV2_IMG}@${STRATUM_BMV2_SHA} ${STRATUM_BMV2_IMG}
 	docker pull ${MVN_IMG}@${MVN_SHA}
 	docker tag ${MVN_IMG}@${MVN_SHA} ${MVN_IMG}
-	docker pull ${PTF_IMG}@${PTF_SHA}
-	docker tag ${PTF_IMG}@${PTF_SHA} ${PTF_IMG}
 	docker pull ${GNMI_CLI_IMG}@${GNMI_CLI_SHA}
 	docker tag ${GNMI_CLI_IMG}@${GNMI_CLI_SHA} ${GNMI_CLI_IMG}
 	docker pull ${YANG_IMG}@${YANG_SHA}
@@ -101,7 +99,7 @@ p4-build: p4src/main.p4
 	@echo "*** P4 program compiled successfully! Output files are in p4src/build"
 
 p4-test:
-	@cd ptf && PTF_DOCKER_IMG=$(PTF_IMG) ./run_tests $(TEST)
+	@cd ptf && PTF_DOCKER_IMG=$(STRATUM_BMV2_IMG) ./run_tests $(TEST)
 
 _copy_p4c_out:
 	$(info *** Copying p4c outputs to app resources...)
@@ -131,9 +129,6 @@ app-uninstall:
 	@echo
 
 app-reload: app-uninstall app-install
-
-mn-single:
-	docker run --privileged --rm -it -v /tmp/mn-stratum:/tmp -p 50001:50001 ${MN_STRATUM_IMG}
 
 yang-tools:
 	docker run --rm -it -v ${curr_dir}/yang/demo-port.yang:/models/demo-port.yang ${YANG_IMG}
