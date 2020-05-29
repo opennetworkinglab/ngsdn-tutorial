@@ -35,6 +35,7 @@ class IPv4Host(Host):
         super(IPv4Host, self).config(mac, ip, defaultRoute, lo, **_params)
         self.cmd('ip -4 addr flush dev %s' % self.defaultIntf())
         self.cmd('ip -6 addr flush dev %s' % self.defaultIntf())
+        self.cmd('sysctl -w net.ipv4.ip_forward=0')
         self.cmd('ip -4 link set up %s' % self.defaultIntf())
         self.cmd('ip -4 addr add %s dev %s' % (ip, self.defaultIntf()))
         if gw:
