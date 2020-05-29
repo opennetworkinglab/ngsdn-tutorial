@@ -1,0 +1,33 @@
+{
+  "flows": [
+    {
+      "deviceId": "device:leaf1",
+      "tableId": "FabricIngress.spgw_ingress.dl_sess_lookup",
+      "priority": 10,
+      "timeout": 0,
+      "isPermanent": true,
+      "selector": {
+        "criteria": [
+          {
+            "type": "IPV4_DST",
+            "ip": "<INSERT UE IP ADDRESS HERE>/32"
+          }
+        ]
+      },
+      "treatment": {
+        "instructions": [
+          {
+            "type": "PROTOCOL_INDEPENDENT",
+            "subtype": "ACTION",
+            "actionId": "FabricIngress.spgw_ingress.set_dl_sess_info",
+            "actionParams": {
+              "teid": "BEEF",
+              "s1u_enb_addr": "0a006401",
+              "s1u_sgw_addr": "0a0064fe"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

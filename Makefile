@@ -43,6 +43,9 @@ start: _start
 start-v4: NGSDN_TOPO_PY := topo-v4.py
 start-v4: _start
 
+start-gtp: NGSDN_TOPO_PY := topo-gtp.py
+start-gtp: _start
+
 stop:
 	$(info *** Stopping ONOS and Mininet...)
 	@NGSDN_TOPO_PY=foo docker-compose down -t0
@@ -79,6 +82,15 @@ netcfg: _netcfg
 
 netcfg-sr: NGSDN_NETCFG_JSON := netcfg-sr.json
 netcfg-sr: _netcfg
+
+netcfg-gtp: NGSDN_NETCFG_JSON := netcfg-gtp.json
+netcfg-gtp: _netcfg
+
+flowrule-gtp:
+	$(info *** Pushing flowrule-gtp.json to ONOS...)
+	${onos_curl} -X POST -H 'Content-Type:application/json' \
+		${onos_url}/v1/flows?appId=rest-api -d@./mininet/flowrule-gtp.json
+	@echo
 
 reset: stop
 	-$(NGSDN_TUTORIAL_SUDO) rm -rf ./tmp
@@ -224,3 +236,41 @@ check-sr:
 	util/mn-cmd h4 ping -c 1 172.16.2.1
 	make stop
 	make solution-revert
+
+check-gtp:
+	make reset
+	make start-gtp
+	sleep 45
+	util/onos-cmd app activate segmentrouting
+	util/onos-cmd app activate pipelines.fabric
+	util/onos-cmd app activate netcfghostprovider
+	sleep 15
+	make netcfg-gtp
+	sleep 20
+	util/mn-cmd enodeb ping -c 1 10.0.100.254
+	util/mn-cmd pdn ping -c 1 10.0.200.254
+#	util/mn-cmd h2 ping -c 1 172.16.2.254
+#	sleep 5
+#	util/mn-cmd h2 ping -c 1 172.16.1.1
+#	util/mn-cmd h2 ping -c 1 172.16.1.2
+#	util/mn-cmd h2 ping -c 1 172.16.1.3
+#	# ping from h3 and h4 should not work without the solution
+#	! util/mn-cmd h3 ping -c 1 172.16.3.254
+#	! util/mn-cmd h4 ping -c 1 172.16.4.254
+#	make solution-apply
+#	make netcfg-sr
+#	sleep 20
+#	util/mn-cmd h3 ping -c 1 172.16.3.254
+#	util/mn-cmd h4 ping -c 1 172.16.4.254
+#	sleep 5
+#	util/mn-cmd h3 ping -c 1 172.16.1.1
+#	util/mn-cmd h3 ping -c 1 172.16.1.2
+#	util/mn-cmd h3 ping -c 1 172.16.1.3
+#	util/mn-cmd h3 ping -c 1 172.16.2.1
+#	util/mn-cmd h3 ping -c 1 172.16.4.1
+#	util/mn-cmd h4 ping -c 1 172.16.1.1
+#	util/mn-cmd h4 ping -c 1 172.16.1.2
+#	util/mn-cmd h4 ping -c 1 172.16.1.3
+#	util/mn-cmd h4 ping -c 1 172.16.2.1
+#	make stop
+#	make solution-revert
