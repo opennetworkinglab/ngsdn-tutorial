@@ -245,10 +245,13 @@ check-gtp:
 	util/onos-cmd app activate pipelines.fabric
 	util/onos-cmd app activate netcfghostprovider
 	sleep 15
+	make solution-apply
 	make netcfg-gtp
 	sleep 20
 	util/mn-cmd enodeb ping -c 1 10.0.100.254
 	util/mn-cmd pdn ping -c 1 10.0.200.254
+	util/onos-cmd route-add 17.0.0.0/24 10.0.100.1
+	make flowrule-gtp
 #	util/mn-cmd h2 ping -c 1 172.16.2.254
 #	sleep 5
 #	util/mn-cmd h2 ping -c 1 172.16.1.1
