@@ -17,7 +17,7 @@
 # from the Stratum project which contains stratum_bmv2 and the Mininet
 # libraries. We extend that with PTF, scapy, etc.
 
-ARG MN_STRATUM_SHA="sha256:ae7c59885509ece8062e196e6a8fb6aa06386ba25df646ed27c765d92d131692"
+ARG MN_STRATUM_SHA="sha256:1bba2e2c06460c73b0133ae22829937786217e5f20f8f80fcc3063dcf6707ebe"
 
 FROM bitnami/minideb:stretch as builder
 
