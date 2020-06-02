@@ -92,6 +92,12 @@ flowrule-gtp:
 		${onos_url}/v1/flows?appId=rest-api -d@./mininet/flowrule-gtp.json
 	@echo
 
+flowrule-clean:
+	$(info *** Removing all flows installed via REST APIs...)
+	${onos_curl} -X DELETE -H 'Content-Type:application/json' \
+		${onos_url}/v1/flows/application/rest-api
+	@echo
+
 reset: stop
 	-$(NGSDN_TUTORIAL_SUDO) rm -rf ./tmp
 
@@ -154,6 +160,7 @@ solution-apply:
 	rsync -r solution/ ./
 
 solution-revert:
+	test -d working_copy
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./app/*
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./p4src/*
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./ptf/*
@@ -252,28 +259,9 @@ check-gtp:
 	util/mn-cmd pdn ping -c 1 10.0.200.254
 	util/onos-cmd route-add 17.0.0.0/24 10.0.100.1
 	make flowrule-gtp
-#	util/mn-cmd h2 ping -c 1 172.16.2.254
-#	sleep 5
-#	util/mn-cmd h2 ping -c 1 172.16.1.1
-#	util/mn-cmd h2 ping -c 1 172.16.1.2
-#	util/mn-cmd h2 ping -c 1 172.16.1.3
-#	# ping from h3 and h4 should not work without the solution
-#	! util/mn-cmd h3 ping -c 1 172.16.3.254
-#	! util/mn-cmd h4 ping -c 1 172.16.4.254
-#	make solution-apply
-#	make netcfg-sr
-#	sleep 20
-#	util/mn-cmd h3 ping -c 1 172.16.3.254
-#	util/mn-cmd h4 ping -c 1 172.16.4.254
-#	sleep 5
-#	util/mn-cmd h3 ping -c 1 172.16.1.1
-#	util/mn-cmd h3 ping -c 1 172.16.1.2
-#	util/mn-cmd h3 ping -c 1 172.16.1.3
-#	util/mn-cmd h3 ping -c 1 172.16.2.1
-#	util/mn-cmd h3 ping -c 1 172.16.4.1
-#	util/mn-cmd h4 ping -c 1 172.16.1.1
-#	util/mn-cmd h4 ping -c 1 172.16.1.2
-#	util/mn-cmd h4 ping -c 1 172.16.1.3
-#	util/mn-cmd h4 ping -c 1 172.16.2.1
-#	make stop
-#	make solution-revert
+	# util/mn-cmd requires a TTY because it uses docker -it option
+	# hence we use screen for putting it in the background
+	screen -d -m util/mn-cmd pdn /mininet/send-udp.py
+	util/mn-cmd enodeb /mininet/recv-gtp.py -e
+	make stop
+	make solution-revert

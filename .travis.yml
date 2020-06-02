@@ -12,4 +12,4 @@ install:
   - make deps
 
 script:
-  - make check check-sr NGSDN_TUTORIAL_SUDO=sudo
+  - make check check-sr check-gtp NGSDN_TUTORIAL_SUDO=sudo
