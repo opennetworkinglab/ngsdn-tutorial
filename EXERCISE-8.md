@@ -1,28 +1,30 @@
 # Exercise 8: GTP termination with fabric.p4
 
 The goal of this exercise is to learn how to use Trellis and fabric.p4 to
-encapsulate and route packets using the GTP header as in a 4G/5G mobile core
-Serving and Packet Gateway (SPGW).
+encapsulate and route packets using the GPRS Tunnelling Protocol (GTP) header as
+in 4G mobile core networks.
 
 ## Overview
 
 ![Topology GTP](img/topo-gtp.png)
 
 The topology we will use in this exercise ([topo-gtp.py]) is a very simple one,
-with the usual 2x2 fabric, but only two hosts emulating:
+with the usual 2x2 fabric, but only two hosts. We assume our fabric is used as
+part of a 4G (i.e, LTE) network, connecting base stations to a Packet Data
+Network (PDN), such as the Internet. The two hosts in our topology represent:
 
 * An eNodeB, i.e., a base station providing radio connectivity to User
   Equipments (UEs) such as smartphones;
-* An host on the Packet Data Network (PDN), i.e., any host on the Internet.
+* A host on the Packet Data Network (PDN), i.e., any host on the Internet.
 
 To provide connectivity between the UEs and the Internet, we need to program our
-fabric to act as a SPGW. The SPGW is a very complex and feature-rich component
-of the mobile architecture that is used as a gateway between the base stations
-and the Internet. Base stations aggregate UE traffic in GTP tunnels (one or more
-per UE). The SPGW has many functions, among which that of terminating GTP
-tunnels. In other words, it encapsulates downlink traffic (Internet→UE) in an
-additional IPv4+UDP+GTP-U header, or it removes it for the uplink direction
-(UE→Internet).
+fabric to act as a Serving and Packet Gateway (SPGW). The SPGW is a complex and
+feature-rich component of the 4G mobile core architecture that is used by the
+base stations as a gateway to the PDN. Base stations aggregate UE traffic in GTP
+tunnels (one or more per UE). The SPGW has many functions, among which that of
+terminating such tunnels. In other words, it encapsulates downlink traffic
+(Internet→UE) in an additional IPv4+UDP+GTP-U header, and it removes it for the
+uplink direction (UE→Internet).
 
 In this exercise you will learn how to:
 
