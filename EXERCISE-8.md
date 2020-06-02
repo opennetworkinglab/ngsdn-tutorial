@@ -1,4 +1,4 @@
-# Exercise 4: GTP termination with fabric.p4
+# Exercise 8: GTP termination with fabric.p4
 
 The goal of this exercise is to learn how to use Trellis and fabric.p4 to
 encapsulate and route packets using the GTP header as in a 4G/5G mobile core
