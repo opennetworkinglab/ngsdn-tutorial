@@ -19,12 +19,10 @@ _docker_pull_all:
 	docker tag ${P4RT_SH_IMG}@${P4RT_SH_SHA} ${P4RT_SH_IMG}
 	docker pull ${P4C_IMG}@${P4C_SHA}
 	docker tag ${P4C_IMG}@${P4C_SHA} ${P4C_IMG}
-	docker pull ${MN_STRATUM_IMG}@${MN_STRATUM_SHA}
-	docker tag ${MN_STRATUM_IMG}@${MN_STRATUM_SHA} ${MN_STRATUM_IMG}
+	docker pull ${STRATUM_BMV2_IMG}@${STRATUM_BMV2_SHA}
+	docker tag ${STRATUM_BMV2_IMG}@${STRATUM_BMV2_SHA} ${STRATUM_BMV2_IMG}
 	docker pull ${MVN_IMG}@${MVN_SHA}
 	docker tag ${MVN_IMG}@${MVN_SHA} ${MVN_IMG}
-	docker pull ${PTF_IMG}@${PTF_SHA}
-	docker tag ${PTF_IMG}@${PTF_SHA} ${PTF_IMG}
 	docker pull ${GNMI_CLI_IMG}@${GNMI_CLI_SHA}
 	docker tag ${GNMI_CLI_IMG}@${GNMI_CLI_SHA} ${GNMI_CLI_IMG}
 	docker pull ${YANG_IMG}@${YANG_SHA}
@@ -44,6 +42,9 @@ start: _start
 
 start-v4: NGSDN_TOPO_PY := topo-v4.py
 start-v4: _start
+
+start-gtp: NGSDN_TOPO_PY := topo-gtp.py
+start-gtp: _start
 
 stop:
 	$(info *** Stopping ONOS and Mininet...)
@@ -82,6 +83,21 @@ netcfg: _netcfg
 netcfg-sr: NGSDN_NETCFG_JSON := netcfg-sr.json
 netcfg-sr: _netcfg
 
+netcfg-gtp: NGSDN_NETCFG_JSON := netcfg-gtp.json
+netcfg-gtp: _netcfg
+
+flowrule-gtp:
+	$(info *** Pushing flowrule-gtp.json to ONOS...)
+	${onos_curl} -X POST -H 'Content-Type:application/json' \
+		${onos_url}/v1/flows?appId=rest-api -d@./mininet/flowrule-gtp.json
+	@echo
+
+flowrule-clean:
+	$(info *** Removing all flows installed via REST APIs...)
+	${onos_curl} -X DELETE -H 'Content-Type:application/json' \
+		${onos_url}/v1/flows/application/rest-api
+	@echo
+
 reset: stop
 	-$(NGSDN_TUTORIAL_SUDO) rm -rf ./tmp
 
@@ -101,7 +117,7 @@ p4-build: p4src/main.p4
 	@echo "*** P4 program compiled successfully! Output files are in p4src/build"
 
 p4-test:
-	@cd ptf && PTF_DOCKER_IMG=$(PTF_IMG) ./run_tests $(TEST)
+	@cd ptf && PTF_DOCKER_IMG=$(STRATUM_BMV2_IMG) ./run_tests $(TEST)
 
 _copy_p4c_out:
 	$(info *** Copying p4c outputs to app resources...)
@@ -132,9 +148,6 @@ app-uninstall:
 
 app-reload: app-uninstall app-install
 
-mn-single:
-	docker run --privileged --rm -it -v /tmp/mn-stratum:/tmp -p 50001:50001 ${MN_STRATUM_IMG}
-
 yang-tools:
 	docker run --rm -it -v ${curr_dir}/yang/demo-port.yang:/models/demo-port.yang ${YANG_IMG}
 
@@ -147,6 +160,7 @@ solution-apply:
 	rsync -r solution/ ./
 
 solution-revert:
+	test -d working_copy
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./app/*
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./p4src/*
 	$(NGSDN_TUTORIAL_SUDO) rm -rf ./ptf/*
@@ -227,5 +241,27 @@ check-sr:
 	util/mn-cmd h4 ping -c 1 172.16.1.2
 	util/mn-cmd h4 ping -c 1 172.16.1.3
 	util/mn-cmd h4 ping -c 1 172.16.2.1
+	make stop
+	make solution-revert
+
+check-gtp:
+	make reset
+	make start-gtp
+	sleep 45
+	util/onos-cmd app activate segmentrouting
+	util/onos-cmd app activate pipelines.fabric
+	util/onos-cmd app activate netcfghostprovider
+	sleep 15
+	make solution-apply
+	make netcfg-gtp
+	sleep 20
+	util/mn-cmd enodeb ping -c 1 10.0.100.254
+	util/mn-cmd pdn ping -c 1 10.0.200.254
+	util/onos-cmd route-add 17.0.0.0/24 10.0.100.1
+	make flowrule-gtp
+	# util/mn-cmd requires a TTY because it uses docker -it option
+	# hence we use screen for putting it in the background
+	screen -d -m util/mn-cmd pdn /mininet/send-udp.py
+	util/mn-cmd enodeb /mininet/recv-gtp.py -e
 	make stop
 	make solution-revert

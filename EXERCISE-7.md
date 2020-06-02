@@ -182,6 +182,9 @@ Re-start ONOS and Mininet, this time with the new IPv4 topology:
 
     $ make start-v4
 
+Wait about 1 minute before proceeding with the next steps, this will give time
+to ONOS to start all of its subsystems.
+
 ### 2. Load fabric pipeconf and segmentrouting
 
 Differently from previous exercises, instead of building and installing our own
@@ -596,6 +599,6 @@ forwarding in a 2x2 leaf-spine fabric of IPv4 hosts.
 [netcfg.json]: mininet/netcfg.json
 [docker-compose.yml]: docker-compose.yml
 [pseudo-wire]: https://en.wikipedia.org/wiki/Pseudo-wire
-[onos/apps/segmentrouting]: https://github.com/opennetworkinglab/onos/tree/onos-2.2/apps/segmentrouting
-[onos/pipelines/fabric]: https://github.com/opennetworkinglab/onos/tree/onos-2.2/pipelines/fabric
+[onos/apps/segmentrouting]: https://github.com/opennetworkinglab/onos/tree/2.2.2/apps/segmentrouting
+[onos/pipelines/fabric]: https://github.com/opennetworkinglab/onos/tree/2.2.2/pipelines/fabric
 [fabric-tofino]: https://github.com/opencord/fabric-tofino
