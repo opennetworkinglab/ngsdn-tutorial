@@ -100,7 +100,7 @@
   "hosts": {
     "00:00:00:00:00:10/None": {
       "basic": {
-        "name": "eNodeB",
+        "name": "enodeb",
         "gridX": 100,
         "gridY": 700,
         "locType": "grid",
@@ -114,7 +114,7 @@
     },
     "00:00:00:00:00:20/None": {
       "basic": {
-        "name": "PDN",
+        "name": "pdn",
         "gridX": 850,
         "gridY": 700,
         "locType": "grid",
