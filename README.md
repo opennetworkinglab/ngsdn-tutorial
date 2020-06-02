@@ -168,7 +168,8 @@ Click on the exercise name to see the instructions:
  4. [Enabling ONOS built-in services](./EXERCISE-4.md)
  5. [Implementing IPv6 routing with ECMP](./EXERCISE-5.md)
  6. [Implementing SRv6](./EXERCISE-6.md)
- 6. [Trellis Basics](./EXERCISE-7.md)
+ 7. [Trellis Basics](./EXERCISE-7.md)
+ 8. [GTP termination with fabric.p4](./EXERCISE-8.md)
 
 ## Solutions
 
