@@ -20,14 +20,16 @@ fabric to act as a SPGW. The SPGW is a very complex and feature-rich component
 of the mobile architecture that is used as a gateway between the base stations
 and the Internet. Base stations aggregate UE traffic in GTP tunnels (one or more
 per UE). The SPGW has many functions, among which that of terminating GTP
-tunnels. In other words, it encapsulates downlink traffic (Internet->UE) in an
-additional IPv4+UDP+GTP header, or it removes it for the uplink direction.
+tunnels. In other words, it encapsulates downlink traffic (Internet→UE) in an
+additional IPv4+UDP+GTP-U header, or it removes it for the uplink direction
+(UE→Internet).
 
 In this exercise you will learn how to:
 
 * Program a switch with the `fabric-spgw` profile;
 * Use Trellis to route traffic from the PDN to the eNodeB;
-* Use the ONOS REST APIs to enable GTP encapsulation of downlink traffic.
+* Use the ONOS REST APIs to enable GTP encapsulation of downlink traffic on
+  `leaf1`.
 
 ## Exercise steps
 
@@ -117,7 +119,7 @@ this ID in the next step.
     id=org.onosproject.pipelines.fabric-int, behaviors=[PortStatisticsDiscovery, PiPipelineInterpreter, Pipeliner, IntProgrammable], extensions=[P4_INFO_TEXT, BMV2_JSON, CPU_PORT_TXT]
     id=org.onosproject.pipelines.basic, behaviors=[PiPipelineInterpreter, Pipeliner, PortStatisticsDiscovery], extensions=[P4_INFO_TEXT, BMV2_JSON]
 
-### 2. Modify and push netcfg to use fabric-spgw profile
+### 3. Modify and push netcfg to use fabric-spgw profile
 
 Up until now, we have used topologies where all switches were configured with
 the same pipeconf, and so the same P4 program.
@@ -149,7 +151,7 @@ Let's modify the netcfg JSON to use the `fabric-spgw` profile on switch
 
 3. Save the file.
 
-### Push netcfg to ONOS
+#### Push netcfg to ONOS
 
 On a terminal window, type:
 
@@ -203,7 +205,7 @@ Check that the `enodeb` and `pdn` hosts have been discovered:
 `provider=host:org.onosproject.netcfghost` and `configured=true` are indications
 that the host entry was created by `netcfghostprovider`.
 
-### 3. Verify IP connectivity between PDN and eNodeB
+### 4. Verify IP connectivity between PDN and eNodeB
 
 Since the two hosts have been already discovered, they should be pingable.
 
@@ -216,7 +218,7 @@ Using the Mininet CLI (`make mn-cli`) start a ping between `enodeb` and `pdn`:
     64 bytes from 10.0.200.1: icmp_seq=3 ttl=62 time=9.63 ms
     ...
 
-### 4. Start PDN and eNodeB processes
+### 5. Start PDN and eNodeB processes
 
 We have created two Python scripts to emulate the PDN sending downlink
 traffic to the UEs, and the eNodeB, expecting to receive the
@@ -263,7 +265,7 @@ You should see traffic (5 pps) on the link between the `pdn` host and `leaf2`,
 but not on other links. **Packets are dropped at switch `leaf2` as this switch
 does not know how to route packets with IPv4 destination `17.0.0.1`.**
 
-### 5. Install route for UE subnet and debug table entries
+### 6. Install route for UE subnet and debug table entries
 
 Using the ONOS CLI (`make onos-cli`), type the following command to add a route
 for the UE subnet (`17.0.0.0/24`) with next hop the `enodeb` (`10.0.100.1`):
@@ -306,27 +308,27 @@ spines, and delivered to the eNodeB (the next hop of our static route).
 #### Debug fabric.p4 table entries
 
 You can verify that the table entries for the static route have been added to
-the switches by "grepping" the output of the `flows` command, for example for
-`leaf2`:
+the switches by "grepping" the output of the ONOS CLI `flows` command, for
+example for `leaf2`:
 
-    flows -s any device:leaf2 | grep "17.0.0.0"
+    onos> flows -s any device:leaf2 | grep "17.0.0.0"
         ADDED, bytes=0, packets=0, table=FabricIngress.forwarding.routing_v4, priority=48010, selector=[IPV4_DST:17.0.0.0/24], treatment=[immediate=[FabricIngress.forwarding.set_next_id_routing_v4(next_id=0xd)]]
 
 
-As you can see, the entry has been `ADDED` to table
-`FabricIngress.forwarding.routing_v4` with `next_id=0xd`.
+One entry has been `ADDED` to table `FabricIngress.forwarding.routing_v4` with
+`next_id=0xd`.
 
 Let's grep flow rules for `next_id=0xd`:
 
-    onos@root > flows -s any device:leaf2 | grep "next_id=0xd"
+    onos> flows -s any device:leaf2 | grep "next_id=0xd"
         ADDED, bytes=0, packets=0, table=FabricIngress.forwarding.routing_v4, priority=48010, selector=[IPV4_DST:17.0.0.0/24], treatment=[immediate=[FabricIngress.forwarding.set_next_id_routing_v4(next_id=0xd)]]
         ADDED, bytes=0, packets=0, table=FabricIngress.forwarding.routing_v4, priority=48010, selector=[IPV4_DST:10.0.100.0/24], treatment=[immediate=[FabricIngress.forwarding.set_next_id_routing_v4(next_id=0xd)]]
         ADDED, bytes=1674881, packets=2429, table=FabricIngress.next.hashed, priority=0, selector=[next_id=0xd], treatment=[immediate=[GROUP:0xd]]
         ADDED, bytes=1674881, packets=2429, table=FabricIngress.next.next_vlan, priority=0, selector=[next_id=0xd], treatment=[immediate=[FabricIngress.next.set_vlan(vlan_id=0xffe)]]
 
-We can notice that another route shares the same next ID (`10.0.100.0/24`,
-assigned to interface on leaf1), and that the next ID points to a group with the
-same value (`GROUP:0xd`).
+We can notice that another route shares the same next ID (`10.0.100.0/24` from
+the to interface config for `leaf1`), and that the next ID points to a group
+with the same value (`GROUP:0xd`).
 
 Let's take a look at this specific group:
 
@@ -341,29 +343,28 @@ push an MPLS label with hex value`0x65`, or 101 in base 10.
 Spine switches will use this label to forward packets. Can you tell what 101
 identifies here? Hint: take a look at [netcfg-gtp.json]
 
-### 5. Install flow rule to enable GTP encapsulation
+### 7. Use ONOS REST APIs to create GTP flow rule
 
 Finally, it is time to instruct `leaf1` to encapsulate traffic with a GTP tunnel
 header. To do this, we will insert a special table entry in the "SPGW portion"
-of the [fabric.p4] pipeline, implemented in file [spgw.p4].
-
-Specifically, we will insert one entry in the [dl_sess_lookup] table,
-responsible for handling downlink traffic (i.e., with match on the UE IPv4
-address) by setting the GTP tunnel info which will be used to perform the
-encapsulation (action `set_dl_sess_info`).
+of the [fabric.p4] pipeline, implemented in file [spgw.p4]. Specifically, we
+will insert one entry in the [dl_sess_lookup] table, responsible for handling
+downlink traffic (i.e., with match on the UE IPv4 address) by setting the GTP
+tunnel info which will be used to perform the encapsulation (action
+`set_dl_sess_info`).
 
 **NOTE:** this version of spgw.p4 is from ONOS v2.2.2 (the same used in this
 tutorial). The P4 code might have changed recently, and you might see different
 tables if you open up the same file in a different branch.
 
 To insert the flow rule, we will not use an app (which we would have to
-implement from scratch!), but instead, we will use the ONOS REST APIs.
-
-To learn more about the available APIs, use the following URL to open up the
+implement from scratch!), but instead, we will use the ONOS REST APIs. To learn
+more about the available APIs, use the following URL to open up the
 automatically generated API docs from your running ONOS instance:
 <http://127.0.0.1:8181/onos/v1/docs/>
 
-The specific API we will use is `POST /flows` to create new flow rules:
+The specific API we will use to create new flow rules is `POST /flows`,
+described here:
 <http://127.0.0.1:8181/onos/v1/docs/#!/flows/post_flows>
 
 This API takes a JSON request. The file
@@ -386,8 +387,7 @@ send it via the REST APIs.
    ...
    ```
     
-    **Modify the `ip` field to match on the IP address of the UE
-    (17.0.0.1).**
+2. Modify the `ip` field to match on the IP address of the UE (17.0.0.1).
     
     Since the `dl_sess_lookup` table performs exact match on the IPv4
     address, make sure to specify the match field with `/32` prefix length.
@@ -412,12 +412,12 @@ send it via the REST APIs.
    On a terminal window, type the following commands:
    
    ```
-   $ make flowrulee-gtp
+   $ make flowrule-gtp
    ```
 
-   This command uses `cURL` to push the flow rule JSON file to the ONOS REST
-   APIs. If the flow rule has been created correctly, you should see an output
-   similar to the following one:
+   This command uses `cURL` to push the flow rule JSON file to the ONOS REST API
+   endpoint. If the flow rule has been created correctly, you should see an
+   output similar to the following one:
 
    ```
    *** Pushing flowrule-gtp.json to ONOS...
@@ -427,8 +427,8 @@ send it via the REST APIs.
 
    ```
 
-5. Check the eNodeB process. You should now see that the received packets
-are now GTP encapsulated!
+5. Check the eNodeB process. You should see that the received packets
+   are now GTP encapsulated!
 
     ```
     [...] 727 bytes: 10.0.100.254 -> 10.0.100.1, is_gtp_encap=True
