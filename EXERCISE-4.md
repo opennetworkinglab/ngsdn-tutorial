@@ -1,6 +1,6 @@
 # Exercise 4: Enabling ONOS built-in services
 
-In this exercise, you will have to integrate ONOS built-in services for link and
+In this exercise, you will integrate ONOS built-in services for link and
 host discovery with your P4 program. Such built-in services are based on the
 ability of switches to send data plane packets to the controller (packet-in) and
 vice versa (packet-out).
@@ -170,8 +170,8 @@ $ make restart
 This command will restart all containers, removing any state from previous
 executions, including ONOS.
 
-Wait approx. 20 seconds for ONOS to completing booting, or check the ONOS log
-(`make onos-log`) until no more messages are shown.
+Wait approximately 20 seconds for ONOS to completing booting, or check
+the ONOS log (`make onos-log`) until no more messages are shown.
 
 ### 5. Load updated app and register pipeconf
 
@@ -217,12 +217,12 @@ src=device:spine2/1, dst=device:leaf1/2, type=DIRECT, state=ACTIVE, expected=fal
 src=device:spine2/2, dst=device:leaf2/2, type=DIRECT, state=ACTIVE, expected=false
 ```
 
-**If you don't see any link**, check the ONOS log (`make onos-log`) for any
-error with packet-in/out handling. In case of errors, it's possible that you
+**If you don't see a link**, check the ONOS log (`make onos-log`) for any
+errors with packet-in/out handling. In case of errors, it's possible that you
 have not modified `InterpreterImpl.java` correctly. In this case, go back to
-exercise step 3.
+step 3.
 
-Verify flow rules, you should see 5 flow rules for each device. For example,
+You should see 5 flow rules for each device. For example,
 to show all flow rules installed so far on device `leaf1`:
 
 ```
@@ -244,7 +244,7 @@ behavior implementation ([PipelinerImpl.java][PipelinerImpl.java]). These flow
 rules specify a match key by using ONOS standard/known header fields, such as
 `ETH_TYPE`, `ICMPV6_TYPE`, etc. These types are mapped to P4Info-specific match
 fields by the pipeline interpreter
-([InterpreterImpl.java][InterpreterImpl.java], look for method
+([InterpreterImpl.java][InterpreterImpl.java]; look for method
 `mapCriterionType`)
 
 The `hostprovider` app provides host discovery capabilities by intercepting ARP
@@ -282,8 +282,8 @@ deviceId=device:leaf1, groupCount=1
 ### 7. Visualize links on the ONOS UI
 
 Using the ONF Cloud Tutorial Portal, access the ONOS UI.
-If you are using the tutorial VM, open up a browser (e.g. Firefox) to
-<http://127.0.0.1:8181/onos/ui>.
+If you are running the VM on your laptop, open up a browser
+(e.g. Firefox) to <http://127.0.0.1:8181/onos/ui>.
 
 On the same page where the ONOS topology view is shown:
 * Press `L` to show device labels;
@@ -486,7 +486,7 @@ PING 2001:1:1::b(2001:1:1::b) 56 data bytes
 ...
 ```
 
-Differently from exercise 1, here we have NOT set any NDP static entry.
+In contrast to Exercise 1, here we have NOT set any NDP static entries.
 Instead, NDP NS and NA packets are handled by the data plane thanks to the `ALL`
 group and `l2_ternary_table`'s flow rule described above. Moreover, given the
 ACL flow rules to clone NDP packets to the controller, hosts can be discovered
@@ -512,7 +512,7 @@ id=00:00:00:00:00:1B/None, mac=00:00:00:00:00:1B, locations=[device:leaf1/4], vl
 ```
 
 Using the ONF Cloud Tutorial Portal, access the ONOS UI.
-If you are using the tutorial VM, open up a browser (e.g. Firefox) to
+If you are running the VM on your laptop, open up a browser (e.g. Firefox) to
 <http://127.0.0.1:8181/onos/ui>.
 
 To toggle showing hosts on the topology view, press `H` on your keyboard.

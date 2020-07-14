@@ -57,7 +57,7 @@ The next step is to compile the P4 program for the BMv2 `simple_switch` target.
 For this, we will use the open source P4_16 compiler ([p4c][p4c]) which includes
 a backend for this specific target, named `p4c-bm2-ss`.
 
-To compile the program, open a terminal window on the tutorial repo and type the
+To compile the program, open a terminal window in the exercise VM and type the
 following command:
 
 ```
@@ -76,7 +76,7 @@ docker run --rm -v /home/sdn/ngsdn-tutorial:/workdir -w /workdir
 *** P4 program compiled successfully! Output files are in p4src/build
 ```
 
-We have instrumented the tutorial Makefile to use a containerized version of the
+We have instrumented the Makefile to use a containerized version of the
 `p4c-bm2-ss` compiler. If you look at the arguments when calling `p4c-bm2-ss `,
 you will notice that we are asking the compiler to:
 
@@ -96,7 +96,7 @@ format. When `simple_switch` receives a new packet, it uses this configuration
 to process the packet in a way that is consistent with the P4 program.
 
 This is quite a big file, but don't worry, there's no need to understand its
-content for the sake of this tutorial. If you want to learn more, a
+content for the sake of this exercise. If you want to learn more, a
 specification of the BMv2 JSON format is provided here:
 <https://github.com/p4lang/behavioral-model/blob/master/docs/JSON_format.md>
 
@@ -132,7 +132,7 @@ make start
 ```
 
 This command will start two Docker containers, one for mininet and one for ONOS.
-You can ignore the ONOS one for now, we will use that in exercise 3 and 4.
+You can ignore the ONOS one for now, we will use that in exercises 3 and 4.
 
 To make sure the container is started without errors, you can use the `make
 mn-log` command to show the Mininet log. Verify that you see the following
@@ -180,8 +180,9 @@ two hosts of this subnet.
 ### stratum_bmv2 temporary files
 
 When starting the Mininet container, a set of files related to the execution of
-each `stratum_bmv2` instance are generated in the `tmp` directory located inside
-this tutorial repo (i.e., `ngsdn-tutorial/tmp`). Example of these files are:
+each `stratum_bmv2` instance is generated in the
+`tmp`directory. Examples include:
+
 
 * `tmp/leaf1/stratum_bmv2.log`: contains the stratum_bmv2 log for switch
   `leaf1`;

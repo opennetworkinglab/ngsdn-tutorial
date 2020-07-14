@@ -1,6 +1,6 @@
 # Exercise 3: Using ONOS as the control plane
 
-This exercise provides a hands-on introduction to ONOS where you will learn how
+This exercise provides a hands-on introduction to ONOS, where you will learn how
 to:
 
 1. Start ONOS along with a set of built-in apps for basic services such as
@@ -27,13 +27,13 @@ The parameters to start the ONOS container are specified in [docker
 environment variable `ONOS_APPS`, used to define the built-in apps to load
 during startup.
 
-In our case this variable has value:
+In our case, this variable has value:
 
 ```
 ONOS_APPS=gui2,drivers.bmv2,lldpprovider,hostprovider
 ```
 
-Requesting ONOS to pre-load the following built-in apps:
+requesting ONOS to pre-load the following built-in apps:
 
 * `gui2`: ONOS web user interface (available at <http://localhost:8181/onos/ui>)
 * `drivers.bmv2`: BMv2/Stratum drivers based on P4Runtime, gNMI, and gNOI
@@ -57,9 +57,8 @@ ssh_exchange_identification: Connection closed by remote host
 make: *** [onos-cli] Error 255
 ```
 
-When you see the Password prompt, type the default password: `rocks`
-
-Type the following command in the ONOS CLI to show the list of running apps:
+When you see the Password prompt, type the default password: `rocks`. 
+Then type the following command in the ONOS CLI to show the list of running apps:
 
 ```
 onos> apps -a -s
@@ -86,7 +85,7 @@ Make sure you see the following list of apps displayed:
 * 181 org.onosproject.drivers.bmv2          2.2.2    BMv2 Drivers
 ```
 
-This is definitely more apps than what defined in `$ONOS_APPS`. That's
+There are definitely more apps than defined in `$ONOS_APPS`. That's
 because each app in ONOS can define other apps as dependencies. When loading an
 app, ONOS automatically resolves dependencies and loads all other required apps.
 
@@ -94,15 +93,15 @@ app, ONOS automatically resolves dependencies and loads all other required apps.
 
 Link discovery will be the focus of the next exercise. For now, this service
 lacks support in the P4 program. We suggest you deactivate it for the rest of
-this exercise, to avoid running into issues. To deactivate the link discovery
-service, using the following ONOS CLI command:
+this exercise, to avoid running into issues. Use the following ONOS
+CLI command to deactivate the link discovery service.
 
 ```
 onos> app deactivate lldpprovider
 ```
 
-To quit out of the ONOS CLI, use `Ctrl-D`. This will just end the CLI process
-and will not stop the ONOS process.
+To exit the ONOS CLI, use `Ctrl-D`. This will stop the CLI process
+but will not affect ONOS itself.
 
 **Restart ONOS in case of errors**
 
@@ -121,8 +120,8 @@ ONOS app that includes a pipeconf. The pipeconf-related files are the following:
 * [PipelinerImpl.java][PipelinerImpl.java]: An implementation of the `Pipeliner`
   driver behavior;
 
-To build the ONOS app (including the pipeconf), in the second terminal window,
-use the command:
+To build the ONOS app (including the pipeconf), run the following
+command in the second terminal window:
 
 ```
 $ make app-build
@@ -131,7 +130,7 @@ $ make app-build
 This will produce a binary file `app/target/ngsdn-tutorial-1.0-SNAPSHOT.oar`
 that we will use to install the application in the running ONOS instance.
 
-Use the following command to upload to ONOS and activate the app binary:
+Use the following command to load the app into ONOS and activate it:
 
 ```
 $ make app-reload
@@ -156,18 +155,18 @@ onos> pipeconfs
 ### 3. Push netcfg to ONOS
 
 Now that ONOS and Mininet are running, it's time to let ONOS know how to reach
-the 4 switches and control them. We do this by using a configuration file
+the four switches and control them. We do this by using a configuration file
 located at [mininet/netcfg.json](mininet/netcfg.json), which contains
 information such as:
 
-* The gRPC address and port associated to each Stratum device;
+* The gRPC address and port associated with each Stratum device;
 * The ONOS driver to use for each device, `stratum-bmv2` in this case;
 * The pipeconf to use for each device, `org.onosproject.ngsdn-tutorial` in this
   case, as defined in [PipeconfLoader.java][PipeconfLoader.java];
 * Configuration specific to our custom app (`fabricDeviceConfig`)
 
-This file contains also information related to the IPv6 configuration associated
-to each switch interface. We will discuss this information in more details in
+This file also contains information related to the IPv6 configuration associated
+with each switch interface. We will discuss this information in more details in
 the next exercises.
 
 On a terminal window, type:
@@ -248,7 +247,7 @@ deviceId=device:spine1
 
 #### Flow rules and groups
 
-Check the ONOS flow rules, you should see 3 flow rules for each device. For
+Check the ONOS flow rules. You should see three flow rules for each device. For
 example, to show all flow rules installed so far on device `leaf1`:
 
 ```
@@ -281,7 +280,7 @@ packet-in/out in the next session.
 ### 5. Visualize the topology on the ONOS web UI
 
 Using the ONF Cloud Tutorial Portal, access the ONOS UI.
-If you are using the tutorial VM, open up a browser (e.g. Firefox) to
+If you are running the VM on your laptop, open up a browser (e.g. Firefox) to
 <http://127.0.0.1:8181/onos/ui>.
 
 When asked, use the username `onos` and password `rocks`.
@@ -316,13 +315,13 @@ fields, actions, action parameter bit widths, etc.
 
 ## Congratulations!
 
-You have completed the third exercise! If there is still time before the end of
-this session, you can check the bonus steps below.
+You have completed the third exercise! If you're feeling ambitious,
+you can check the bonus steps below.
 
 ### Bonus: inspect stratum_bmv2 internal state
 
 You can use the P4Runtime shell to dump all table entries currently
-installed on the switch by ONOS. On a separate terminal window type, start a
+installed on the switch by ONOS. In a separate terminal window, start a
 P4Runtime shell for leaf1:
 
 ```
@@ -338,7 +337,7 @@ P4Runtime sh >>> for te in table_entry["IngressPipeImpl.acl_table"].read():
             ...:
 ```
 
-You should see exactly 3 entries, each one corresponding to a flow rule
+You should see exactly three entries, each one corresponding to a flow rule
 in ONOS. For example, the flow rule matching on NDP NS packets should look
 like this in the P4runtime shell:
 
@@ -375,9 +374,9 @@ priority: 40001
 
 ### Bonus: show ONOS gRPC log
 
-ONOS provides a debugging feature that allow dumping to file all gRPC messages
-exchanged with a device. To enable this feature, type the following command in
-the ONOS CLI (`make onos-cli`):
+ONOS provides a debugging feature that dumps all gRPC messages
+exchanged with a device to a file. To enable this feature, type the
+following command in the ONOS CLI (`make onos-cli`):
 
 ```
 onos> cfg set org.onosproject.grpc.ctl.GrpcChannelControllerImpl enableMessageLog true
@@ -385,7 +384,7 @@ onos> cfg set org.onosproject.grpc.ctl.GrpcChannelControllerImpl enableMessageLo
 
 Check the content of directory `tmp/onos` in the `ngsdn-tutorial` root. You
 should see many files, some of which starting with name `grpc___mininet_`. You
-should see 4 of such files in total, one file per device, named after the gRPC
+should see four such files, one file per device, named after the gRPC
 port used to establish the gRPC chanel.
 
 Check content of one of these files, you should see a dump of the gRPC messages

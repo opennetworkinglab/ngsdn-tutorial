@@ -98,11 +98,11 @@ There are multiple solutions to this problem:
   switch to reply to NDP NS packets;
 * we can intercept NDP NS via packet-in, generate a corresponding NDP NA
   reply in ONOS, and send it back via packet-out; or
-* we can instruct the switch to generate NDP NA replies using P4. That is, we
-  can write P4 code that takes care of replying to NDP requests without any
-  intervention from the control plane.
+* we can instruct the switch to generate NDP NA replies using P4
+  (i.e., we write P4 code that takes care of replying to NDP requests without any
+  intervention from the control plane).
 
-**Note:** The rest of the exercise assume you will decide to implement the last
+**Note:** The rest of the exercise assumes you will decide to implement the last
 option. You can decide to go with a different one, but you should keep in mind
 that there will be less starter code for you to re-use.
 
@@ -129,8 +129,8 @@ The ONOS app already provides a component
 [NdpReplyComponent.java](app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java)
 responsible of inserting entries in this table.
 
-The component is currently disabled; you will need to enable and modify it in
-the next steps. But for now, let's focus on the P4 program
+The component is currently disabled. You will need to enable and modify it in
+the next steps, but for now, let's focus on the P4 program.
 
 #### LPM IPv6 routing table
 
@@ -140,9 +140,9 @@ prefix match (LPM) on the destination address and performs the required packet
 transformations:
 
 1. Replace the source Ethernet address with the destination one, expected to be
-   `myStationMac` (see next section on "My Station" table);
+   `myStationMac` (see next section on "My Station" table).
 2. Set the destination Ethernet to the next hop's address (passed as an action
-   argument);
+   argument).
 3. Decrement the IPv6 `hop_limit`.
 
 This L3 table and action should provide a mapping between a given IPv6 prefix
@@ -161,7 +161,7 @@ packets.
 
 **Note:** For simplicity, we are using a global routing table. If you would like
 to segment your routing table in virtual ones (i.e. using a VRF ID), you can
-tackle this as an extra credit.
+tackle this as extra credit.
 
 #### "My Station" table
 
@@ -170,8 +170,8 @@ indiscriminately, which is technically incorrect. The switch should only route
 Ethernet frames that are destined for the router's Ethernet address
 (`myStationMac`).
 
-To address this issue, you will need to create a table that will match the
-destination Ethernet address and mark the packet for routing if there is a
+To address this issue, you will need to create a table that matches the
+destination Ethernet address and marks the packet for routing if there is a
 match. We call this the "My Station" table.
 
 You are free to use a specific action or metadata to carry this information, or
@@ -180,8 +180,8 @@ for simplicity, you can use `NoAction` and check for a hit in this table in your
 
 #### Adding support for ECMP with action selectors
 
-The last modification that you will make to the pipeline is to add an
-`action_selector` that will hash traffic between the different possible next
+The last modification you will make to the pipeline is to add an
+`action_selector` that hashes traffic between the different possible next
 hops. In our leaf-spine topology, we have an equal-cost path for each spine for
 every leaf pair, and we want to be able to take advantage of that.
 
@@ -223,7 +223,7 @@ For example:
 
 #### Check for regressions
 
-To make sures the new changes are not breaking other features, make sure to run
+To make sure the new changes are not breaking other features, run the
 tests of the previous exercises as well.
 
     make p4-test TEST=packetio
@@ -245,11 +245,11 @@ Open those files and modify wherever requested (look for `TODO EXERCISE 5`).
 #### Ipv6RoutingComponent.java
 
 The starter code already provides an implementation for event listeners and the
-routing policy, i.e., methods triggered as a consequence of topology events, for
-example to compute ECMP groups based on the available links between leaves and a
-spines.
+routing policy (i.e., methods triggered as a consequence of topology
+events), for example to compute ECMP groups based on the available
+links between leaves and the spine.
 
-You are asked to modify the implementation of 4 methods.
+You are asked to modify the implementation of four methods.
 
 * `setUpMyStationTable()`: to insert flow rules for the "My Station" table;
 
@@ -268,14 +268,14 @@ You are asked to modify the implementation of 4 methods.
 #### NdpReplyComponent.java
 
 This component listens to device events. Each time a new device is added in
-ONOS, it uses the content of netcfg.json to populate the NDP reply table.
+ONOS, it uses the content of `netcfg.json` to populate the NDP reply table.
 
 You are asked to modify the implementation of method `buildNdpReplyFlowRule()`,
 to insert the name of the table and action to generate NDP replies.
 
 #### Enable the routing components
 
-Once you're confident your solution to the previous step should work, before
+Once you are confident your solution to the previous step works, before
 building and reloading the app, remember to enable the routing-related
 components by setting the `enabled` flag to `true` at the top of the class
 definition.
@@ -297,7 +297,7 @@ When building the app, the modified P4 compiler outputs (`bmv2.json` and
 `p4info.txt`) will be packaged together along with the Java classes. After
 reloading the app, you should see messages in the ONOS log signaling that a new
 pipeline configuration has been set and the `Ipv6RoutingComponent` and
-`NdpReplyComponent` have been activated. Check also the log for potentially
+`NdpReplyComponent` have been activated. Also check the log for potentially
 harmful messages (`make onos-log`). If needed, take a look at section **Appendix
 A: Understanding ONOS error logs** at the end of this exercise.
 
@@ -317,8 +317,8 @@ PING 2001:1:2::1(2001:1:2::1) 56 data bytes
 ...
 ```
 
-Now ping between `h3` and `h2` should work. If ping does NOT work, check section
-**Appendix B: Troubleshooting** at the end of this exercise.
+Pinging between `h3` and `h2` should work now. If ping does NOT work,
+check section **Appendix B: Troubleshooting** at the end of this exercise.
 
 The ONOS log should show messages such as:
 
@@ -331,7 +331,7 @@ INFO  [Ipv6RoutingComponent] Adding routes on device:leaf2 for host 00:00:00:00:
 ...
 ```
 
-If you don't see messages regarding the discovery of `h2` (`00:00:00:00:00:20`)
+If you don't see messages about the discovery of `h2` (`00:00:00:00:00:20`)
 it's because ONOS has already discovered that host when you tried to ping at
 the beginning of the exercise.
 
@@ -354,7 +354,7 @@ messages, a possible solution could be:
 #### Verify P4-based NDP NA generation
 
 To verify that the P4-based generation of NDP NA replies by the switch is
-working, you can check the neighbor table of `h2` or `h3`, it should show
+working, you can check the neighbor table of `h2` or `h3`. It should show
 something similar to this:
 
 ```
@@ -362,7 +362,7 @@ mininet> h3 ip -6 n
 2001:2:3::ff dev h3-eth0 lladdr 00:aa:00:00:00:02 router REACHABLE
 ```
 
-Where `2001:2:3::ff` is the IPv6 gateway address defined in `netcfg.json` and
+where `2001:2:3::ff` is the IPv6 gateway address defined in `netcfg.json` and
 `topo-v6.py`, and `00:aa:00:00:00:02` is the `myStationMac` defined for `leaf2`
 in `netcfg.json`.
 
@@ -375,7 +375,7 @@ To verify that ECMP is working, let's start multiple parallel traffic flows from
 mininet> h2 iperf -c h3 -u -V -P5 -b1M -t600 -i1
 ```
 
-This commands will start an iperf client on `h2`, sending UDP packets (`-u`)
+This commands starts an iperf client on `h2`, sending UDP packets (`-u`)
 over IPv6 (`-V`) to `h3` (`-c`). In doing this, we generate 5 distinct flows
 (`-P5`), each one capped at 1Mbit/s (`-b1M`), running for 10 minutes (`-t600`)
 and reporting stats every 1 second (`-i1`).
@@ -408,7 +408,7 @@ IPv6 traffic between any host.
 
 ## Appendix A: Understanding ONOS error logs
 
-There are mainly 2 types of errors that you might see when
+There are two main types of errors that you might see when
 reloading the app:
 
 1. Write errors, such as removing a nonexistent entity or inserting one that
@@ -439,7 +439,7 @@ reloading the app:
     WARN  [P4RuntimeFlowRuleProgrammable] Unable to translate flow rule for pipeconf 'org.onosproject.ngsdn-tutorial':...
     ```
 
-    **Read carefully the error message and make changes to the app as needed.**
+    **Carefully read the error message and make changes to the app as needed.**
     Chances are that you are using a table, match field, or action name that
     does not exist in your P4Info. Check your P4Info file, modify, and reload the
     app (`make app-build app-reload`).

@@ -182,8 +182,8 @@ Re-start ONOS and Mininet, this time with the new IPv4 topology:
 
     $ make start-v4
 
-Wait about 1 minute before proceeding with the next steps, this will give time
-to ONOS to start all of its subsystems.
+Wait about 1 minute before proceeding with the next steps. This will
+give ONOS time to start all of its subsystems.
 
 ### 2. Load fabric pipeconf and segmentrouting
 
@@ -200,9 +200,10 @@ Open up the ONOS CLI (`make onos-cli`) and activate the following apps:
 built-in apps using the ONOS CLI, you can specify just the last piece of the
 full ID (after the last dot.)
 
-**NOTE 2:** The `fabric` app has the only purpose of registering pipeconfs in
-the system. I.e., differently from `segmentrouting`, even if we call them both
-apps, `fabric` does not interact with the network in any way.
+**NOTE 2:** The `fabric` app has the minimal purpose of registering
+pipeconfs in the system. Different from `segmentrouting`, even if we
+call them both apps, `fabric` does not interact with the network in
+any way.
 
 #### Verify apps
 
@@ -262,7 +263,7 @@ Wondering why so many pipeconfs? `fabric.p4` comes in different "profiles", used
 to enable different dataplane features in the pipeline. We'll come back
 to the differences between different profiles in the next exercise, for now
 let's make sure the basic one `org.onosproject.pipelines.fabric` is loaded.
-This is the one we need to program all 4 switches, as specified in
+This is the one we need to program all four switches, as specified in
 [netcfg-sr.json].
 
 #### Increase reconciliation frequency (optional, but recommended)
@@ -324,7 +325,7 @@ Verify that all interfaces have been configured successfully:
     leaf1-5: port=device:leaf1/5 ips=[172.16.1.254/24] mac=00:AA:00:00:00:01 vlanTagged=[100]
     leaf1-6: port=device:leaf1/6 ips=[172.16.2.254/24] mac=00:AA:00:00:00:01 vlanTagged=[200]
 
-You should see 4 interfaces in total (for all host-facing ports of `leaf1`),
+You should see four interfaces in total (for all host-facing ports of `leaf1`),
 configured as in the [netcfg-sr.json] file. You will have to add the
 configuration for `leaf2`'s ports later in this exercise.
 
@@ -342,7 +343,7 @@ This command lists all device-subnet mapping known to `segmentrouting`. For a
 list of other available sr-specific commands, type `sr-` and press
 <kbd>tab</kbd> (as for command auto-completion).
 
-Another interesting command is `sr-ecmp-spg`, to list all computed ECMP
+Another interesting command is `sr-ecmp-spg`, which lists all computed ECMP
 shortest-path graphs:
 
     onos> sr-ecmp-spg 
@@ -405,16 +406,17 @@ Verify that all initial flows and groups have be programmed successfully:
     deviceId=device:spine1, groupCount=5
     deviceId=device:spine2, groupCount=5
 
-You should see the same `flowRuleCount` and `groupCount` in your output. To dump
-the whole flow rules and groups, remove the `-c` argument from the command.
-`added` is used to filter only entities that are known to have been written
-to the switch (i.e., the P4Runtime Write RPC was successful.)
+You should see the same `flowRuleCount` and `groupCount` in your
+output. To dump the whole set of flow rules and groups, remove the
+`-c` argument from the command. `added` is used to filter only
+entities that are known to have been written to the switch (i.e., the
+P4Runtime Write RPC was successful.)
 
 ### 4. Connectivity test
 
 #### Same-subnet hosts (bridging)
 
-Open up the Mininet CLI (`make mn-cli`), let's start by pinging `h1a` and `h1c`,
+Open up the Mininet CLI (`make mn-cli`). Start by pinging `h1a` and `h1c`,
 which are both on the same subnet (VLAN `100` 172.16.1.0/24):
 
     mininet> h1a ping h1c
@@ -514,14 +516,14 @@ For example, to dump packets out of the `h2` main interface:
 
 ### 6. Add missing interface config
 
-Let's start a ping from `h3` to any other host, for example `h2`:
+Start a ping from `h3` to any other host, for example `h2`:
 
     mininet> h3 ping h2
     ...
 
-It should NOT work. Can you tell why?
+It should NOT work. Can you explain why?
 
-Let's check the ONOS log (`make onos-log`), you should see the following
+Let's check the ONOS log (`make onos-log`). You should see the following
 messages:
 
     ...
