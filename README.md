@@ -24,6 +24,18 @@ focus on concepts such as:
 * Testing using bmv2 in Mininet
 * PTF-based P4 unit tests
 
+## Basic vs. advanced version
+
+This tutorial comes in two versions: basic (`master` branch), and advanced
+(this branch).
+
+The basic version contains fewer exercises, and it does not assume previous
+knowledge of the P4 language. Instead, it provides a gentle introduction to it.
+Check the `master` branch of this repo if you're interested in the basic
+version.
+
+If you're interested in the advanced version, keep reading.
+
 ## Slides
 
 Tutorial slides are available online:
