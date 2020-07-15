@@ -291,5 +291,5 @@ leaf2; spine two follows the same pattern.
 
 ## Congratulations!
 
-You have completed the seventh exercise! Now your fabric is capable of steering
+You have completed the sixth exercise! Now your fabric is capable of steering
 traffic using SRv6.

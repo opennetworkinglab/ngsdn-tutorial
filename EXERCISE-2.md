@@ -1,9 +1,7 @@
 # Exercise 2: Yang, OpenConfig, and gNMI basics
 
-This set of exercises is designed to give you more exposure to YANG, OpenConfig,
-and gNMI.
-
-This exercise is divided in three parts:
+This exercise is designed to give you more exposure to YANG, OpenConfig,
+and gNMI. It is divided in three parts:
 
 1. Understanding the YANG language
 2. Understand YANG encoding
@@ -11,7 +9,7 @@ This exercise is divided in three parts:
 
 ## Part 1: Understanding the YANG language
 
-We will start with a simple YANG module called `demo-port` in
+We start with a simple YANG module called `demo-port` in
 [`yang/demo-port.yang`](./yang/demo-port.yang)
 
 Take a look at the model and try to derive the structure. What are valid values
@@ -211,7 +209,7 @@ data that adheres to a model, like NETCONF, RESTCONF, and gNMI.
 
 This part focuses on using the protobuf encoding over gNMI.
 
-First, make sure that your Mininet container is still running.
+First, make sure your Mininet container is still running.
 
 ```
 $ make start
@@ -287,7 +285,7 @@ You can see that Stratum provides a response of type `openconfig.Device`, which
 is the top-level message defined in `openconfig.proto`. The response is the
 binary encoding of the data based on the protobuf message.
 
-The value is not very human readable, but we can translate the reply using a
+The value is not human readable, but we can translate the reply using a
 utility that converts between the binary and textual representations of the
 protobuf message.
 
@@ -298,7 +296,7 @@ utility (then pipe that output to `less` to make scrolling easier):
 $ util/gnmi-cli --grpc-addr localhost:50001 get / | util/oc-pb-decoder | less
 ```
 
-The contents of the response should be easier to read. Scroll down to the first
+The contents of the response should now be easier to read. Scroll down to the first
 `interface`. Is the interface enabled? What is the speed of the port?
 
 *Extra credit:* Can you find `in-pkts`? If not, why do you think they are
@@ -306,7 +304,7 @@ missing?
 
 -------
 
-One of the benefits to gNMI is it's "schema-less" encoding that allows clients
+One of the benefits of gNMI is it's "schema-less" encoding, which allows clients
 or devices to update only the paths that need to be updated. This is
 particularly useful for subscriptions.
 
@@ -592,7 +590,7 @@ $ util/gnmi-cli --grpc-addr localhost:50001 set \
     --bool-val false
 ```
 
-In the gNMI set window, you should see request indicating the new value for the
+In the gNMI set window, you should see a request indicating the new value for the
 `enabled` leaf:
 
 ```

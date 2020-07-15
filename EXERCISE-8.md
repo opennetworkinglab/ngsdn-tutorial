@@ -209,7 +209,7 @@ that the host entry was created by `netcfghostprovider`.
 
 ### 4. Verify IP connectivity between PDN and eNodeB
 
-Since the two hosts have been already discovered, they should be pingable.
+Since the two hosts have already been discovered, they should be pingable.
 
 Using the Mininet CLI (`make mn-cli`) start a ping between `enodeb` and `pdn`:
 
@@ -226,7 +226,7 @@ We have created two Python scripts to emulate the PDN sending downlink
 traffic to the UEs, and the eNodeB, expecting to receive the
 same traffic but GTP-encapsulated.
 
-On a new terminal window, start the [send-udp.py] script on the `pdn` host:
+In a new terminal window, start the [send-udp.py] script on the `pdn` host:
 
     $ util/mn-cmd pdn /mininet/send-udp.py
     Sending 5 UDP packets per second to 17.0.0.1...
@@ -255,8 +255,8 @@ see no packets being printed for the moment.
 #### Use ONOS UI to visualize traffic
 
 Using the ONF Cloud Tutorial Portal, access the ONOS UI.
-If you are using the tutorial VM, open up a browser (e.g. Firefox) to
-<http://127.0.0.1:8181/onos/ui>.
+If you are running a VM on your laptop, open up a browser
+(e.g. Firefox) to <http://127.0.0.1:8181/onos/ui>.
 
 When asked, use the username `onos` and password `rocks`.
 
@@ -328,7 +328,7 @@ Let's grep flow rules for `next_id=0xd`:
         ADDED, bytes=1674881, packets=2429, table=FabricIngress.next.hashed, priority=0, selector=[next_id=0xd], treatment=[immediate=[GROUP:0xd]]
         ADDED, bytes=1674881, packets=2429, table=FabricIngress.next.next_vlan, priority=0, selector=[next_id=0xd], treatment=[immediate=[FabricIngress.next.set_vlan(vlan_id=0xffe)]]
 
-We can notice that another route shares the same next ID (`10.0.100.0/24` from
+Notice that another route shares the same next ID (`10.0.100.0/24` from
 the to interface config for `leaf1`), and that the next ID points to a group
 with the same value (`GROUP:0xd`).
 
@@ -356,7 +356,7 @@ tunnel info which will be used to perform the encapsulation (action
 `set_dl_sess_info`).
 
 **NOTE:** this version of spgw.p4 is from ONOS v2.2.2 (the same used in this
-tutorial). The P4 code might have changed recently, and you might see different
+exercise). The P4 code might have changed recently, and you might see different
 tables if you open up the same file in a different branch.
 
 To insert the flow rule, we will not use an app (which we would have to
