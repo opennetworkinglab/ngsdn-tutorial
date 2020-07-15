@@ -14,6 +14,18 @@ The tutorial is organized around a sequence of hands-on exercises that show how
 to build an IPv6-based leaf-spine data center fabric using P4, Stratum, and
 ONOS.
 
+## Basic vs. advanced version
+
+This tutorial comes in two versions: basic (this branch), and advanced
+(`advanced` branch).
+
+The advanced version assumes intermediate knowledge of the P4 language, and it
+contains more exercises, e.g., showing how to use existing ONOS applications and
+P4 programs such as Trellis and fabric.p4. Check the `advanced` branch of this
+repo if you're interested in the advanced version.
+
+If you're interested in the basic version, keep reading.
+
 ## Slides
 
 Tutorial slides are available online:
