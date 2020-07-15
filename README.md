@@ -29,7 +29,7 @@ focus on concepts such as:
 This tutorial comes in two versions: basic (`master` branch), and advanced
 (this branch).
 
-The basic version contains fewer exercises, and it does not assume previous
+The basic version contains fewer exercises, and it does not assume prior
 knowledge of the P4 language. Instead, it provides a gentle introduction to it.
 Check the `master` branch of this repo if you're interested in the basic
 version.
