@@ -318,7 +318,6 @@ fields, actions, action parameter bit widths, etc.
 You have completed the third exercise! If you're feeling ambitious,
 you can do the extra credit steps below.
 
-
 ### Extra Credit: Inspect stratum_bmv2 internal state
 
 You can use the P4Runtime shell to dump all table entries currently
@@ -372,7 +371,6 @@ action {
 }
 priority: 40001
 ```
-
 
 ### Extra Credit: Show ONOS gRPC log
 
