@@ -1,10 +1,10 @@
-# Exercise 1: P4Runtime basics
+# Exercise 1: P4Runtime Basics
 
 This exercise provides a hands-on introduction to the P4Runtime API. You will be
 asked to:
 
-1. Take a look at the starter P4 code
-2. Compile it for the BMv2 software switch and understand the output (the P4Info
+1. Look at the P4 starter code
+2. Compile it for the BMv2 software switch and understand the output (P4Info
    and BMv2 JSON files)
 3. Start Mininet with a 2x2 topology of `stratum_bmv2` switches
 4. Use the P4Runtime Shell to manually insert table entries in one of the
@@ -87,7 +87,7 @@ you will notice that we are asking the compiler to:
   It's ok to ignore such warnings here, as they are generated because of a bug
   in p4c.
 
-### Take a look at the compiler output
+### Compiler output
 
 #### bmv2.json
 
@@ -182,7 +182,6 @@ two hosts of this subnet.
 When starting the Mininet container, a set of files related to the execution of
 each `stratum_bmv2` instance is generated in the
 `tmp`directory. Examples include:
-
 
 * `tmp/leaf1/stratum_bmv2.log`: contains the stratum_bmv2 log for switch
   `leaf1`;
@@ -402,8 +401,8 @@ PING 2001:1:1::b(2001:1:1::b) 56 data bytes
 
 ## Congratulations!
 
-You have completed the first exercise! Leave mininet running, as we will need it
-for following exercises.
+You have completed the first exercise! Leave Mininet running, as you will need it
+for the following exercises.
 
 [p4c]: https://github.com/p4lang/p4c
 [p4runtime-sh]: https://github.com/p4lang/p4runtime-shell

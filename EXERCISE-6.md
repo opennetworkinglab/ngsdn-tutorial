@@ -4,6 +4,8 @@ In this exercise, you will be implementing a simplified version of segment
 routing, a source routing method that steers traffic through a specified set of
 nodes.
 
+## Background
+
 This exercise is based on an IETF draft specification called SRv6, which uses
 IPv6 packets to frame traffic that follows an SRv6 policy. SRv6 packets use the
 IPv6 routing header, and they can either encapsulate IPv6 (or IPv4) packets
@@ -100,9 +102,8 @@ In our implementation, we simplify these types into two roles:
 For more details, you can read the draft specification here:
 https://tools.ietf.org/id/draft-filsfils-spring-srv6-network-programming-06.html
 
-## Exercise steps
 
-### 1. Adding tables for SRv6
+## 1. Adding tables for SRv6
 
 We have already defined the SRv6 header as well as included the logic for
 parsing the header in `main.p4`.
@@ -121,7 +122,7 @@ entries to forward traffic after the SRv6 policy is applied). You can also apply
 the PSP behavior as part of your `apply` logic because we will always be
 applying it if we are the penultimate SID.
 
-### 2. Testing the pipeline with Packet Test Framework (PTF)
+## 2. Testing the pipeline with Packet Test Framework (PTF)
 
 In this exercise, you will be modifying tests in [srv6.py](ptf/tests/srv6.py) to
 verify the SRv6 behavior of the pipeline.
@@ -171,7 +172,7 @@ $ make p4-test
 
 Now we have shown that we can install basic rules and pass SRv6 traffic using BMv2.
 
-### 3. Building the ONOS App
+## 3. Building the ONOS App
 
 For the ONOS application, you will need to update `Srv6Component.java` in the
 following ways:
@@ -198,7 +199,7 @@ reload the app:
 $ make app-build app-reload
 ```
 
-### 4. Inserting SRv6 policies
+## 4. Inserting SRv6 policies
 
 The next step is to show that traffic can be steered using an SRv6 policy.
 
@@ -270,7 +271,7 @@ the specified spine.
 
 <img src="img/srv6-ping-2.png" alt="SRv6 Ping Test" width="335"/>
 
-### Debugging and Clean Up
+## 5. Debugging and Clean Up
 
 If you need to remove your SRv6 policies, you can use the `srv6-clear` command
 to clear all SRv6 policies from a specific device. For example to remove flows

@@ -1,10 +1,10 @@
-# Exercise 5: IPv6 routing
+# Exercise 5: IPv6 Routing
 
 In this exercise, you will be modifying the P4 program and ONOS app to add
 support for IPv6-based (L3) routing between all hosts connected to the fabric,
 with support for ECMP to balance traffic flows across multiple spines.
 
-## Overview
+## Background
 
 ### Requirements
 
@@ -79,9 +79,7 @@ mininet> h2 ip -6 n
 2001:1:2::ff dev h2-eth0  FAILED
 ```
 
-## Exercise steps
-
-### 1. Modify P4 program
+## 1. Modify P4 program
 
 The first step will be to add new tables to `main.p4`.
 
@@ -202,7 +200,7 @@ Make sure to address any compiler errors before continuing.
 
 At this point, our P4 pipeline should be ready for testing.
 
-### 2. Run PTF tests
+## 2. Run PTF tests
 
 Tests for the IPv6 routing behavior are located in `ptf/tests/routing.py`. Open
 that file up and modify wherever requested (look for `TODO EXERCISE 5`).
@@ -232,7 +230,7 @@ tests of the previous exercises as well.
 
 If all tests succeed, congratulations! You can move to the next step.
 
-### 3. Modify ONOS app
+## 3. Modify ONOS app
 
 The last part of the exercise is to update the starter code for the routing
 components of our ONOS app, located here:
@@ -301,7 +299,7 @@ pipeline configuration has been set and the `Ipv6RoutingComponent` and
 harmful messages (`make onos-log`). If needed, take a look at section **Appendix
 A: Understanding ONOS error logs** at the end of this exercise.
 
-### 4. Test IPv6 routing on Mininet
+## 4. Test IPv6 routing on Mininet
 
 #### Verify ping
 

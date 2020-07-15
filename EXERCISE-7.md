@@ -3,7 +3,7 @@
 The goal of this exercise is to learn how to set up and configure an emulated
 Trellis environment with a simple 2x2 topology.
 
-## Overview
+## Background
 
 Trellis is a set of built-in ONOS applications that provide the control plane
 for an IP fabric based on MPLS segment-routing. That is, similar in purpose to
@@ -91,7 +91,7 @@ defines 4 IPv4 subnets:
 * `172.16.3.0/24` with 1 hosts connected to `leaf2` (`h3`)
 * `172.16.4.0/24` with 1 hosts connected to `leaf2` (`h4`)
 
-#### VLAN tagged vs. untagged ports
+### VLAN tagged vs. untagged ports
 
 As usually done in a traditional router, different subnets are associated to
 different VLANs. For this reason, Trellis allows configuring ports with
@@ -164,9 +164,8 @@ following questions:
 * Is the `interfaces` block provided for all host-facing ports? Which ports are
   missing and which hosts are attached to those ports?
 
-## Exercise steps
 
-### 1. Restart ONOS and Mininet with the IPv4 topology
+## 1. Restart ONOS and Mininet with the IPv4 topology
 
 Since we want to use a new topology with IPv4 hosts, we need to reset the
 current environment:
@@ -185,7 +184,7 @@ Re-start ONOS and Mininet, this time with the new IPv4 topology:
 Wait about 1 minute before proceeding with the next steps. This will
 give ONOS time to start all of its subsystems.
 
-### 2. Load fabric pipeconf and segmentrouting
+## 2. Load fabric pipeconf and segmentrouting
 
 Differently from previous exercises, instead of building and installing our own
 pipeconf and app, here we use built-in ones.
@@ -283,7 +282,7 @@ P4Runtime write requests time out because the system is overloaded.
 The default reconciliation period is 30 seconds, the above commands set it to 4
 seconds for flow rules, and 3 seconds for groups.
 
-### 3. Push netcfg-sr.json to ONOS
+## 3. Push netcfg-sr.json to ONOS
 
 On a terminal window, type:
 
@@ -412,7 +411,7 @@ output. To dump the whole set of flow rules and groups, remove the
 entities that are known to have been written to the switch (i.e., the
 P4Runtime Write RPC was successful.)
 
-### 4. Connectivity test
+## 4. Connectivity test
 
 #### Same-subnet hosts (bridging)
 
@@ -502,9 +501,9 @@ ONOS:
     id=00:00:00:00:00:1C/100, mac=00:00:00:00:00:1C, locations=[device:leaf1/5], vlan=100, ip(s)=[172.16.1.3]
     id=00:00:00:00:00:20/200, mac=00:00:00:00:00:20, locations=[device:leaf1/6], vlan=200, ip(s)=[172.16.2.1]
 
-### 5. Dump packets to see VLAN tags (optional)
+## 5. Dump packets to see VLAN tags (optional)
 
-TODO: detailed instructions for this step are still work in progress.
+TODO: detailed instructions for this step are still a work-in-progress.
 
 If you feel adventurous, start a ping between any two hosts, and use the tool
 [util/mn-pcap](util/mn-pcap) to dump packets to a PCAP file. After dumping
@@ -514,7 +513,7 @@ For example, to dump packets out of the `h2` main interface:
 
     $ util/mn-pcap h2
 
-### 6. Add missing interface config
+## 6. Add missing interface config
 
 Start a ping from `h3` to any other host, for example `h2`:
 

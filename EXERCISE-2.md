@@ -1,13 +1,13 @@
-# Exercise 2: Yang, OpenConfig, and gNMI basics
+# Exercise 2: Yang, OpenConfig, and gNMI Basics
 
 This exercise is designed to give you more exposure to YANG, OpenConfig,
-and gNMI. It is divided in three parts:
+and gNMI. It includes:
 
 1. Understanding the YANG language
 2. Understand YANG encoding
 3. Understanding YANG-enabled transport protocols (using gNMI)
 
-## Part 1: Understanding the YANG language
+## 1. Understanding the YANG language
 
 We start with a simple YANG module called `demo-port` in
 [`yang/demo-port.yang`](./yang/demo-port.yang)
@@ -38,7 +38,9 @@ bash-4.4# pyang -f tree demo-port.yang
 You should see a tree representation of the `demo-port` module. Does this match
 your expectations?
 
-*Extra Credit:* If you finish this quickly, you can try to add a new leaf node
+------
+
+*Extra Credit:* Try to add a new leaf node
 to `port-config` or `port-state` grouping, then rerun `pyang` and see where your
 new leaf was added.
 
@@ -71,7 +73,9 @@ In the interface model, we can see the path to enable or disable an interface:
 
 What is the path to read the number of incoming packets (`in-pkts`) on an interface?
 
-*Extra Credit:* If you have some time, take a look at the models in the
+------
+
+*Extra Credit:* Take a look at the models in the
 `/models` directory or browse them on Github:
 <https://github.com/openconfig/public/tree/master/release/models>
 
@@ -79,7 +83,9 @@ Try to find the description of the `enabled` or `in-pkts` leaf nodes.
 
 *Hint:* Take a look at the `openconfig-interfaces.yang` file.
 
-## Part 2: Understand YANG encoding
+------
+
+## 2. Understand YANG encoding
 
 There is no specific YANG data encoding, but data adhering to YANG models can be
 encoded into XML, JSON, or Protobuf (among other formats). Each of these formats
@@ -145,7 +151,6 @@ bash-4.4# less /proto/tutorial/enums/enums.proto
 You should see an enum for the 10GB speed, along with any other speeds that you
 added if you completed the extra credit above.
 
-------
 
 We can also use `proto_generator` to build the protobuf messages for the
 OpenConfig models that Stratum uses:
@@ -180,6 +185,8 @@ bash-4.4# proto_generator \
 
 You will find `openconfig.proto` and `enums.proto` in the `/proto/openconfig` directory.
 
+------
+
 *Extra Credit:* Try to find the Protobuf message fields used to enable a port or
 get the ingress packets counter in the protobuf messages.
 
@@ -189,6 +196,8 @@ get the ingress packets counter in the protobuf messages.
 
 `ygot` can also be used to generate Go structs that adhere to the YANG model
 and that are capable of validating the structure, type, and values of data.
+
+------
 
 *Extra Credit:* If you have extra time or are interested in using YANG and Go
 together, try generating Go code for the `demo-port` module.
@@ -200,9 +209,11 @@ bash-4.4# generator -output_dir=/goSrc -package_name=tutorial demo-port.yang
 
 Take a look at the Go files in `/goSrc`.
 
+------
+
 You can now quit out of the container (using `Ctrl-D` or `exit`).
 
-## Part 3: Understanding YANG-enabled transport protocols
+## 3. Understanding YANG-enabled transport protocols
 
 There are several YANG-model agnostic protocols that can be used to get or set
 data that adheres to a model, like NETCONF, RESTCONF, and gNMI.
@@ -298,6 +309,8 @@ $ util/gnmi-cli --grpc-addr localhost:50001 get / | util/oc-pb-decoder | less
 
 The contents of the response should now be easier to read. Scroll down to the first
 `interface`. Is the interface enabled? What is the speed of the port?
+
+------
 
 *Extra credit:* Can you find `in-pkts`? If not, why do you think they are
 missing?
@@ -474,8 +487,6 @@ while your ping is still running. (If it's not exactly 1, then there could be
 other traffic like NDP messages contributing to the increase.)
 
 You can stop the gNMI subscription using `Ctrl-C`.
-
-------
 
 Finally, we will monitor link events using gNMI's on-change subscriptions.
 

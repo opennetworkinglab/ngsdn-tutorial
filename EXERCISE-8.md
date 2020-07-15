@@ -4,7 +4,7 @@ The goal of this exercise is to learn how to use Trellis and fabric.p4 to
 encapsulate and route packets using the GPRS Tunnelling Protocol (GTP) header as
 in 4G mobile core networks.
 
-## Overview
+## Background
 
 ![Topology GTP](img/topo-gtp.png)
 
@@ -33,9 +33,8 @@ In this exercise you will learn how to:
 * Use the ONOS REST APIs to enable GTP encapsulation of downlink traffic on
   `leaf1`.
 
-## Exercise steps
 
-### 1. Start ONOS and Mininet with GTP topology
+## 1. Start ONOS and Mininet with GTP topology
 
 Since we want to use a different topology, we need to reset the current
 environment (if currently active):
@@ -54,7 +53,7 @@ Re-start ONOS and Mininet, this time with the new topology:
 Wait about 1 minute before proceeding with the next steps, this will give time
 to ONOS to start all of its subsystems.
 
-### 2. Load additional apps
+## 2. Load additional apps
 
 As in the previous exercises, let's activate the `segmentrouting` and `fabric`
 pipeconf app using the ONOS CLI (`make onos-cli`):
@@ -121,7 +120,7 @@ this ID in the next step.
     id=org.onosproject.pipelines.fabric-int, behaviors=[PortStatisticsDiscovery, PiPipelineInterpreter, Pipeliner, IntProgrammable], extensions=[P4_INFO_TEXT, BMV2_JSON, CPU_PORT_TXT]
     id=org.onosproject.pipelines.basic, behaviors=[PiPipelineInterpreter, Pipeliner, PortStatisticsDiscovery], extensions=[P4_INFO_TEXT, BMV2_JSON]
 
-### 3. Modify and push netcfg to use fabric-spgw profile
+## 3. Modify and push netcfg to use fabric-spgw profile
 
 Up until now, we have used topologies where all switches were configured with
 the same pipeconf, and so the same P4 program.
@@ -207,7 +206,7 @@ Check that the `enodeb` and `pdn` hosts have been discovered:
 `provider=host:org.onosproject.netcfghost` and `configured=true` are indications
 that the host entry was created by `netcfghostprovider`.
 
-### 4. Verify IP connectivity between PDN and eNodeB
+## 4. Verify IP connectivity between PDN and eNodeB
 
 Since the two hosts have already been discovered, they should be pingable.
 
@@ -220,7 +219,7 @@ Using the Mininet CLI (`make mn-cli`) start a ping between `enodeb` and `pdn`:
     64 bytes from 10.0.200.1: icmp_seq=3 ttl=62 time=9.63 ms
     ...
 
-### 5. Start PDN and eNodeB processes
+## 5. Start PDN and eNodeB processes
 
 We have created two Python scripts to emulate the PDN sending downlink
 traffic to the UEs, and the eNodeB, expecting to receive the
@@ -267,7 +266,7 @@ You should see traffic (5 pps) on the link between the `pdn` host and `leaf2`,
 but not on other links. **Packets are dropped at switch `leaf2` as this switch
 does not know how to route packets with IPv4 destination `17.0.0.1`.**
 
-### 6. Install route for UE subnet and debug table entries
+## 6. Install route for UE subnet and debug table entries
 
 Using the ONOS CLI (`make onos-cli`), type the following command to add a route
 for the UE subnet (`17.0.0.0/24`) with next hop the `enodeb` (`10.0.100.1`):
@@ -345,7 +344,7 @@ push an MPLS label with hex value`0x65`, or 101 in base 10.
 Spine switches will use this label to forward packets. Can you tell what 101
 identifies here? Hint: take a look at [netcfg-gtp.json]
 
-### 7. Use ONOS REST APIs to create GTP flow rule
+## 7. Use ONOS REST APIs to create GTP flow rule
 
 Finally, it is time to instruct `leaf1` to encapsulate traffic with a GTP tunnel
 header. To do this, we will insert a special table entry in the "SPGW portion"

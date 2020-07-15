@@ -1,4 +1,4 @@
-# Exercise 3: Using ONOS as the control plane
+# Exercise 3: Using ONOS as the Control Plane
 
 This exercise provides a hands-on introduction to ONOS, where you will learn how
 to:
@@ -11,7 +11,7 @@ to:
 4. Access the ONOS CLI and UI to verify that all `stratum_bmv2` switches have
    been discovered and configured correctly.
 
-### 1. Start ONOS
+## 1. Start ONOS
 
 In a terminal window, type:
 
@@ -89,7 +89,7 @@ There are definitely more apps than defined in `$ONOS_APPS`. That's
 because each app in ONOS can define other apps as dependencies. When loading an
 app, ONOS automatically resolves dependencies and loads all other required apps.
 
-**Disable link discovery service**
+#### Disable link discovery service
 
 Link discovery will be the focus of the next exercise. For now, this service
 lacks support in the P4 program. We suggest you deactivate it for the rest of
@@ -103,12 +103,12 @@ onos> app deactivate lldpprovider
 To exit the ONOS CLI, use `Ctrl-D`. This will stop the CLI process
 but will not affect ONOS itself.
 
-**Restart ONOS in case of errors**
+#### Restart ONOS in case of errors
 
 If anything goes wrong and you need to kill ONOS, you can use command `make
 restart` to restart both Mininet and ONOS.
 
-### 2. Build app and register pipeconf
+## 2. Build app and register pipeconf
 
 Inside the [app/](./app) directory you will find a starter implementation of an
 ONOS app that includes a pipeconf. The pipeconf-related files are the following:
@@ -152,7 +152,7 @@ Alternatively, you can show the list of registered pipeconfs using the ONOS CLI
 onos> pipeconfs
 ```
 
-### 3. Push netcfg to ONOS
+## 3. Push netcfg to ONOS
 
 Now that ONOS and Mininet are running, it's time to let ONOS know how to reach
 the four switches and control them. We do this by using a configuration file
@@ -197,7 +197,7 @@ INFO  [DeviceManager] Device device:leaf1 port [leaf1-eth5](5) status changed (e
 INFO  [DeviceManager] Device device:leaf1 port [leaf1-eth6](6) status changed (enabled=true)
 ```
 
-### 4. Use the ONOS CLI to verify the network configuration
+## 4. Use the ONOS CLI to verify the network configuration
 
 Access the ONOS CLI using `make onos-cli`. Enter the following command to
 verify the network config pushed before:
@@ -277,7 +277,7 @@ types of P4Runtime entities. In this case, you should see 1 group of type
 clone packets to the controller via packet-in. We'll talk more about controller
 packet-in/out in the next session.
 
-### 5. Visualize the topology on the ONOS web UI
+## 5. Visualize the topology on the ONOS web UI
 
 Using the ONF Cloud Tutorial Portal, access the ONOS UI.
 If you are running the VM on your laptop, open up a browser (e.g. Firefox) to
@@ -316,9 +316,10 @@ fields, actions, action parameter bit widths, etc.
 ## Congratulations!
 
 You have completed the third exercise! If you're feeling ambitious,
-you can check the bonus steps below.
+you can do the extra credit steps below.
 
-### Bonus: inspect stratum_bmv2 internal state
+
+### Extra Credit: Inspect stratum_bmv2 internal state
 
 You can use the P4Runtime shell to dump all table entries currently
 installed on the switch by ONOS. In a separate terminal window, start a
@@ -372,7 +373,8 @@ action {
 priority: 40001
 ```
 
-### Bonus: show ONOS gRPC log
+
+### Extra Credit: Show ONOS gRPC log
 
 ONOS provides a debugging feature that dumps all gRPC messages
 exchanged with a device to a file. To enable this feature, type the

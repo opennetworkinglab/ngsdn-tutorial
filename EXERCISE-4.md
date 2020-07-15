@@ -1,4 +1,4 @@
-# Exercise 4: Enabling ONOS built-in services
+# Exercise 4: Enabling ONOS Built-in Services
 
 In this exercise, you will integrate ONOS built-in services for link and
 host discovery with your P4 program. Such built-in services are based on the
@@ -15,9 +15,12 @@ The exercise has two parts:
 1. Enable packet I/O and verify link discovery
 2. Host discovery & L2 bridging
 
-But first, let's review how controller packet I/O works with P4Runtime.
 
-## Controller packet I/O with P4Runtime
+## Part 1: Enable packet I/O and verify link discovery
+
+We start by reviewing how controller packet I/O works with P4Runtime.
+
+### Background: Controller packet I/O with P4Runtime
 
 The P4 program under [p4src/main.p4](p4src/main.p4) provides support for
 carrying arbitrary metadata in P4Runtime `PacketIn` and `PacketOut` messages.
@@ -52,7 +55,6 @@ Similarly, when Stratum receives a P4Runtime `PacketOut` message, it uses the
 values found in the `PacketOut`'s metadata fields to serialize and prepend a
 `cpu_out_header_t` to the frame before feeding it to the pipeline parser.
 
-## Part 1: enable packet I/O and verify link discovery
 
 ### 1. Modify P4 program
 
@@ -315,7 +317,7 @@ In the following, you will be asked to enable the app's `L2BridgingComponent`,
 and to verify that host discovery works by pinging hosts on Mininet. But before,
 it's useful to review how the starter code implements L2 bridging.
 
-### Overview: our implementation of L2 bridging
+### Background: Our implementation of L2 bridging
 
 To make things easier, the starter code assumes that hosts of a given subnet are
 all connected to the same leaf, and two interfaces of two different leaves
