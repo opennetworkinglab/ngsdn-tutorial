@@ -460,7 +460,7 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
     // We use this table to clone all NDP packets to the control plane, so to
     // enable host discovery. When the location of a new host is discovered, the
     // controller is expected to update the L2 and L3 tables with the
-    // correspionding brinding and routing entries.
+    // corresponding bridging and routing entries.
 
     action send_to_cpu() {
         standard_metadata.egress_spec = CPU_PORT;
