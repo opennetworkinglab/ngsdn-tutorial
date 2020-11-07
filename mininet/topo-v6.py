@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 #  Copyright 2019-present Open Networking Foundation
 #

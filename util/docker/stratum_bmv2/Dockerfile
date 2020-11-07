@@ -17,13 +17,13 @@
 # from the Stratum project which contains stratum_bmv2 and the Mininet
 # libraries. We extend that with PTF, scapy, etc.
 
-ARG MN_STRATUM_SHA="sha256:1bba2e2c06460c73b0133ae22829937786217e5f20f8f80fcc3063dcf6707ebe"
+ARG MN_STRATUM_SHA="sha256:ffdb01919eaeddc6bb2c295300fb02270abdc6f4faefa13392941b6bb0b322d4"
 
 FROM bitnami/minideb:stretch as builder
 
 ENV BUILD_DEPS \
-    python-pip \
-    python-setuptools \
+    python3-pip \
+    python3-setuptools \
     git
 RUN install_packages $BUILD_DEPS
 
@@ -34,7 +34,7 @@ ENV PIP_DEPS \
     git+https://github.com/p4lang/ptf.git \
     googleapis-common-protos==1.6.0 \
     ipaddress
-RUN pip install --no-cache-dir --root /output $PIP_DEPS
+RUN pip3 install --no-cache-dir --root /output $PIP_DEPS
 
 FROM opennetworking/mn-stratum:latest@$MN_STRATUM_SHA as runtime
 

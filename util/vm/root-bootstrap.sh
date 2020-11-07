@@ -24,7 +24,8 @@ DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \
     git \
     bash-completion \
     htop \
-    python \
+    python3 \
+    python3-pip \
     zip unzip \
     make \
     wget \
@@ -37,11 +38,6 @@ systemctl start docker
 systemctl enable docker
 # Add sdn user to docker group
 usermod -a -G docker sdn
-
-# Install pip
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python get-pip.py --force-reinstall
-rm -f get-pip.py
 
 # Bash autocompletion
 echo "source /etc/profile.d/bash_completion.sh" >> ~/.bashrc

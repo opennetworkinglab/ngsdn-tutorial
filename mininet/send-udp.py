@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Script used in Exercise 8.
 # Send downlink packets to UE address.

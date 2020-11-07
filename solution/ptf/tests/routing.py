@@ -127,7 +127,7 @@ class IPv6RoutingTest(P4RuntimeTest):
         pkt_route(exp_pkt, next_hop_mac)
         pkt_decrement_ttl(exp_pkt)
 
-        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.send_packet(self, self.port1, pkt)
         testutils.verify_packet(self, exp_pkt, self.port2)
 
 
@@ -172,5 +172,5 @@ class NdpReplyGenTest(P4RuntimeTest):
                               dst_ip=pkt[IPv6].src)
 
         # Send NDP NS, expect NDP NA from the same port.
-        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.send_packet(self, self.port1, pkt)
         testutils.verify_packet(self, exp_pkt, self.port1)

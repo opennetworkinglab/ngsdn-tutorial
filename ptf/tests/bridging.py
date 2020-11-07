@@ -146,12 +146,12 @@ class ArpNdpRequestWithCloneTest(P4RuntimeTest):
         for inport in mcast_ports:
 
             # Send packet...
-            testutils.send_packet(self, inport, str(pkt))
+            testutils.send_packet(self, inport, pkt)
 
             # Pkt should be received on CPU via PacketIn...
             # Expected P4Runtime PacketIn message.
             exp_packet_in_msg = self.helper.build_packet_in(
-                payload=str(pkt),
+                payload=pkt,
                 metadata={
                     "ingress_port": inport,
                     "_pad": 0
@@ -234,12 +234,12 @@ class ArpNdpReplyWithCloneTest(P4RuntimeTest):
             priority=DEFAULT_PRIORITY
         ))
 
-        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.send_packet(self, self.port1, pkt)
 
         # Pkt should be received on CPU via PacketIn...
         # Expected P4Runtime PacketIn message.
         exp_packet_in_msg = self.helper.build_packet_in(
-            payload=str(pkt),
+            payload=pkt,
             metadata={
                 "ingress_port": self.port1,
                 "_pad": 0
@@ -302,8 +302,8 @@ class BridgingTest(P4RuntimeTest):
         # ---- END SOLUTION ----
 
         # Send and verify.
-        testutils.send_packet(self, self.port1, str(pkt))
-        testutils.send_packet(self, self.port2, str(pkt2))
+        testutils.send_packet(self, self.port1, pkt)
+        testutils.send_packet(self, self.port2, pkt2)
 
         testutils.verify_each_packet_on_each_port(
             self, [pkt, pkt2], [self.port2, self.port1])

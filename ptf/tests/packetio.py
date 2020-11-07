@@ -65,7 +65,7 @@ class PacketOutTest(P4RuntimeTest):
             # Modify metadata names to match the content of your P4Info file
             # ---- START SOLUTION ----
             packet_out_msg = self.helper.build_packet_out(
-                payload=str(pkt),
+                payload=pkt,
                 metadata={
                     "MODIFY ME": outport,
                     "_pad": 0
@@ -126,7 +126,7 @@ class PacketInTest(P4RuntimeTest):
             # ---- START SOLUTION ----
             # Expected P4Runtime PacketIn message.
             exp_packet_in_msg = self.helper.build_packet_in(
-                payload=str(pkt),
+                payload=pkt,
                 metadata={
                     "MODIFY ME": inport,
                     "_pad": 0
@@ -135,5 +135,5 @@ class PacketInTest(P4RuntimeTest):
 
             # Send packet to given switch ingress port and expect P4Runtime
             # PacketIn message.
-            testutils.send_packet(self, inport, str(pkt))
+            testutils.send_packet(self, inport, pkt)
             self.verify_packet_in(exp_packet_in_msg)

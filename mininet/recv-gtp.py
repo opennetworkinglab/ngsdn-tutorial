@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Script used in Exercise 8 that sniffs packets and prints on screen whether
 # they are GTP encapsulated or not.

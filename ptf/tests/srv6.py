@@ -188,7 +188,7 @@ class Srv6InsertTest(P4RuntimeTest):
         set_cksum(pkt, 1)
         set_cksum(exp_pkt, 1)
 
-        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.send_packet(self, self.port1, pkt)
         testutils.verify_packet(self, exp_pkt, self.port2)
 
 
@@ -291,7 +291,7 @@ class Srv6TransitTest(P4RuntimeTest):
         set_cksum(pkt, 1)
         set_cksum(exp_pkt, 1)
 
-        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.send_packet(self, self.port1, pkt)
         testutils.verify_packet(self, exp_pkt, self.port2)
 
 
@@ -398,7 +398,7 @@ class Srv6EndTest(P4RuntimeTest):
         set_cksum(pkt, 1)
         set_cksum(exp_pkt, 1)
 
-        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.send_packet(self, self.port1, pkt)
         testutils.verify_packet(self, exp_pkt, self.port2)
 
 
@@ -505,5 +505,5 @@ class Srv6EndPspTest(P4RuntimeTest):
         set_cksum(pkt, 1)
         set_cksum(exp_pkt, 1)
 
-        testutils.send_packet(self, self.port1, str(pkt))
+        testutils.send_packet(self, self.port1, pkt)
         testutils.verify_packet(self, exp_pkt, self.port2)

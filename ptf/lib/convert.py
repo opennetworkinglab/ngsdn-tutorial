@@ -35,11 +35,11 @@ def matchesMac(mac_addr_string):
 
 
 def encodeMac(mac_addr_string):
-    return mac_addr_string.replace(':', '').decode('hex')
+    return bytes.fromhex(mac_addr_string.replace(':', ''))
 
 
 def decodeMac(encoded_mac_addr):
-    return ':'.join(s.encode('hex') for s in encoded_mac_addr)
+    return ':'.join(['{:02x}'.format(s) for s in encoded_mac_addr])
 
 
 ip_pattern = re.compile(r'^(\d{1,3}\.){3}(\d{1,3})$')
@@ -59,7 +59,7 @@ def decodeIPv4(encoded_ip_addr):
 
 def matchesIPv6(ip_addr_string):
     try:
-        addr = ipaddress.ip_address(unicode(ip_addr_string, "utf-8"))
+        addr = ipaddress.ip_address(ip_addr_string)
         return isinstance(addr, ipaddress.IPv6Address)
     except ValueError:
         return False
@@ -79,11 +79,11 @@ def encodeNum(number, bitwidth):
     if number >= 2 ** bitwidth:
         raise Exception(
             "Number, %d, does not fit in %d bits" % (number, bitwidth))
-    return ('0' * (byte_len * 2 - len(num_str)) + num_str).decode('hex')
+    return bytes.fromhex(('0' * (byte_len * 2 - len(num_str)) + num_str))
 
 
 def decodeNum(encoded_number):
-    return int(encoded_number.encode('hex'), 16)
+    return int.from_bytes(encoded_number, byteorder='big')
 
 
 def encode(x, bitwidth):
@@ -114,20 +114,20 @@ def test():
     # TODO These tests should be moved out of main eventually
     mac = "aa:bb:cc:dd:ee:ff"
     enc_mac = encodeMac(mac)
-    assert (enc_mac == '\xaa\xbb\xcc\xdd\xee\xff')
+    assert (enc_mac == b'\xaa\xbb\xcc\xdd\xee\xff')
     dec_mac = decodeMac(enc_mac)
     assert (mac == dec_mac)
 
     ip = "10.0.0.1"
     enc_ip = encodeIPv4(ip)
-    assert (enc_ip == '\x0a\x00\x00\x01')
+    assert (enc_ip == b'\x0a\x00\x00\x01')
     dec_ip = decodeIPv4(enc_ip)
     assert (ip == dec_ip)
 
     num = 1337
     byte_len = 5
     enc_num = encodeNum(num, byte_len * 8)
-    assert (enc_num == '\x00\x00\x00\x05\x39')
+    assert (enc_num == b'\x00\x00\x00\x05\x39')
     dec_num = decodeNum(enc_num)
     assert (num == dec_num)
 
@@ -137,7 +137,7 @@ def test():
     assert (not matchesIPv4('10001'))
 
     assert (matchesIPv6('::1'))
-    assert (encode('1:2:3:4:5:6:7:8', 128) == '\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00\x07\x00\x08')
+    assert (encode('1:2:3:4:5:6:7:8', 128) == b'\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00\x07\x00\x08')
     assert (matchesIPv6('2001:0000:85a3::8a2e:370:1111'))
     assert (not matchesIPv6('10.0.0.1'))
 
@@ -152,7 +152,7 @@ def test():
         encodeNum(num, 8)
         raise Exception("expected exception")
     except Exception as e:
-        print e
+        print(e)
 
 
 if __name__ == '__main__':
