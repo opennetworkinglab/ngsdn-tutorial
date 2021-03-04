@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// SNIPPETS FOR EXERCISE 6 (IPV6 ROUTING)
+// SNIPPETS FOR EXERCISE 5 (IPV6 ROUTING)
 //------------------------------------------------------------------------------
 
 // Action that transforms an NDP NS packet into an NDP NA one for the given
@@ -38,7 +38,7 @@ action_selector(HashAlgorithm.crc16, 32w1024, 32w16) ecmp_selector;
 // }
 
 //------------------------------------------------------------------------------
-// SNIPPETS FOR EXERCISE 7 (SRV6)
+// SNIPPETS FOR EXERCISE 6 (SRV6)
 //------------------------------------------------------------------------------
 
 action insert_srv6h_header(bit<8> num_segments) {
@@ -50,7 +50,7 @@ action insert_srv6h_header(bit<8> num_segments) {
     hdr.srv6h.last_entry = num_segments - 1;
     hdr.srv6h.flags = 0;
     hdr.srv6h.tag = 0;
-    hdr.ipv6.next_hdr = PROTO_SRV6;
+    hdr.ipv6.next_hdr = IP_PROTO_SRV6;
 }
 
 action srv6_t_insert_2(ipv6_addr_t s1, ipv6_addr_t s2) {
