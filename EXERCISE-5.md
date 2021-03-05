@@ -401,7 +401,7 @@ below:
 
 ## Congratulations!
 
-You have completed the sixth exercise! Now your fabric is capable of forwarding
+You have completed the fifth exercise! Now your fabric is capable of forwarding
 IPv6 traffic between any host.
 
 ## Appendix A: Understanding ONOS error logs
