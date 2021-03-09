@@ -235,8 +235,8 @@ spine1 and leaf2, you can use the following command:
 
 * Insert the SRv6 policy from h2 to h4 on leaf1 (through spine1 and leaf2)
 ```
-onos> srv6-insert device:leaf1 3:201:2:: 3:102:2:: 2001:1:4::1
-Installing path on device device:leaf1: 3:201:2::, 3:102:2::, 2001:1:4::1
+onos> srv6-insert device:leaf1 3:201:2:: 3:102:2:: 2001:2:4::1
+Installing path on device device:leaf1: 3:201:2::, 3:102:2::, 2001:2:4::1
 ```
 * Insert the SRv6 policy from h4 to h2 on leaf2 (through spine1 and leaf1)
 ```
