@@ -227,7 +227,7 @@ To add new SRv6 policies, you should use the `srv6-insert` command.
 onos> srv6-insert <device ID> <segment list>
 ```
 
-Note: In our topology, the SID for spine1 is `3:201:2::` and the SID for spine
+Note: In our topology, the SID for spine1 is `3:201:2::` and the SID for spine2
 is `3:202:2::`.
 
 For example, to add a policy that forwards traffic between h2 and h4 though
@@ -245,7 +245,7 @@ Installing path on device device:leaf2: 3:201:2::, 3:101:2::, 2001:1:2::1
 ```
 
 These commands will match on traffic to the last segment on the specified device
-(e.g. match `2001:1:4::1` on `leaf1`). You can update the command to allow for
+(e.g. match `2001:2:4::1` on `leaf1`). You can update the command to allow for
 more specific match criteria as extra credit.
 
 You can confirm that your rule has been added using a variant of the following:
@@ -288,7 +288,7 @@ For example, if you want to capture packet from port 1 of spine1, capture
 packets from interface `spine1-eth1`.
 
 NOTE: `spine1-eth1` is connected to leaf1, and `spine1-eth2` is connected to
-leaf2; spine two follows the same pattern.
+leaf2; spine2 follows the same pattern.
 
 ## Congratulations!
 
