@@ -253,8 +253,8 @@ The `hostprovider` app provides host discovery capabilities by intercepting ARP
 (`selector=[ETH_TYPE:arp]`) and NDP packets (`selector=[ETH_TYPE:ipv6,
 IP_PROTO:58, ICMPV6_TYPE:...]`), which are cloned to the controller
 (`treatment=[immediate=[IngressPipeImpl.clone_to_cpu()]]`). Similarly,
-`lldpprovider` generates flow objectives to intercept LLDP and BBDP packets
-(`selector=[ETH_TYPE:lldp]` and `selector=[ETH_TYPE:bbdp]` ) periodically
+`lldpprovider` generates flow objectives to intercept LLDP and BDDP packets
+(`selector=[ETH_TYPE:lldp]` and `selector=[ETH_TYPE:bddp]` ) periodically
 emitted on all devices' ports as P4Runtime packet-outs, allowing automatic link
 discovery.
 
