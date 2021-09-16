@@ -452,9 +452,9 @@ network:
    `groups any device:leaf1`, verify that all flows and groups are in state
    `ADDED`. If you see other states such as `PENDING_ADD`, check the ONOS log
    for possible errors with writing those entries to the device. You can also
-   use the ONOS web UI to check flows and group state. If there is no any `flows`
-   and `groups` shows in ONOS CLI, run `make netcfg` first to configure devices
-   and hosts.
+   use the ONOS web UI to check flows and group state. 
+   
+   2. Check `netcfg` in ONOS CLI. If network config is missing, run `make netcfg` again to configure devices and hosts.
 
 2. **Use table counters to verify that tables are being hit as expected.**
    If you don't already have direct counters defined for your table(s), modify
