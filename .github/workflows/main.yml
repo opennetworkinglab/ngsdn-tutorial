@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [ advanced ]
+  pull_request:
+    branches: [ advanced ]
+
+  workflow_dispatch:
+
+jobs:
+  verify_solution:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download deps
+        run: make deps
+      - name: Check solution
+        run: make check check-sr check-gtp NGSDN_TUTORIAL_SUDO=sudo        
