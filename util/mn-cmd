@@ -5,4 +5,7 @@ if [ -z $1 ]; then
   exit 1
 fi
 
-docker exec -it mininet /mininet/host-cmd $@
+# Do not attach stdin if running in an environment without (e.g., GitHub Actions)
+it=$(test -t 0 && echo "-it" || echo "-t")
+
+docker exec $it mininet /mininet/host-cmd $@
