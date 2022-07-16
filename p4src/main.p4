@@ -438,8 +438,8 @@ control IngressPipeImpl (inout parsed_headers_t    hdr,
     //    block below should use the result (table.hit) to decide how to process
     //    the packet.
     //
-    // 3. Create a table for IPv6 routing. An action selector should be use to
-    //    pick a next hop MAC address according to a hash of packet header
+    // 3. Create a table for IPv6 routing. An action selector should be used 
+    //    to pick a next hop MAC address according to a hash of packet header
     //    fields (IPv6 source/destination address and the flow label). Look in
     //    snippets.p4 for an example of an action selector and table using it.
     //
