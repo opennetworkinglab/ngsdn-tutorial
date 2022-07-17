@@ -46,7 +46,7 @@ of the file). The same IPv6 addresses are used in the Mininet topology script
 
 ### Try pinging hosts in different subnets
 
-Similarly to the previous exercise, let's start by using Mininet to verify that
+Similar to the previous exercise, let's start by using Mininet to verify that
 pinging between hosts on different subnets does NOT work. It will be your task
 to make it work.
 
@@ -120,12 +120,12 @@ in [netcfg.json](mininet/netcfg.json) and the `myStationMac` associated to each
 switch (also defined in netcfg.json). When an NDP NS packet is received, asking
 to resolve one of such IPv6 addresses, the `ndp_ns_to_na` action should be
 invoked with the given `myStationMac` as parameter. The ONOS app will be
-responsible of inserting entries in this table according to the content of
+responsible for inserting entries in this table according to the content of
 netcfg.json.
 
 The ONOS app already provides a component
 [NdpReplyComponent.java](app/src/main/java/org/onosproject/ngsdn/tutorial/NdpReplyComponent.java)
-responsible of inserting entries in this table.
+responsible for inserting entries in this table.
 
 The component is currently disabled. You will need to enable and modify it in
 the next steps, but for now, let's focus on the P4 program.
@@ -251,7 +251,7 @@ You are asked to modify the implementation of four methods.
 
 * `setUpMyStationTable()`: to insert flow rules for the "My Station" table;
 
-* `createNextHopGroup()`: responsible of creating the ONOS equivalent of a
+* `createNextHopGroup()`: responsible for creating the ONOS equivalent of a
   P4Runtime action profile group for the ECMP selector of the routing table;
 
 * `createRoutingRule()`: to create a flow rule for the IPv6 routing table;

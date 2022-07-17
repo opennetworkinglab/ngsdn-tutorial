@@ -102,7 +102,7 @@ For example:
 
 #### Check for regressions
 
-To make sures the new changes are not breaking other features, make sure to run
+To make sure the new changes are not breaking other features, make sure to run
 tests for L2 bridging support.
 
     make p4-test TEST=bridging
@@ -350,7 +350,7 @@ destination address FF:FF:FF:FF:FF:FF, NDP messages are sent to special Ethernet
 addresses specified by RFC2464. These addresses are prefixed with 33:33 and the
 last four octets are the last four octets of the IPv6 destination multicast
 address. The most straightforward way of matching on such IPv6
-broadcast/multicast packets, without digging in the details of RFC2464, is to
+broadcast/multicast packets, without digging into the details of RFC2464, is to
 use a ternary match on `33:33:**:**:**:**`, where `*` means "don't care".
 
 For this reason, our solution defines two tables. One that matches in an exact
